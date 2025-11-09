@@ -1,0 +1,7 @@
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" fill="#0078D4"/>
+  <text x="96" y="110" font-family="Arial" font-size="72" fill="white" text-anchor="middle" font-weight="bold">BT</text>
+  <rect x="40" y="130" width="30" height="30" fill="white" rx="5"/>
+  <rect x="80" y="130" width="30" height="30" fill="white" rx="5"/>
+  <rect x="120" y="130" width="30" height="30" fill="white" rx="5"/>
+</svg>

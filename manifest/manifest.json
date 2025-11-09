@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "{{TEAMS_APP_ID}}",
+  "packageName": "com.elaine.blocksteamsapontamento",
+  "developer": {
+    "name": "Elaine M Barros",
+    "websiteUrl": "https://www.example.com",
+    "privacyUrl": "https://www.example.com/privacy",
+    "termsOfUseUrl": "https://www.example.com/terms"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "Blocks Apontamento",
+    "full": "Blocks Teams Time Tracking"
+  },
+  "description": {
+    "short": "Track your time and appointments",
+    "full": "A Microsoft Teams application for tracking time and managing appointments efficiently"
+  },
+  "accentColor": "#FFFFFF",
+  "staticTabs": [
+    {
+      "entityId": "timetracking",
+      "name": "Time Tracking",
+      "contentUrl": "https://{{HOSTNAME}}/tab",
+      "websiteUrl": "https://{{HOSTNAME}}/tab",
+      "scopes": ["personal"]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "{{HOSTNAME}}"
+  ],
+  "webApplicationInfo": {
+    "id": "{{TEAMS_APP_ID}}",
+    "resource": "https://{{HOSTNAME}}"
+  }
+}
