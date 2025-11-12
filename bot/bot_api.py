@@ -38,6 +38,15 @@ except ImportError:
     print("⚠️ Aviso: agente_apontamentos.py não encontrado. Bot funcionará em modo limitado.")
     AgenteApontamentos = None
 
+# Importar módulo de conversação com IA
+try:
+    from bot.ai_conversation import ConversacaoIA
+    IA_DISPONIVEL = True
+except ImportError:
+    print("⚠️ Módulo de IA não disponível")
+    ConversacaoIA = None
+    IA_DISPONIVEL = False
+
 # Configurar logging
 logging.basicConfig(
     level=getattr(logging, config.LOG_LEVEL),
@@ -86,6 +95,15 @@ def get_agente():
     return agente_inst
 
 agente = get_agente()
+
+# Inicializar módulo de conversação com IA
+conversacao_ia = None
+if IA_DISPONIVEL and agente:
+    try:
+        conversacao_ia = ConversacaoIA(agente)
+        logger.info("✅ Módulo de conversação IA inicializado")
+    except Exception as e:
+        logger.warning(f"⚠️ Erro ao inicializar conversação IA: {e}")
 
 
 async def process_message(turn_context: TurnContext):
@@ -140,9 +158,18 @@ async def process_message(turn_context: TurnContext):
             await turn_context.send_activity(reply)
             return
         
-        # Processar com agente se disponível
+        # Processar com agente (com IA se disponível)
         if agente:
-            resultado = agente.responder_pergunta(user_message, user_name)
+            # Usar IA conversacional se disponível
+            if conversacao_ia:
+                try:
+                    resultado = conversacao_ia.processar_mensagem(user_message, user_name)
+                    logger.info(f"✅ Processado com IA conversacional")
+                except Exception as e:
+                    logger.error(f"❌ Erro na IA, usando fallback: {e}")
+                    resultado = agente.responder_pergunta(user_message, user_name)
+            else:
+                resultado = agente.responder_pergunta(user_message, user_name)
             
             # Determinar tipo de card baseado no resultado
             card = None
@@ -266,7 +293,8 @@ async def root():
         "description": config.BOT_DESCRIPTION,
         "version": "0.1.0",
         "status": "running",
-        "agente_disponivel": agente is not None
+        "agente_disponivel": agente is not None,
+        "ia_conversacional": conversacao_ia is not None
     }
 
 
@@ -279,6 +307,7 @@ async def health():
         "status": "healthy",
         "bot_configured": adapter is not None,
         "agente_available": agente is not None,
+        "ia_conversacional_available": conversacao_ia is not None,
         "environment": config.ENVIRONMENT
     }
 
