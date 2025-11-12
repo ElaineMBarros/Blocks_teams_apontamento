@@ -1,0 +1,1216 @@
+PROPOSTA DE SERVIÇOS DE HOSPEDAGEM EM NUVEM AZURE
+
+BOT DE APONTAMENTO DE HORAS - MICROSOFT TEAMS
+
+REL.XXXX/2025 v.1.0
+
+10 de novembro de 2025
+
+================================================================================
+
+ÍNDICE
+
+Controle de revisão	3
+1. Objetivo	4
+2. Situação atual	4
+3. Proposta técnica	5
+   3.1. Arquitetura Azure Cloud	6
+      3.1.1. Ambiente de produção	7
+      3.1.2. Ambiente de homologação	9
+   3.2. Serviços Azure complementares	10
+   3.3. Segurança e governança	11
+   3.4. Monitoramento e observabilidade	12
+   3.5. Topologias	13
+      3.5.1. Ambiente de produção	13
+      3.5.2. Ambiente de homologação	14
+   3.6. Resumo dos serviços Azure	15
+4. Orçamento técnico	16
+5. Considerações gerais	17
+6. Conclusão	18
+
+================================================================================
+
+CONTROLE DE REVISÃO
+
+DATA       | VER. | ELABORADO POR        | REVISADO POR | DESCRIÇÃO              | ARQUIVO
+-----------|------|---------------------|--------------|------------------------|---------------------------
+10/11/2025 | 1.0  | Equipe Técnica      |              | Versão inicial         | REL.xxxx_bot_apontamentos.docx
+10/11/2025 | 2.0  | Equipe Técnica      |              | Ajuste para Azure Cloud| REL.xxxx_bot_apontamentos.docx
+
+================================================================================
+
+1. OBJETIVO
+
+Este relatório de projeto técnico (RPT) tem o objetivo de propor serviços de hospedagem em nuvem Microsoft Azure para o Bot de Apontamento de Horas integrado ao Microsoft Teams, utilizando Bot Framework e arquitetura cloud-native, a ser fornecido para demanda corporativa de gestão de apontamentos de horas.
+
+================================================================================
+
+2. SITUAÇÃO ATUAL
+
+Atualmente, o sistema de análise de apontamentos possui:
+
+• Dashboard web desenvolvido em Streamlit (versão 2.0) com 6 módulos funcionais:
+  - Alertas e inconsistências
+  - Análise de dados
+  - Visão por pessoa
+  - Gráficos e visualizações
+  - Horas extras
+  - Dados detalhados
+
+• Backend analítico Python com módulo AgenteApontamentos (agente_apontamentos.py):
+  - Processamento de dados com pandas/numpy
+  - Cálculos de horas extras, médias e rankings
+  - Detecção de outliers (z-score)
+  - Chat IA integrado (OpenAI GPT-3.5)
+
+• Integração com Microsoft Fabric Data Warehouse para acesso aos dados corporativos
+
+NECESSIDADE:
+
+Para melhorar a adoção e facilitar o acesso às informações, propõe-se a criação de um Bot integrado ao Microsoft Teams hospedado inteiramente em nuvem Azure, permitindo que colaboradores consultem seus apontamentos diretamente na plataforma onde já trabalham diariamente.
+
+Os principais benefícios esperados são:
+
+✓ Acesso rápido e intuitivo via Microsoft Teams
+✓ Interface mobile-friendly através do app Teams
+✓ Infraestrutura cloud-native Azure (escalável e resiliente)
+✓ Notificações proativas de alertas e inconsistências
+✓ Melhor adoção pela integração nativa com ferramentas corporativas
+✓ Autenticação corporativa out-of-the-box (Azure AD / Entra ID)
+✓ Redução de tempo para consultas básicas
+✓ Alta disponibilidade e disaster recovery nativo
+✓ Custos operacionais reduzidos (pay-as-you-go)
+✓ Centralização no ecossistema Microsoft
+
+================================================================================
+
+3. PROPOSTA TÉCNICA
+
+Propõe-se a criação de uma infraestrutura cloud-native completa na plataforma Microsoft Azure, aproveitando serviços gerenciados (PaaS) para maximizar performance, segurança e reduzir overhead operacional.
+
+O escopo da proposta técnica considerará os itens a seguir:
+
+✓ Azure App Service (hospedagem da aplicação web)
+✓ Azure Bot Service (integração com Microsoft Teams)
+✓ Azure Cache for Redis (cache distribuído)
+✓ Azure Application Gateway (entrada HTTPS com WAF)
+✓ Azure Key Vault (gerenciamento de secrets)
+✓ Application Insights (monitoramento e telemetria)
+✓ Azure Monitor (logs e alertas)
+✓ Microsoft Entra ID (autenticação e autorização)
+✓ Integração com Microsoft Fabric Data Warehouse
+
+ARQUITETURA DA SOLUÇÃO:
+
+┌─────────────────┐
+│ Microsoft Teams │ (Cliente)
+│   Desktop/Web   │
+│     Mobile      │
+└────────┬────────┘
+         │ HTTPS
+         ↓
+┌────────────────────────┐
+│  Azure Bot Service     │
+│ (Bot Channels Reg.)    │
+└────────┬───────────────┘
+         │
+         ↓
+┌────────────────────────┐
+│ Application Gateway    │
+│   + WAF + SSL/TLS     │
+└────────┬───────────────┘
+         │
+         ↓
+┌────────────────────────┐
+│   Azure App Service    │
+│  FastAPI + Bot SDK     │
+│     Python 3.11+       │
+└────────┬───────────────┘
+         │
+         ├─────────────┬──────────────┐
+         │             │              │
+         ↓             ↓              ↓
+┌────────────┐  ┌─────────────┐  ┌──────────────┐
+│ Redis      │  │ Key Vault   │  │ App Insights │
+│ Cache      │  │ (Secrets)   │  │ (Monitor)    │
+└────────────┘  └─────────────┘  └──────────────┘
+         │
+         ↓
+┌────────────────────────┐
+│ Microsoft Fabric       │
+│  Data Warehouse        │
+│  (SQL Endpoint)        │
+└────────────────────────┘
+
+TECNOLOGIAS UTILIZADAS:
+
+Backend:
+• Python 3.11+
+• FastAPI 0.104.1 (framework web assíncrono)
+• Bot Framework SDK 4.15.0
+• Pandas 2.0+ e NumPy 1.24+ (processamento de dados)
+• aiohttp 3.9+ (comunicação assíncrona)
+
+Autenticação e Segurança:
+• Microsoft Entra ID (Azure AD)
+• MSAL 1.24.0 (Microsoft Authentication Library)
+• Azure Identity 1.14.0
+• PyJWT 2.8.0 (JSON Web Tokens)
+
+Integração Microsoft:
+• Bot Framework Schema 4.15.0
+• Adaptive Cards 1.4+
+• Teams App SDK
+
+Serviços Azure:
+• Azure App Service (Python 3.11 runtime)
+• Azure Bot Service
+• Azure Cache for Redis
+• Azure Application Gateway
+• Azure Key Vault
+• Application Insights
+• Azure Monitor
+
+================================================================================
+
+3.1. ARQUITETURA AZURE CLOUD
+
+Todos os componentes da solução serão hospedados em Microsoft Azure, utilizando serviços gerenciados (PaaS) para garantir alta disponibilidade, escalabilidade e segurança.
+
+REGIÃO AZURE: Brazil South (São Paulo)
+GRUPO DE RECURSOS: rg-bot-apontamentos-prod / rg-bot-apontamentos-hml
+
+COMPONENTES PRINCIPAIS:
+
+1. CAMADA DE ENTRADA (Azure Application Gateway)
+   - Balanceamento de carga L7
+   - SSL/TLS offloading
+   - Web Application Firewall (WAF)
+   - Certificado gerenciado Azure
+
+2. CAMADA DE APLICAÇÃO (Azure App Service)
+   - Plano: Premium V3 (produção)
+   - Runtime: Python 3.11
+   - Auto-scaling habilitado
+   - Deployment slots (blue-green deploy)
+
+3. CAMADA DE CACHE (Azure Cache for Redis)
+   - Tier: Standard/Premium
+   - Alta disponibilidade (replicação)
+   - Persistência de dados
+
+4. GERENCIAMENTO DE SEGREDOS (Azure Key Vault)
+   - Armazenamento de connection strings
+   - Secrets de API
+   - Certificados
+
+5. INTEGRAÇÃO BOT (Azure Bot Service)
+   - Bot Channels Registration
+   - Canal Teams habilitado
+   - Webhook endpoint configurado
+
+6. MONITORAMENTO (Application Insights + Azure Monitor)
+   - Logs estruturados
+   - Métricas de performance
+   - Alertas proativos
+   - Dashboards customizados
+
+================================================================================
+
+3.1.1. AMBIENTE DE PRODUÇÃO
+
+AZURE APP SERVICE (Aplicação Principal)
+
+Especificações:
+• App Service Plan: Premium V3 P1V3
+  - 2 vCores
+  - 8 GB RAM
+  - 250 GB armazenamento
+  - Auto-scaling: 2-10 instâncias
+• Sistema Operacional: Linux (container Python)
+• Runtime: Python 3.11
+• Deployment: GitHub Actions / Azure DevOps
+• Always On: Habilitado
+• HTTPS Only: Habilitado
+• Managed Identity: Habilitada
+
+Recursos:
+✓ FastAPI + uvicorn
+✓ Bot Framework SDK 4.15.0
+✓ Integração com Bot Service
+✓ Conexão com Redis Cache
+✓ Integração com Key Vault
+✓ Application Insights auto-instrumentation
+
+---
+
+AZURE BOT SERVICE
+
+Especificações:
+• Tipo: Bot Channels Registration
+• Canal: Microsoft Teams
+• Região: Global (com endpoint Brazil South)
+• Messaging Endpoint: https://bot-apontamentos.azurewebsites.net/api/messages
+• Microsoft App ID: Gerado automaticamente
+• Pricing Tier: Standard (S1)
+
+Recursos:
+✓ Integração nativa com Teams
+✓ Autenticação Azure AD
+✓ Analytics integrado
+✓ Multi-canal (Teams + outros futuros)
+
+---
+
+AZURE CACHE FOR REDIS
+
+Especificações:
+• Tier: Standard C1
+• Capacidade: 1 GB
+• Replicação: Sim (alta disponibilidade)
+• Versão: Redis 6.x
+• Região: Brazil South
+• SSL Habilitado: Sim
+
+Recursos:
+✓ Cache de consultas frequentes
+✓ Sessões de usuário
+✓ Pré-computação de estatísticas
+✓ TTL configurável
+✓ Eviction policy: allkeys-lru
+
+---
+
+AZURE APPLICATION GATEWAY
+
+Especificações:
+• SKU: WAF_v2 (Medium)
+• Capacidade: 2-10 unidades (auto-scale)
+• Tier: WAF V2
+• Região: Brazil South
+• SSL/TLS: Certificado gerenciado Azure
+
+Recursos:
+✓ Web Application Firewall (WAF)
+✓ SSL Offloading
+✓ Load Balancing
+✓ Health Probes
+✓ URL Routing
+✓ Proteção DDoS
+
+---
+
+AZURE KEY VAULT
+
+Especificações:
+• Tier: Standard
+• Região: Brazil South
+• Soft-delete: Habilitado (90 dias)
+• Purge protection: Habilitado
+
+Secrets armazenados:
+✓ BOT_APP_PASSWORD
+✓ FABRIC_CONNECTION_STRING
+✓ REDIS_CONNECTION_STRING
+✓ AZURE_CLIENT_SECRET
+✓ API_KEYS (OpenAI, etc)
+
+---
+
+APPLICATION INSIGHTS
+
+Especificações:
+• Tipo: Workspace-based
+• Região: Brazil South
+• Retenção: 90 dias
+• Sampling: Adaptive (otimizado para custo)
+
+Métricas monitoradas:
+✓ Request rate e latency
+✓ Dependency calls
+✓ Exceptions e errors
+✓ Custom events (mensagens bot)
+✓ User sessions
+✓ Performance counters
+
+---
+
+AZURE MONITOR
+
+Especificações:
+• Log Analytics Workspace
+• Retenção: 30 dias
+• Alertas configurados
+
+Alertas:
+✓ App Service CPU > 80%
+✓ App Service Memory > 85%
+✓ Redis Memory > 90%
+✓ Error rate > 5%
+✓ Response time > 3s
+✓ Bot Service availability < 99%
+
+---
+
+MICROSOFT FABRIC DATA WAREHOUSE (Integração)
+
+Não requer provisionamento adicional:
+
+Conexão:
+• Endpoint: SQL Endpoint do Fabric
+• Autenticação: Azure AD (Managed Identity)
+• Driver: pyodbc / SQL Server driver
+• Connection pooling: Habilitado
+
+Configurações:
+✓ Service Principal com permissões leitura
+✓ Connection string no Key Vault
+✓ Retry policy configurada
+✓ Timeout: 30 segundos
+
+================================================================================
+
+3.1.2. AMBIENTE DE HOMOLOGAÇÃO
+
+AZURE APP SERVICE (Aplicação)
+
+Especificações:
+• App Service Plan: Basic B2
+  - 2 vCores
+  - 3.5 GB RAM
+  - 10 GB armazenamento
+• Runtime: Python 3.11
+• Auto-scaling: Desabilitado (fixo em 1 instância)
+
+---
+
+AZURE BOT SERVICE
+
+Especificações:
+• Tipo: Bot Channels Registration
+• Canal: Microsoft Teams
+• Pricing Tier: Standard (S1)
+• Endpoint: https://bot-apontamentos-hml.azurewebsites.net/api/messages
+
+---
+
+AZURE CACHE FOR REDIS
+
+Especificações:
+• Tier: Basic C0
+• Capacidade: 250 MB
+• Replicação: Não
+• Versão: Redis 6.x
+
+---
+
+OUTROS SERVIÇOS COMPARTILHADOS
+
+• Application Gateway: Não incluído (acesso direto via HTTPS do App Service)
+• Key Vault: Mesma instância de produção (secrets separados por prefixo)
+• Application Insights: Mesma instância (filtros por ambiente)
+• Azure Monitor: Mesma instância
+
+OBSERVAÇÕES AMBIENTE HOMOLOGAÇÃO:
+
+• Dimensionado para testes (menor custo)
+• Sem Application Gateway (redução de custo)
+• Redis menor (cache limitado)
+• App Service sem auto-scale
+• Compartilha Key Vault e monitoring com produção
+• Dados de teste no Fabric DW
+
+================================================================================
+
+3.2. SERVIÇOS AZURE COMPLEMENTARES
+
+AZURE ACTIVE DIRECTORY / ENTRA ID
+
+Recursos não tarifados adicionalmente:
+• App Registration para o Bot
+• Service Principal para Fabric DW
+• Grupos de segurança para controle de acesso
+• Conditional Access Policies
+• Multi-Factor Authentication (MFA)
+
+AZURE STORAGE ACCOUNT (Opcional)
+
+Especificações:
+• Tier: Standard (LRS)
+• Tipo: General Purpose v2
+• Uso: Backup de logs, arquivos temporários
+
+Estimativa:
+• 10 GB armazenamento
+• ~R$ 2-5/mês
+
+AZURE DEVOPS / GITHUB ACTIONS
+
+CI/CD Pipeline:
+• Build automatizado
+• Testes unitários e integração
+• Deploy automático para slots
+• Blue-green deployment
+• Rollback automático em caso de falha
+
+Custo: Gratuito (GitHub Actions) ou incluído (Azure DevOps Basic)
+
+AZURE BACKUP (Opcional)
+
+Para backup de configurações:
+• Key Vault backup
+• App Service configuration
+• Redis RDB snapshots
+
+Estimativa: R$ 10-20/mês
+
+================================================================================
+
+3.3. SEGURANÇA E GOVERNANÇA
+
+CAMADAS DE SEGURANÇA:
+
+1. Rede:
+   ✓ Virtual Network (VNet) isolada
+   ✓ Network Security Groups (NSG)
+   ✓ Private Endpoints para Redis e Key Vault
+   ✓ Service Endpoints para Fabric DW
+   ✓ DDoS Protection (Standard via App Gateway)
+
+2. Identidade:
+   ✓ Managed Identity (System-assigned)
+   ✓ Azure AD authentication only
+   ✓ Role-Based Access Control (RBAC)
+   ✓ Principle of least privilege
+   ✓ Conditional Access Policies
+
+3. Dados:
+   ✓ Encryption at rest (AES-256)
+   ✓ Encryption in transit (TLS 1.2+)
+   ✓ Key Vault para secrets
+   ✓ No hardcoded credentials
+   ✓ Audit logs habilitados
+
+4. Aplicação:
+   ✓ Web Application Firewall (WAF)
+   ✓ OWASP Top 10 protection
+   ✓ Rate limiting
+   ✓ Input validation
+   ✓ Secure headers
+
+GOVERNANÇA:
+
+• Azure Policy aplicada:
+  - Requer tags em todos recursos
+  - Apenas regiões aprovadas
+  - Requer encryption
+  - Bloqueio de recursos críticos
+
+• Resource locks:
+  - Produção: CanNotDelete
+  - Homologação: None
+
+• Compliance:
+  - Logs de auditoria: 90 dias
+  - Change tracking habilitado
+  - Azure Security Center ativado
+
+================================================================================
+
+3.4. MONITORAMENTO E OBSERVABILIDADE
+
+NÍVEIS DE MONITORAMENTO:
+
+1. Infraestrutura:
+   • Azure Monitor
+   • Resource Health
+   • Service Health
+   • Advisor recommendations
+
+2. Aplicação:
+   • Application Insights
+   • Custom metrics
+   • Distributed tracing
+   • Dependency tracking
+
+3. Negócio:
+   • Métricas de uso do bot
+   • Taxa de sucesso de comandos
+   • Usuários ativos
+   • Tempo médio de resposta
+
+DASHBOARDS:
+
+Dashboard Operacional (Azure Monitor):
+• Status de todos serviços
+• Métricas em tempo real
+• Alertas ativos
+• Custos atualizados
+
+Dashboard de Negócio (Power BI):
+• Usuários ativos
+• Comandos mais usados
+• Taxa de satisfação
+• Trends de uso
+
+ALERTAS CONFIGURADOS:
+
+CRÍTICOS (SMS + Email):
+• App Service down
+• Redis unavailable
+• Error rate > 10%
+• Response time > 5s
+
+WARNINGS (Email):
+• CPU > 80%
+• Memory > 85%
+• Redis memory > 90%
+• Unusual traffic patterns
+
+INFO (Log only):
+• Deployments
+• Configuration changes
+• Scale events
+
+SLA MONITORADO:
+
+• Disponibilidade: 99.9%
+• Response time: P95 < 3s
+• Error rate: < 1%
+
+================================================================================
+
+3.5. TOPOLOGIAS
+
+3.5.1. AMBIENTE DE PRODUÇÃO - AZURE CLOUD
+
+┌─────────────────────────────────────────────────────────────┐
+│                        INTERNET/TEAMS                        │
+│                    (Usuários Corporativos)                   │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           │ HTTPS
+                           ↓
+┌──────────────────────────────────────────────────────────────┐
+│                    AZURE BOT SERVICE                         │
+│              (Bot Channels Registration)                     │
+│                   Região: Global/Brazil South                │
+└──────────────────────────┬───────────────────────────────────┘
+                           │
+                           │ HTTPS (Webhook)
+                           ↓
+    ┌──────────────────────────────────────────────────────┐
+    │                   MICROSOFT AZURE                    │
+    │                Region: Brazil South                  │
+    │                                                      │
+    │  ┌────────────────────────────────────────────┐    │
+    │  │  Azure Application Gateway + WAF           │    │
+    │  │  - SSL/TLS Termination                    │    │
+    │  │  - Load Balancing (2-10 instances)        │    │
+    │  │  - Web Application Firewall               │    │
+    │  │  - DDoS Protection                        │    │
+    │  └──────────────────┬─────────────────────────┘    │
+    │                     │                               │
+    │                     │ HTTP (backend)                │
+    │                     ↓                               │
+    │  ┌────────────────────────────────────────────┐    │
+    │  │  Azure App Service (Premium V3 P1V3)      │    │
+    │  │  - 2 vCores, 8GB RAM                      │    │
+    │  │  - Auto-scale: 2-10 instances             │    │
+    │  │  - Python 3.11 + FastAPI                  │    │
+    │  │  - Bot Framework SDK 4.15.0               │    │
+    │  │  - Managed Identity enabled               │    │
+    │  │  - Always On + HTTPS Only                 │    │
+    │  └──────────────────┬─────────────────────────┘    │
+    │                     │                               │
+    │      ┌──────────────┼──────────────┐              │
+    │      │              │              │               │
+    │      ↓              ↓              ↓               │
+    │  ┌────────┐  ┌─────────────┐  ┌──────────────┐  │
+    │  │ Redis  │  │ Key Vault   │  │ App Insights │  │
+    │  │ Cache  │  │ Standard    │  │ Monitoring   │  │
+    │  │ C1 1GB │  │ (Secrets)   │  │ + Logs       │  │
+    │  └────────┘  └─────────────┘  └──────────────┘  │
+    │      │                              │             │
+    │      └──────────────────────────────┘             │
+    │                     │                             │
+    └─────────────────────┼─────────────────────────────┘
+                          │
+                          │ TDS/HTTPS (Azure AD Auth)
+                          ↓
+    ┌──────────────────────────────────────────────────┐
+    │       MICROSOFT FABRIC DATA WAREHOUSE            │
+    │              SQL Endpoint                        │
+    │       (Dados de Apontamentos)                   │
+    └──────────────────────────────────────────────────┘
+
+FLUXO DE COMUNICAÇÃO:
+
+1. Usuário envia mensagem no Teams
+2. Teams encaminha para Azure Bot Service (global)
+3. Bot Service chama webhook no Application Gateway
+4. Application Gateway:
+   - Valida certificado SSL
+   - Processa WAF rules
+   - Load balancer para App Service instance
+5. App Service processa com FastAPI + Bot SDK:
+   - Autentica via Bot Framework
+   - Busca secrets no Key Vault
+   - Consulta Redis Cache
+   - Se cache miss, consulta Fabric DW (Azure AD auth)
+   - Processa com AgenteApontamentos
+   - Gera Adaptive Card
+6. Log telemetria no Application Insights
+7. Retorna resposta para Bot Service
+8. Bot Service entrega para Teams
+9. Usuário visualiza resposta
+
+ALTA DISPONIBILIDADE:
+• App Service: Multi-instance (2-10)
+• Redis: Replicação master-slave
+• Application Gateway: Zone-redundant
+• Fabric DW: Gerenciado pela Microsoft
+• Bot Service: SLA 99.9% Microsoft
+
+---
+
+3.5.2. AMBIENTE DE HOMOLOGAÇÃO - AZURE CLOUD
+
+┌──────────────────────────────────────────────────────┐
+│            AZURE BOT SERVICE (DEV/HML)               │
+│         Bot Registration - Ambiente Testes           │
+└──────────────────────┬───────────────────────────────┘
+                       │
+                       │ HTTPS (direct endpoint)
+                       ↓
+┌──────────────────────────────────────────────────────┐
+│                   MICROSOFT AZURE                    │
+│                Region: Brazil South                  │
+│                                                      │
+│  ┌────────────────────────────────────────┐        │
+│  │  Azure App Service (Basic B2)          │        │
+│  │  - 2 vCores, 3.5GB RAM                │        │
+│  │  - 1 instância fixa (no auto-scale)   │        │
+│  │  - Python 3.11 + FastAPI              │        │
+│  │  - HTTPS Only                         │        │
+│  └──────────────────┬─────────────────────┘        │
+│                     │                               │
+│                     ↓                               │
+│  ┌────────────────────────────────────────┐        │
+│  │  Azure Cache for Redis (Basic C0)      │        │
+│  │  - 250 MB (sem replicação)            │        │
+│  └────────────────────────────────────────┘        │
+│                                                     │
+│  Compartilhado com Produção:                       │
+│  - Key Vault (secrets prefixados -hml)            │
+│  - Application Insights (filtro por env)          │
+│  - Azure Monitor                                   │
+│                                                     │
+└─────────────────────┼───────────────────────────────┘
+                      │
+                      ↓
+        ┌─────────────────────────────┐
+        │  Fabric DW (Dados Teste)    │
+        └─────────────────────────────┘
+
+OBSERVAÇÕES HOMOLOGAÇÃO:
+
+• Sem Application Gateway (custo otimizado)
+• Acesso direto HTTPS via App Service endpoint
+• Redis menor e sem replicação
+• Compartilha recursos de monitoring
+• Ideal para testes e validações
+
+================================================================================
+
+3.6. RESUMO DOS SERVIÇOS AZURE
+
+AMBIENTE DE PRODUÇÃO
+
+SERVIÇO AZURE                              | TIER/SKU          | QTD | UNIDADE
+-------------------------------------------|-------------------|-----|------------------
+Azure App Service Plan                     | Premium V3 P1V3   | 01  | Por plano/mês
+Azure App Service (instâncias)             | Included in plan  | 2-10| Auto-scale
+Azure Bot Service                          | Standard S1       | 01  | Por bot/mês
+Azure Cache for Redis                      | Standard C1       | 01  | Por cache/mês
+Azure Application Gateway                  | WAF_v2 Medium     | 01  | Por gateway/mês
+Application Gateway Compute Units          | Auto-scale        | 2-10| Por unit/hora
+Azure Key Vault                            | Standard          | 01  | Por vault/mês
+Key Vault Operations                       | Included          | -   | Por 10k ops
+Application Insights                       | Workspace-based   | 01  | Por GB ingestado
+Azure Monitor Log Analytics                | Pay-as-you-go     | 01  | Por GB ingestado
+Azure Storage (logs/backup)                | Standard LRS      | 10GB| Por GB/mês
+
+AMBIENTE DE HOMOLOGAÇÃO
+
+SERVIÇO AZURE                              | TIER/SKU          | QTD | UNIDADE
+-------------------------------------------|-------------------|-----|------------------
+Azure App Service Plan                     | Basic B2          | 01  | Por plano/mês
+Azure Bot Service                          | Standard S1       | 01  | Por bot/mês
+Azure Cache for Redis                      | Basic C0          | 01  | Por cache/mês
+Key Vault                                  | Compartilhado     | -   | Incluído em Prod
+Application Insights                       | Compartilhado     | -   | Incluído em Prod
+Azure Monitor                              | Compartilhado     | -   | Incluído em Prod
+
+SERVIÇOS COMPARTILHADOS (SEM CUSTO ADICIONAL)
+
+• Microsoft Entra ID (Azure AD) - App Registrations
+• Azure DevOps / GitHub Actions - CI/CD básico
+• Azure Advisor - Recomendações
+• Azure Service Health - Status de serviços
+• Azure Resource Manager - Gerenciamento de recursos
+
+================================================================================
+
+4. ORÇAMENTO TÉCNICO
+
+O orçamento está baseado nos preços de Microsoft Azure região Brazil South (novembro/2025) em reais (BRL), sujeitos a variação cambial.
+
+CUSTOS AZURE - AMBIENTE DE PRODUÇÃO (MENSAL)
+
+SERVIÇO                          | TIER/SKU          | QTD  | VL. UNIT.  | TOTAL/MÊS
+---------------------------------|-------------------|------|------------|------------
+App Service Plan P1V3            | Premium V3        | 1    | R$ 450,00  | R$ 450,00
+App Service Auto-scale           | 1-9 inst. extras  | média| R$ 45,00   | R$ 225,00
+Bot Service S1                   | Standard          | 1    | R$ 250,00  | R$ 250,00
+Redis Cache C1                   | Standard 1GB      | 1    | R$ 280,00  | R$ 280,00
+Application Gateway WAF_v2       | Medium            | 1    | R$ 650,00  | R$ 650,00
+App Gateway Compute Units        | Auto-scale        | média| R$ 0,12    | R$ 180,00
+Key Vault                        | Standard          | 1    | R$ 50,00   | R$ 50,00
+Application Insights             | 5GB/mês ingestion | 1    | R$ 150,00  | R$ 150,00
+Azure Monitor Logs               | 2GB/mês           | 1    | R$ 100,00  | R$ 100,00
+Storage Account                  | 10GB              | 1    | R$ 5,00    | R$ 5,00
+Outbound Data Transfer           | ~50GB             | 1    | R$ 60,00   | R$ 60,00
+                                 |                   |      |            |
+SUBTOTAL PRODUÇÃO                |                   |      |            | R$ 2.450,00
+
+CUSTOS AZURE - AMBIENTE DE HOMOLOGAÇÃO (MENSAL)
+
+SERVIÇO                          | TIER/SKU          | QTD  | VL. UNIT.  | TOTAL/MÊS
+---------------------------------|-------------------|------|------------|------------
+App Service Plan B2              | Basic             | 1    | R$ 180,00  | R$ 180,00
+Bot Service S1                   | Standard          | 1    | R$ 250,00  | R$ 250,00
+Redis Cache C0                   | Basic 250MB       | 1    | R$ 65,00   | R$ 65,00
+Storage Account                  | 5GB               | 1    | R$ 3,00    | R$ 3,00
+                                 |                   |      |            |
+SUBTOTAL HOMOLOGAÇÃO             |                   |      |            | R$ 498,00
+
+CUSTOS DE DESENVOLVIMENTO (ONE-TIME)
+
+ITEM                                      | DESCRIÇÃO                              | VALOR
+------------------------------------------|----------------------------------------|-------------
+Desenvolvimento do Bot                    | MVP + Autenticação + Features          | R$ 30.000,00
+Configuração de Infraestrutura Azure      | Setup inicial de recursos              | R$ 5.000,00
+Testes e Garantia de Qualidade           | Testes funcionais, integração, carga   | R$ 8.000,00
+Deploy e Configuração CI/CD              | Pipeline DevOps, automações            | R$ 4.000,00
+Documentação Técnica e Treinamento       | Docs + treinamento equipe/usuários     | R$ 3.000,00
+                                         |                                        |
+SUBTOTAL DESENVOLVIMENTO                 |                                        | R$ 50.000,00
+
+
+CONSOLIDADO FINANCEIRO
+
+VISÃO ANUAL (12 MESES):
+
+COMPONENTE                        | TIPO          | MENSAL       | ANUAL (12 MESES)
+----------------------------------|---------------|--------------|------------------
+Ambiente Produção (Azure)         | Recorrente    | R$ 2.450,00  | R$ 29.400,00
+Ambiente Homologação (Azure)      | Recorrente    | R$ 498,00    | R$ 5.976,00
+Desenvolvimento                   | One-time      | -            | R$ 50.000,00
+                                  |               |              |
+TOTAL ANO 1 (com desenvolvimento) |               |              | R$ 85.376,00
+
+ANO 2 EM DIANTE (apenas operação):
+• Produção + Homologação:         |               | R$ 2.948,00  | R$ 35.376,00/ano
+
+
+BREAKDOWN DETALHADO POR FASE:
+
+FASE 1 - SETUP INICIAL (One-time):
+• Desenvolvimento do bot:                          R$ 30.000,00
+• Setup infraestrutura Azure:                      R$ 5.000,00
+• Testes e QA:                                     R$ 8.000,00
+• Deploy e CI/CD:                                  R$ 4.000,00
+• Documentação e treinamento:                      R$ 3.000,00
+SUBTOTAL FASE 1:                                   R$ 50.000,00
+
+FASE 2 - OPERAÇÃO MENSAL:
+• Azure Produção:                                  R$ 2.450,00/mês
+• Azure Homologação:                               R$ 498,00/mês
+SUBTOTAL OPERAÇÃO:                                 R$ 2.948,00/mês
+
+TOTAL PRIMEIRO ANO:
+• Investimento inicial:                            R$ 50.000,00
+• Operação 12 meses (12 x R$ 2.948,00):           R$ 35.376,00
+TOTAL ANO 1:                                       R$ 85.376,00
+
+
+COMPARATIVO DE CUSTOS (Azure Cloud vs On-Premises):
+
+ITEM                              | AZURE CLOUD    | ON-PREMISES*  | ECONOMIA
+----------------------------------|----------------|---------------|----------
+Infraestrutura (ano 1)            | R$ 35.376,00   | R$ 438.022,80 | -92%
+Desenvolvimento                   | R$ 50.000,00   | R$ 45.000,00  | -10%
+TOTAL ANO 1                       | R$ 85.376,00   | R$ 483.022,80 | -82%
+                                  |                |               |
+Operação anual (anos seguintes)   | R$ 35.376,00   | R$ 438.022,80 | -92%
+
+*Valores on-premises baseados em estimativa Prodesp do documento anterior
+
+VANTAGENS FINANCEIRAS AZURE:
+
+✓ Redução de ~82% no primeiro ano
+✓ Redução de ~92% em custos recorrentes
+✓ Sem investimento em hardware
+✓ Pay-as-you-go (paga apenas o que usar)
+✓ Escalabilidade sem capex adicional
+✓ Incluído: backups, alta disponibilidade, disaster recovery
+✓ Updates automáticos de infraestrutura
+✓ Sem custos com data center físico
+
+
+5. CONSIDERAÇÕES GERAIS
+
+VIGÊNCIA E MODELO DE PAGAMENTO:
+
+• Custos Azure: Mensais (pay-as-you-go)
+• Desenvolvimento: One-time (pagamento único ou parcelado)
+• Contrato sugerido: 12 meses renováveis
+• Compromisso Azure: Sem lock-in (pode cancelar a qualquer momento)
+
+PREÇOS E VARIAÇÕES:
+
+• Os PREÇOS Azure informados referem-se aos valores da tabela Microsoft Azure região Brazil South (novembro/2025)
+• Valores em Reais (BRL), sujeitos a variação cambial USD/BRL
+• Custos podem variar conforme uso real (auto-scaling, data transfer)
+• Estimativas baseadas em uso médio esperado de 100 usuários ativos
+• Microsoft oferece calculadora online para estimativas precisas
+
+PREMISSAS TÉCNICAS:
+
+1. Conectividade:
+   ✓ Conectividade internet estável
+   ✓ Latência < 50ms para Brazil South region
+   ✓ Largura de banda adequada
+
+2. Segurança:
+   ✓ Certificados SSL gerenciados pelo Azure
+   ✓ Autenticação via Azure AD configurada
+   ✓ Secrets no Key Vault
+   ✓ WAF habilitado
+   ✓ Logs de auditoria: 90 dias
+
+3. Disponibilidade:
+   ✓ SLA Azure: 99.95% (App Service Premium)
+   ✓ SLA Bot Service: 99.9%
+   ✓ Multi-instância para alta disponibilidade
+   ✓ Auto-healing habilitado
+   ✓ Health checks automáticos
+
+4. Performance:
+   ✓ Tempo de resposta: < 3 segundos (P95)
+   ✓ Suporte a 100+ usuários simultâneos
+   ✓ Auto-scaling baseado em carga
+   ✓ Cache Redis para otimização
+
+5. Escalabilidade:
+   ✓ Auto-scale horizontal (2-10 instâncias)
+   ✓ Upgrade de tier conforme demanda
+   ✓ Sem downtime para escalar
+   ✓ Métricas para decisões data-driven
+
+DEPENDÊNCIAS CRÍTICAS:
+
+✓ Subscrição Azure ativa com créditos
+✓ Acesso administrativo ao tenant Azure
+✓ Credenciais de acesso ao Microsoft Fabric DW
+✓ Aprovação de custos (R$ 85.376,00 ano 1)
+✓ Equipe de desenvolvimento Python disponível
+✓ Aprovação de stakeholders
+
+CRONOGRAMA DE IMPLEMENTAÇÃO:
+
+Semana 1-2: Provisionamento Azure
+• Criação de Resource Groups
+• Deploy de App Service, Redis, Key Vault
+• Configuração de Application Gateway
+• Registro do Bot no Bot Service
+• Setup de Application Insights
+
+Semana 3-6: Desenvolvimento
+• Implementação da API FastAPI
+• Integração com Bot Framework SDK
+• Desenvolvimento de Adaptive Cards
+• Conexão com Fabric DW
+• Implementação de cache
+• Testes unitários
+
+Semana 7-8: Testes
+• Testes funcionais
+• Testes de integração
+• Testes de performance e carga
+• Testes de segurança (penetração)
+• Validação com usuários piloto
+
+Semana 9-10: Deploy e Go-Live
+• Deploy em homologação
+• Validação final com stakeholders
+• Deploy em produção (blue-green)
+• Treinamento de usuários finais
+• Monitoramento intensivo pós-deploy
+• Ajustes finos
+
+TOTAL: 10 semanas (2,5 meses)
+
+RISCOS E MITIGAÇÕES:
+
+RISCOS TÉCNICOS:
+• Latência entre Azure e Teams: MITIGADO com cache Redis agressivo
+• Custos variáveis Azure: MITIGADO com alertas de budget e auto-scaling configurado
+• Mudanças na API Bot Service: MITIGADO com versionamento e testes contínuos
+
+RISCOS DE NEGÓCIO:
+• Baixa adoção inicial: MITIGADO com treinamento e comunicação prévia
+• Resistência à mudança: MITIGADO mantendo dashboard atual em paralelo
+• Custos acima do esperado: MITIGADO com monitoramento em tempo real
+
+PLANOS DE CONTINGÊNCIA:
+✓ Rollback automático em caso de falha
+✓ Backup de configurações no Git
+✓ Disaster recovery com Azure Backup
+✓ Documentação completa para troubleshooting
+✓ Suporte Microsoft Azure disponível 24/7
+
+MODELO DE SUPORTE:
+
+Horário de Suporte: 24x7
+• Monitoramento automático (Azure Monitor + App Insights)
+• Alertas críticos: SMS + Email + Teams
+• Incident response: < 1 hora (crítico), < 4 horas (alto)
+• Runbooks documentados para issues comuns
+• Escalação para Microsoft Azure Support quando necessário
+
+MÉTRICAS DE SUCESSO:
+
+KPIs Técnicos:
+• Disponibilidade > 99.9%
+• Tempo de resposta < 3s (P95)
+• Taxa de erro < 1%
+• Zero incidentes de segurança
+
+KPIs de Negócio:
+• 80%+ dos usuários ativos em 3 meses
+• 500+ interações/dia após 6 meses
+• NPS > 8.0
+• Redução de 50% em chamados de suporte sobre apontamentos
+
+
+6. CONCLUSÃO
+
+Propõe-se a implementação do Bot de Apontamento de Horas integrado ao Microsoft Teams utilizando arquitetura cloud-native na plataforma Microsoft Azure.
+
+INVESTIMENTO TOTAL:
+
+**ANO 1: R$ 85.376,00 (OITENTA E CINCO MIL, TREZENTOS E SETENTA E SEIS REAIS)**
+
+Incluindo:
+✓ Infraestrutura Azure Cloud (Produção + Homologação)
+✓ Desenvolvimento completo da solução
+✓ Testes e garantia de qualidade
+✓ CI/CD e automações
+✓ Documentação e treinamento
+✓ 12 meses de operação
+
+**ANOS SEGUINTES: R$ 35.376,00/ano (TRINTA E CINCO MIL, TREZENTOS E SETENTA E SEIS REAIS)**
+
+Incluindo apenas custos operacionais de infraestrutura Azure.
+
+BENEFÍCIOS PRINCIPAIS:
+
+1. Redução Significativa de Custos:
+   ✓ 82% mais barato que solução on-premises no primeiro ano
+   ✓ 92% mais barato em custos recorrentes
+   ✓ Sem capex em hardware
+
+2. Vantagens Técnicas:
+   ✓ Infraestrutura cloud-native resiliente
+   ✓ Alta disponibilidade (SLA 99.9%+)
+   ✓ Auto-scaling automático
+   ✓ Disaster recovery incluído
+   ✓ Updates automáticos
+   ✓ Segurança enterprise-grade
+
+3. Vantagens de Negócio:
+   ✓ Acesso via Microsoft Teams (onde usuários já estão)
+   ✓ Mobile-friendly
+   ✓ Melhor adoção esperada
+   ✓ Redução de chamados ao suporte
+   ✓ Time-to-market rápido (10 semanas)
+
+4. Vantagens Operacionais:
+   ✓ Pay-as-you-go (flexibilidade)
+   ✓ Sem lock-in de fornecedor
+   ✓ Monitoramento 24x7 automatizado
+   ✓ CI/CD automatizado
+   ✓ Menor overhead operacional
+
+PRÓXIMOS PASSOS:
+
+1. Aprovação deste RPT pelos stakeholders
+2. Aprovação do orçamento (R$ 85.376,00 ano 1)
+3. Criação de subscrição Azure (se ainda não existir)
+4. Alocação de equipe de desenvolvimento
+5. Kickoff do projeto (Semana 1)
+6. Go-live previsto em 10 semanas
+
+RECOMENDAÇÃO FINAL:
+
+✅ **RECOMENDA-SE FORTEMENTE** a adoção da solução Azure Cloud devido:
+
+• Custo 82% menor que alternativa on-premises
+• Maior flexibilidade e escalabilidade
+• Menor risco e complexidade operacional
+• Time-to-market mais rápido
+• Alinhamento total com ecossistema Microsoft
+• Melhor experiência para usuários finais
+
+A solução proposta atende plenamente aos requisitos técnicos, de segurança, performance e custos, proporcionando uma plataforma moderna, escalável e econômica para o Bot de Apontamento de Horas no Microsoft Teams.
+
+
+ANEXOS
+
+ANEXO A - Dependências Python (requirements.txt)
+
+# Bot Framework
+botbuilder-core==4.15.0
+botbuilder-schema==4.15.0
+botbuilder-integration-aiohttp==4.15.0
+
+# Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+aiohttp>=3.9.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Azure SDK
+azure-identity==1.14.0
+azure-keyvault-secrets==4.7.0
+msal==1.24.0
+
+# Cache
+redis==5.0.0
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+PyJWT==2.8.0
+
+# Monitoring
+opencensus-ext-azure==1.1.9
+applicationinsights==0.11.10
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+
+ANEXO B - Variáveis de Ambiente (Azure App Service Configuration)
+
+# Azure Bot Service
+BOT_APP_ID=<gerado-no-bot-registration>
+BOT_APP_PASSWORD=<armazenado-no-key-vault>
+BOT_TENANT_ID=<tenant-id-azure-ad>
+
+# Microsoft Fabric
+FABRIC_ENDPOINT=<fabric-sql-endpoint>
+FABRIC_DATABASE=<database-name>
+
+# Azure Services
+AZURE_CLIENT_ID=<managed-identity-client-id>
+KEY_VAULT_URL=https://<keyvault-name>.vault.azure.net/
+
+# Application
+PORT=8000
+ENVIRONMENT=production
+LOG_LEVEL=INFO
+
+# Cache Redis
+REDIS_HOST=<redis-name>.redis.cache.windows.net
+REDIS_PORT=6380
+REDIS_PASSWORD=<armazenado-no-key-vault>
+REDIS_SSL=true
+
+# Application Insights
+APPLICATIONINSIGHTS_CONNECTION_STRING=<connection-string>
+
+ANEXO C - Comandos Azure CLI para Provisionamento
+
+# Login
+az login
+
+# Criar Resource Group
+az group create --name rg-bot-apontamentos-prod --location brazilsouth
+
+# Criar App Service Plan
+az appservice plan create --name plan-bot-prod --resource-group rg-bot-apontamentos-prod --sku P1V3 --is-linux
+
+# Criar App Service
+az webapp create --name bot-apontamentos --resource-group rg-bot-apontamentos-prod --plan plan-bot-prod --runtime "PYTHON:3.11"
+
+# Criar Redis Cache
+az redis create --name redis-bot-prod --resource-group rg-bot-apontamentos-prod --location brazilsouth --sku Standard --vm-size C1
+
+# Criar Key Vault
+az keyvault create --name kv-bot-prod --resource-group rg-bot-apontamentos-prod --location brazilsouth
+
+# Application Insights
+az monitor app-insights component create --app appins-bot-prod --location brazilsouth --resource-group rg-bot-apontamentos-prod
+
+ANEXO D - Estrutura de Tags Azure (Governança)
+
+Aplicar em todos recursos:
+
+environment: production | homologation
+project: bot-apontamentos
+cost-center: TI-<codigo>
+owner: <email-gestor>
+created-by: terraform | manual
+backup: true | false
+
+
+ELABORADO POR:
+Equipe Técnica
+Data: 10/11/2025
+
+APROVAÇÕES NECESSÁRIAS:
+
+____________________________________
+Gestor de TI
+Data: ___/___/______
+
+____________________________________
+Gerente Financeiro
+Data: ___/___/______
+
+____________________________________
+Gerente de Projetos
+Data: ___/___/______
+
+____________________________________
+Diretor de Tecnologia
+Data: ___/___/______
+
+
+REFERÊNCIAS
+
+• Microsoft Azure Documentation: https://docs.microsoft.com/azure
+• Azure Pricing Calculator: https://azure.microsoft.com/pricing/calculator
+• Bot Framework Documentation: https://docs.microsoft.com/bot-framework
+• FastAPI Documentation: https://fastapi.tiangolo.com
+• Microsoft Teams Platform: https://docs.microsoft.com/microsoftteams/platform
+
+FIM DO DOCUMENTO
+Versão 2.0 - Infraestrutura Azure Cloud

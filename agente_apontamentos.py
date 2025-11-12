@@ -58,9 +58,14 @@ class AgenteApontamentos:
         """
         pergunta_lower = pergunta.lower()
         
+        # Ignorar usuários genéricos do emulator
+        if usuario and usuario.lower() in ['user', 'bot', 'test user', 'usuario teste']:
+            usuario = None
+        
         # Mapeamento de perguntas para funções
         if any(palavra in pergunta_lower for palavra in ['média', 'media', 'quanto tempo']):
-            if usuario:
+            # Se a pergunta menciona um nome específico, buscar por ele
+            if usuario and any(palavra in pergunta_lower for palavra in ['meu', 'minha', 'mim']):
                 return self.duracao_media_usuario(usuario)
             else:
                 return self.duracao_media_geral()
@@ -291,6 +296,9 @@ class AgenteApontamentos:
     
     def total_horas_usuario(self, usuario: str) -> Dict:
         """Total de horas de um usuário"""
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
         df_usuario = self.df[self.df['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
         total = df_usuario['duracao_horas'].sum()
         
@@ -302,6 +310,9 @@ class AgenteApontamentos:
     
     def total_horas_geral(self) -> Dict:
         """Total geral de horas"""
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
         total = self.df['duracao_horas'].sum()
         return {
             "resposta": f"📊 Total geral: **{total:.2f} horas**",
@@ -326,6 +337,13 @@ class AgenteApontamentos:
                        f"Esta semana: {total_atual:.2f}h\n" +
                        f"Semana passada: {total_anterior:.2f}h\n" +
                        f"Diferença: {diferenca:+.2f}h",
+            "dados": {
+                "total_atual": round(total_atual, 2),
+                "total_anterior": round(total_anterior, 2),
+                "diferenca": round(diferenca, 2),
+                "atual": round(total_atual, 2),
+                "anterior": round(total_anterior, 2)
+            },
             "tipo": "comparacao"
         }
     

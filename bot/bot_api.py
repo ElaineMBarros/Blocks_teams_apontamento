@@ -24,7 +24,11 @@ from bot.adaptive_cards import (
     create_user_summary_card,
     create_error_card,
     create_text_card,
-    create_outliers_card
+    create_outliers_card,
+    create_daily_summary_card,
+    create_weekly_summary_card,
+    create_comparison_card,
+    create_help_card
 )
 
 # Importar o agente (módulo já existente)
@@ -69,12 +73,19 @@ except Exception as e:
     logger.error(f"❌ Erro ao configurar Bot Adapter: {e}")
     adapter = None
 
-# Inicializar Agente
-agente = AgenteApontamentos() if AgenteApontamentos else None
-if agente:
-    logger.info("✅ Agente de Apontamentos inicializado")
-else:
-    logger.warning("⚠️ Agente não disponível - modo limitado")
+# Inicializar Agente (será recarregado a cada hot-reload)
+def get_agente():
+    """Retorna uma instância do agente (para hot-reload)"""
+    agente_inst = AgenteApontamentos() if AgenteApontamentos else None
+    if agente_inst and agente_inst.df is not None:
+        logger.info(f"✅ Agente inicializado com {len(agente_inst.df)} registros")
+    elif agente_inst:
+        logger.warning("⚠️ Agente inicializado mas sem dados")
+    else:
+        logger.warning("⚠️ Agente não disponível")
+    return agente_inst
+
+agente = get_agente()
 
 
 async def process_message(turn_context: TurnContext):
@@ -84,14 +95,40 @@ async def process_message(turn_context: TurnContext):
     try:
         # Obter informações do usuário
         user_name = turn_context.activity.from_property.name
-        user_message = turn_context.activity.text.strip()
+        
+        # Obter mensagem do texto ou do botão (value)
+        user_message = None
+        if turn_context.activity.text:
+            user_message = turn_context.activity.text.strip()
+        elif turn_context.activity.value and isinstance(turn_context.activity.value, dict):
+            # Botão foi clicado - extrair comando do value
+            user_message = turn_context.activity.value.get('command', '')
+        
+        # Se não há mensagem, ignorar (conversationUpdate, etc)
+        if not user_message:
+            logger.info(f"📨 Evento sem mensagem de {user_name} (tipo: {turn_context.activity.type})")
+            return
         
         logger.info(f"📨 Mensagem de {user_name}: {user_message}")
         
         # Mensagens especiais
-        if user_message.lower() in ["oi", "olá", "ola", "hello", "hi"]:
+        if user_message.lower() in ["oi", "olá", "ola", "hello", "hi", "start", "começar", "iniciar"]:
             # Card de boas-vindas
             card = create_welcome_card()
+            attachment = Attachment(
+                content_type="application/vnd.microsoft.card.adaptive",
+                content=card
+            )
+            reply = Activity(
+                type=ActivityTypes.message,
+                attachments=[attachment]
+            )
+            await turn_context.send_activity(reply)
+            return
+        
+        # Comando de ajuda
+        if user_message.lower() in ["ajuda", "help", "comandos", "?"]:
+            card = create_help_card()
             attachment = Attachment(
                 content_type="application/vnd.microsoft.card.adaptive",
                 content=card
@@ -109,19 +146,47 @@ async def process_message(turn_context: TurnContext):
             
             # Determinar tipo de card baseado no resultado
             card = None
-            if resultado.get('tipo') == 'estatistica_geral':
+            tipo = resultado.get('tipo')
+            
+            if tipo == 'estatistica_geral' or tipo == 'estatistica':
                 card = create_statistics_card(resultado.get('dados', {}))
-            elif resultado.get('tipo') == 'ranking':
+            
+            elif tipo == 'ranking':
                 card = create_ranking_card(resultado.get('dados', {}))
-            elif resultado.get('tipo') == 'usuario_individual':
+            
+            elif tipo == 'usuario_individual':
                 card = create_user_summary_card(user_name, resultado.get('dados', {}))
-            elif resultado.get('tipo') == 'outliers':
+            
+            elif tipo == 'dia_atual':
+                card = create_daily_summary_card(resultado.get('dados', {}))
+            
+            elif tipo == 'resumo_semanal':
+                card = create_weekly_summary_card(resultado.get('dados', {}))
+            
+            elif tipo == 'comparacao':
+                # Adaptar dados para o card de comparação
+                dados_comparacao = {
+                    'atual': resultado.get('dados', {}).get('total_atual', 0),
+                    'anterior': resultado.get('dados', {}).get('total_anterior', 0),
+                    'diferenca': resultado.get('dados', {}).get('diferenca', 0)
+                }
+                card = create_comparison_card(dados_comparacao)
+            
+            elif tipo == 'outliers':
                 outliers = resultado.get('dados', [])
                 card = create_outliers_card(outliers)
-            elif resultado.get('tipo') == 'erro':
+            
+            elif tipo == 'ajuda':
+                card = create_help_card()
+            
+            elif tipo == 'erro' or tipo == 'info':
                 card = create_error_card(resultado.get('resposta', 'Erro desconhecido'))
+            
+            elif tipo in ['total', 'total_geral']:
+                card = create_text_card("⏱️ Total de Horas", resultado.get('resposta', 'Sem resposta'))
+            
             else:
-                # Card de texto genérico
+                # Card de texto genérico para respostas não categorizadas
                 card = create_text_card("📊 Resultado", resultado.get('resposta', 'Sem resposta'))
             
             if card:
