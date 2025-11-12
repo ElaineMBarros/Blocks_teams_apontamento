@@ -10,6 +10,10 @@ from pathlib import Path
 # Adicionar path do projeto
 sys.path.insert(0, str(Path(__file__).parent))
 
+# Carregar variáveis de ambiente do .env
+from dotenv import load_dotenv
+load_dotenv()
+
 from agente_apontamentos import AgenteApontamentos
 from bot.ai_conversation import ConversacaoIA
 
