@@ -174,33 +174,48 @@ async def process_message(turn_context: TurnContext):
             # Determinar tipo de card baseado no resultado
             card = None
             tipo = resultado.get('tipo')
+            dados = resultado.get('dados', {})
+            
+            # Tentar detectar tipo baseado nos dados (útil quando IA responde)
+            if tipo == 'ia_conversacao' and dados:
+                # Identificar tipo pelos dados retornados
+                if 'media_horas' in dados:
+                    tipo = 'estatistica_geral'
+                elif isinstance(dados, dict) and len(dados) > 5 and all(isinstance(v, dict) for v in dados.values()):
+                    tipo = 'ranking'
+                elif 'total_horas' in dados:
+                    tipo = 'total'
+                elif 'diferenca' in dados and 'total_atual' in dados:
+                    tipo = 'comparacao'
+                elif isinstance(dados, list) and len(dados) > 0:
+                    tipo = 'outliers'
             
             if tipo == 'estatistica_geral' or tipo == 'estatistica':
-                card = create_statistics_card(resultado.get('dados', {}))
+                card = create_statistics_card(dados)
             
             elif tipo == 'ranking':
-                card = create_ranking_card(resultado.get('dados', {}))
+                card = create_ranking_card(dados)
             
             elif tipo == 'usuario_individual':
-                card = create_user_summary_card(user_name, resultado.get('dados', {}))
+                card = create_user_summary_card(user_name, dados)
             
             elif tipo == 'dia_atual':
-                card = create_daily_summary_card(resultado.get('dados', {}))
+                card = create_daily_summary_card(dados)
             
             elif tipo == 'resumo_semanal':
-                card = create_weekly_summary_card(resultado.get('dados', {}))
+                card = create_weekly_summary_card(dados)
             
             elif tipo == 'comparacao':
                 # Adaptar dados para o card de comparação
                 dados_comparacao = {
-                    'atual': resultado.get('dados', {}).get('total_atual', 0),
-                    'anterior': resultado.get('dados', {}).get('total_anterior', 0),
-                    'diferenca': resultado.get('dados', {}).get('diferenca', 0)
+                    'atual': dados.get('total_atual', 0),
+                    'anterior': dados.get('total_anterior', 0),
+                    'diferenca': dados.get('diferenca', 0)
                 }
                 card = create_comparison_card(dados_comparacao)
             
             elif tipo == 'outliers':
-                outliers = resultado.get('dados', [])
+                outliers = dados if isinstance(dados, list) else []
                 card = create_outliers_card(outliers)
             
             elif tipo == 'ajuda':
@@ -213,8 +228,9 @@ async def process_message(turn_context: TurnContext):
                 card = create_text_card("⏱️ Total de Horas", resultado.get('resposta', 'Sem resposta'))
             
             else:
-                # Card de texto genérico para respostas não categorizadas
-                card = create_text_card("📊 Resultado", resultado.get('resposta', 'Sem resposta'))
+                # Card de texto genérico MAS com botões de ação rápida
+                resposta = resultado.get('resposta', 'Sem resposta')
+                card = create_text_card("💬 Resposta", resposta)
             
             if card:
                 attachment = Attachment(
