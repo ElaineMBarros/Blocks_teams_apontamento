@@ -169,7 +169,7 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/
                 if "FERRAMENTA:" in linha:
                     chamada = linha.split("FERRAMENTA:")[1].strip()
                     
-                    # Parse simples: nome_funcao(param1, param2)
+                    # Parse: nome_funcao(param1, param2) ou nome_funcao(key=value, key2=value2)
                     if '(' in chamada:
                         nome = chamada.split('(')[0].strip()
                         params_str = chamada.split('(')[1].split(')')[0]
@@ -177,8 +177,18 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/
                         # Converter para dict
                         params = {}
                         if params_str.strip():
-                            # Por simplicidade, assumir apenas um parâmetro
-                            params['arg'] = params_str.strip().strip('"\'')
+                            # Verificar se tem parâmetros nomeados (key=value)
+                            if '=' in params_str:
+                                # Parse parâmetros nomeados: data_inicio="01/09", data_fim="30/09"
+                                for parte in params_str.split(','):
+                                    if '=' in parte:
+                                        chave, valor = parte.split('=', 1)
+                                        chave = chave.strip()
+                                        valor = valor.strip().strip('"\'')
+                                        params[chave] = valor
+                            else:
+                                # Parâmetro simples único
+                                params['arg'] = params_str.strip().strip('"\'')
                         
                         return (nome, params)
             
