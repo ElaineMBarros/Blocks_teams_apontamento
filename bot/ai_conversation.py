@@ -138,6 +138,7 @@ Você pode solicitar que eu execute funções para obter dados específicos:
 - identificar_outliers(): Apontamentos fora do padrão
 - resumo_semanal(usuario): Resumo da semana
 - comparar_periodos(): Comparar semanas
+- consultar_periodo(data_inicio, data_fim, usuario): Consulta por período de datas (formato: DD/MM/YYYY)
 
 Para usar uma ferramenta, responda no formato:
 FERRAMENTA: nome_da_funcao(parametros)
@@ -147,7 +148,10 @@ User: "quantas horas eu trabalhei?"
 Assistant: FERRAMENTA: total_horas_usuario(Usuario Nome)
 
 User: "qual a média geral?"
-Assistant: FERRAMENTA: duracao_media_geral()"""
+Assistant: FERRAMENTA: duracao_media_geral()
+
+User: "quantas horas entre 01/09/2024 e 30/09/2024?"
+Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/09/2024", usuario=None)"""
     
     def _extrair_ferramenta(self, resposta_ia: str) -> Optional[Tuple[str, Dict]]:
         """
@@ -211,6 +215,13 @@ Assistant: FERRAMENTA: duracao_media_geral()"""
             
             elif nome == "comparar_periodos":
                 return self.agente.comparar_periodos()
+            
+            elif nome == "consultar_periodo":
+                # Extrair data_inicio, data_fim e usuário dos params
+                data_inicio = params.get('data_inicio', '')
+                data_fim = params.get('data_fim', '')
+                user = params.get('usuario', usuario) if params.get('usuario') else None
+                return self.agente.consultar_periodo(data_inicio, data_fim, user)
             
             else:
                 return {"erro": f"Ferramenta '{nome}' não encontrada"}

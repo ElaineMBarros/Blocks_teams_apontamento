@@ -218,6 +218,10 @@ async def process_message(turn_context: TurnContext):
                 outliers = dados if isinstance(dados, list) else []
                 card = create_outliers_card(outliers)
             
+            elif tipo == 'periodo':
+                # Exibir card de texto com resumo do período
+                card = create_text_card("📅 Consulta por Período", resultado.get('resposta', 'Sem resposta'))
+            
             elif tipo == 'ajuda':
                 card = create_help_card()
             

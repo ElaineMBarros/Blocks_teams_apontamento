@@ -319,6 +319,84 @@ class AgenteApontamentos:
             "tipo": "total_geral"
         }
     
+    def consultar_periodo(self, data_inicio: str, data_fim: str, usuario: Optional[str] = None) -> Dict:
+        """
+        Consulta dados de um período específico
+        
+        Args:
+            data_inicio: Data inicial (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            data_fim: Data final (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            usuario: Nome do usuário (opcional, consulta geral se None)
+        
+        Returns:
+            Dicionário com estatísticas do período
+        """
+        if self.df is None or 'data' not in self.df.columns:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        try:
+            # Converter strings para datetime (aceita múltiplos formatos)
+            inicio = pd.to_datetime(data_inicio, dayfirst=True)
+            fim = pd.to_datetime(data_fim, dayfirst=True)
+            
+            # Filtrar por período
+            df_periodo = self.df[(self.df['data'] >= inicio) & (self.df['data'] <= fim)]
+            
+            # Filtrar por usuário se especificado
+            if usuario:
+                df_periodo = df_periodo[df_periodo['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
+            
+            if len(df_periodo) == 0:
+                msg = f"📅 Nenhum apontamento encontrado entre {inicio.date()} e {fim.date()}"
+                if usuario:
+                    msg += f" para {usuario}"
+                return {
+                    "resposta": msg,
+                    "tipo": "info"
+                }
+            
+            # Calcular estatísticas
+            total_horas = df_periodo['duracao_horas'].sum()
+            media_horas = df_periodo['duracao_horas'].mean()
+            quantidade = len(df_periodo)
+            dias_trabalhados = df_periodo['data'].dt.date.nunique()
+            
+            # Ranking no período
+            top_usuarios = df_periodo.groupby('s_nm_recurso')['duracao_horas'].sum().nlargest(5)
+            
+            resposta = f"📅 **Período: {inicio.date()} a {fim.date()}**\n\n"
+            if usuario:
+                resposta += f"👤 Usuário: **{usuario}**\n"
+            resposta += f"⏱️ Total: **{total_horas:.2f}h**\n"
+            resposta += f"📊 Média: **{media_horas:.2f}h**\n"
+            resposta += f"📝 Apontamentos: **{quantidade}**\n"
+            resposta += f"📆 Dias trabalhados: **{dias_trabalhados}**\n"
+            
+            if not usuario:
+                resposta += f"\n🏆 **Top 5 no período:**\n"
+                for i, (nome, horas) in enumerate(top_usuarios.items(), 1):
+                    resposta += f"{i}. {nome}: {horas:.2f}h\n"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "data_inicio": str(inicio.date()),
+                    "data_fim": str(fim.date()),
+                    "total_horas": round(total_horas, 2),
+                    "media_horas": round(media_horas, 2),
+                    "quantidade": quantidade,
+                    "dias_trabalhados": dias_trabalhados,
+                    "top_usuarios": top_usuarios.to_dict() if not usuario else {}
+                },
+                "tipo": "periodo"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao processar datas: {str(e)}\n💡 Use formato DD/MM/YYYY ou YYYY-MM-DD",
+                "tipo": "erro"
+            }
+    
     def comparar_periodos(self) -> Dict:
         """Compara semana atual com anterior"""
         hoje = pd.Timestamp.now()
