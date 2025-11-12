@@ -230,7 +230,14 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/
                 # Extrair data_inicio, data_fim e usuário dos params
                 data_inicio = params.get('data_inicio', '')
                 data_fim = params.get('data_fim', '')
-                user = params.get('usuario', usuario) if params.get('usuario') else None
+                user_param = params.get('usuario', usuario)
+                # Tratar caso onde IA passa string "None" ao invés de None
+                if user_param == 'None' or user_param == 'null':
+                    user = None
+                elif user_param:
+                    user = user_param
+                else:
+                    user = None
                 return self.agente.consultar_periodo(data_inicio, data_fim, user)
             
             else:
