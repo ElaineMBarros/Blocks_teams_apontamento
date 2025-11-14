@@ -139,6 +139,9 @@ Você pode solicitar que eu execute funções para obter dados específicos:
 - resumo_semanal(usuario): Resumo da semana
 - comparar_periodos(): Comparar semanas
 - consultar_periodo(data_inicio, data_fim, usuario): Consulta por período de datas (formato: DD/MM/YYYY)
+- contar_dias_uteis_periodo(data_inicio, data_fim): Conta quantos dias úteis existem no período (formato: DD/MM/YYYY)
+- calcular_horas_esperadas_periodo(data_inicio, data_fim, horas_por_dia=8.0): Calcula horas esperadas (brutas e líquidas) no período
+- dias_nao_apontados(data_inicio, data_fim, usuario): Identifica dias úteis sem apontamento (todos ou usuário específico)
 
 Para usar uma ferramenta, responda no formato:
 FERRAMENTA: nome_da_funcao(parametros)
@@ -151,7 +154,16 @@ User: "qual a média geral?"
 Assistant: FERRAMENTA: duracao_media_geral()
 
 User: "quantas horas entre 01/09/2024 e 30/09/2024?"
-Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/09/2024", usuario=None)"""
+Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/09/2024", usuario=None)
+
+User: "quantos dias úteis tem em setembro?"
+Assistant: FERRAMENTA: contar_dias_uteis_periodo(data_inicio="01/09/2025", data_fim="30/09/2025")
+
+User: "quantas horas deveria fazer em setembro?"
+Assistant: FERRAMENTA: calcular_horas_esperadas_periodo(data_inicio="01/09/2025", data_fim="30/09/2025", horas_por_dia=8.0)
+
+User: "quem não apontou em setembro?"
+Assistant: FERRAMENTA: dias_nao_apontados(data_inicio="01/09/2025", data_fim="30/09/2025", usuario=None)"""
     
     def _extrair_ferramenta(self, resposta_ia: str) -> Optional[Tuple[str, Dict]]:
         """
@@ -239,6 +251,33 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2024", data_fim="30/
                 else:
                     user = None
                 return self.agente.consultar_periodo(data_inicio, data_fim, user)
+            
+            elif nome == "contar_dias_uteis_periodo":
+                # Contar dias úteis no período
+                data_inicio = params.get('data_inicio', '')
+                data_fim = params.get('data_fim', '')
+                return self.agente.contar_dias_uteis_periodo(data_inicio, data_fim)
+            
+            elif nome == "calcular_horas_esperadas_periodo":
+                # Calcular horas esperadas no período
+                data_inicio = params.get('data_inicio', '')
+                data_fim = params.get('data_fim', '')
+                horas_por_dia = float(params.get('horas_por_dia', 8.0))
+                return self.agente.calcular_horas_esperadas_periodo(data_inicio, data_fim, horas_por_dia)
+            
+            elif nome == "dias_nao_apontados":
+                # Identificar dias não apontados
+                data_inicio = params.get('data_inicio', '')
+                data_fim = params.get('data_fim', '')
+                user_param = params.get('usuario', None)
+                # Tratar caso onde IA passa string "None" ao invés de None
+                if user_param == 'None' or user_param == 'null' or user_param == '':
+                    user = None
+                elif user_param:
+                    user = user_param
+                else:
+                    user = None
+                return self.agente.dias_nao_apontados(data_inicio, data_fim, user)
             
             else:
                 return {"erro": f"Ferramenta '{nome}' não encontrada"}

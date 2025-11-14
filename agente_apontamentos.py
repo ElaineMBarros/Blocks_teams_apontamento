@@ -9,6 +9,7 @@ import numpy as np
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 import glob
+import calendar
 
 class AgenteApontamentos:
     """
@@ -44,6 +45,61 @@ class AgenteApontamentos:
         except Exception as e:
             print(f"❌ Erro ao carregar dados: {e}")
             return False
+    
+    def eh_dia_util(self, data: datetime) -> bool:
+        """
+        Verifica se uma data é dia útil (segunda a sexta, exceto feriados)
+        
+        Args:
+            data: Data a verificar
+        
+        Returns:
+            True se for dia útil, False se for fim de semana
+        """
+        # Verifica se é fim de semana (5=sábado, 6=domingo)
+        if data.weekday() >= 5:
+            return False
+        
+        # TODO: Adicionar verificação de feriados nacionais se necessário
+        # Por enquanto, apenas verifica se não é fim de semana
+        return True
+    
+    def aplicar_desconto_almoco(self, horas: float, eh_dia_util: bool = True) -> float:
+        """
+        Aplica desconto de 1 hora de almoço apenas em dias úteis
+        
+        Args:
+            horas: Horas trabalhadas brutas
+            eh_dia_util: Se True, aplica desconto de almoço
+        
+        Returns:
+            Horas líquidas (com desconto de almoço se aplicável)
+        """
+        if eh_dia_util and horas > 0:
+            return max(0, horas - 1.0)  # Desconta 1h, mas não permite negativo
+        return horas
+    
+    def classificar_apontamento(self, data: datetime, horas: float) -> Dict:
+        """
+        Classifica um apontamento quanto a dia útil/fim de semana e aplica descontos
+        
+        Args:
+            data: Data do apontamento
+            horas: Horas trabalhadas brutas
+        
+        Returns:
+            Dicionário com classificação e horas líquidas
+        """
+        dia_util = self.eh_dia_util(data)
+        horas_liquidas = self.aplicar_desconto_almoco(horas, dia_util)
+        
+        return {
+            "dia_util": dia_util,
+            "tipo_dia": "📅 Dia Útil" if dia_util else "🏖️ Fim de Semana",
+            "horas_brutas": horas,
+            "horas_liquidas": horas_liquidas,
+            "desconto_almoco": 1.0 if dia_util and horas > 0 else 0.0
+        }
     
     def responder_pergunta(self, pergunta: str, usuario: Optional[str] = None) -> Dict:
         """
@@ -161,25 +217,33 @@ class AgenteApontamentos:
         }
     
     def apontamentos_hoje(self, usuario: str) -> Dict:
-        """Retorna apontamentos do dia"""
+        """Retorna apontamentos do dia com informação de dia útil e desconto de almoço"""
         if self.df is None or 'data' not in self.df.columns:
             return {"erro": "Dados não disponíveis"}
         
-        hoje = pd.Timestamp.now().date()
+        hoje = pd.Timestamp.now()
+        hoje_date = hoje.date()
         df_hoje = self.df[
-            (self.df['data'].dt.date == hoje) & 
+            (self.df['data'].dt.date == hoje_date) & 
             (self.df['s_nm_recurso'].str.contains(usuario, case=False, na=False))
         ]
         
         if len(df_hoje) == 0:
             return {
-                "resposta": f"📅 Você ainda não tem apontamentos registrados para hoje ({hoje}).",
+                "resposta": f"📅 Você ainda não tem apontamentos registrados para hoje ({hoje_date}).",
                 "tipo": "info"
             }
         
+        # Classificar o dia
         total_horas = df_hoje['duracao_horas'].sum()
-        horas = int(total_horas)
-        minutos = int((total_horas - horas) * 60)
+        classificacao = self.classificar_apontamento(hoje, total_horas)
+        
+        horas_brutas = int(total_horas)
+        minutos_brutos = int((total_horas - horas_brutas) * 60)
+        
+        horas_liquidas = classificacao['horas_liquidas']
+        horas_liq = int(horas_liquidas)
+        minutos_liq = int((horas_liquidas - horas_liq) * 60)
         
         apontamentos = []
         for _, row in df_hoje.iterrows():
@@ -188,13 +252,24 @@ class AgenteApontamentos:
                 "duracao": row.get('duracao_horas', 0)
             })
         
+        resposta = f"📅 **Hoje ({hoje_date})** - {classificacao['tipo_dia']}\n" + \
+                   f"⏱️ **Horas Brutas:** {horas_brutas}h{minutos_brutos:02d}min\n"
+        
+        if classificacao['desconto_almoco'] > 0:
+            resposta += f"🍽️ **Desconto Almoço:** {classificacao['desconto_almoco']:.1f}h\n" + \
+                       f"✅ **Horas Líquidas:** {horas_liq}h{minutos_liq:02d}min\n"
+        
+        resposta += f"📝 **Número de apontamentos:** {len(df_hoje)}"
+        
         return {
-            "resposta": f"📅 **Hoje ({hoje})**\n" +
-                       f"⏱️ Total apontado: **{horas}h{minutos:02d}min**\n" +
-                       f"📝 Número de apontamentos: {len(df_hoje)}",
+            "resposta": resposta,
             "dados": {
-                "data": str(hoje),
-                "total_horas": round(total_horas, 2),
+                "data": str(hoje_date),
+                "total_horas_brutas": round(total_horas, 2),
+                "total_horas_liquidas": round(horas_liquidas, 2),
+                "desconto_almoco": classificacao['desconto_almoco'],
+                "dia_util": classificacao['dia_util'],
+                "tipo_dia": classificacao['tipo_dia'],
                 "quantidade": len(df_hoje),
                 "apontamentos": apontamentos
             },
@@ -202,7 +277,7 @@ class AgenteApontamentos:
         }
     
     def resumo_semanal(self, usuario: str) -> Dict:
-        """Retorna resumo da semana para um usuário"""
+        """Retorna resumo da semana para um usuário com detalhamento de dias úteis"""
         if self.df is None or 'data' not in self.df.columns:
             return {"erro": "Dados não disponíveis"}
         
@@ -220,18 +295,52 @@ class AgenteApontamentos:
                 "tipo": "info"
             }
         
-        total_horas = df_semana['duracao_horas'].sum()
-        media_diaria = df_semana.groupby(df_semana['data'].dt.date)['duracao_horas'].sum().mean()
+        # Calcular horas brutas
+        total_horas_brutas = df_semana['duracao_horas'].sum()
+        
+        # Agrupar por dia e calcular horas líquidas considerando dias úteis
+        total_horas_liquidas = 0
+        dias_uteis_trabalhados = 0
+        dias_fim_semana_trabalhados = 0
+        total_desconto_almoco = 0
+        
+        for data, grupo in df_semana.groupby(df_semana['data'].dt.date):
+            horas_dia = grupo['duracao_horas'].sum()
+            data_dt = pd.Timestamp(data)
+            classificacao = self.classificar_apontamento(data_dt, horas_dia)
+            
+            total_horas_liquidas += classificacao['horas_liquidas']
+            total_desconto_almoco += classificacao['desconto_almoco']
+            
+            if classificacao['dia_util']:
+                dias_uteis_trabalhados += 1
+            else:
+                dias_fim_semana_trabalhados += 1
+        
+        media_diaria_bruta = df_semana.groupby(df_semana['data'].dt.date)['duracao_horas'].sum().mean()
+        media_diaria_liquida = total_horas_liquidas / (dias_uteis_trabalhados + dias_fim_semana_trabalhados) if (dias_uteis_trabalhados + dias_fim_semana_trabalhados) > 0 else 0
+        
+        resposta = f"📅 **Resumo Semanal - {usuario}**\n\n" + \
+                   f"⏱️ **Horas Brutas:** {total_horas_brutas:.2f}h\n" + \
+                   f"🍽️ **Desconto Almoço:** {total_desconto_almoco:.1f}h\n" + \
+                   f"✅ **Horas Líquidas:** {total_horas_liquidas:.2f}h\n\n" + \
+                   f"📊 **Média Diária Bruta:** {media_diaria_bruta:.2f}h\n" + \
+                   f"📊 **Média Diária Líquida:** {media_diaria_liquida:.2f}h\n\n" + \
+                   f"📝 **Apontamentos:** {len(df_semana)}\n" + \
+                   f"📅 **Dias Úteis:** {dias_uteis_trabalhados}\n" + \
+                   f"🏖️ **Fins de Semana:** {dias_fim_semana_trabalhados}"
         
         return {
-            "resposta": f"📅 **Resumo Semanal - {usuario}**\n" +
-                       f"⏱️ Total: {total_horas:.2f}h\n" +
-                       f"📊 Média diária: {media_diaria:.2f}h\n" +
-                       f"📝 Apontamentos: {len(df_semana)}",
+            "resposta": resposta,
             "dados": {
-                "total_horas": round(total_horas, 2),
-                "media_diaria": round(media_diaria, 2),
-                "quantidade": len(df_semana)
+                "total_horas_brutas": round(total_horas_brutas, 2),
+                "total_horas_liquidas": round(total_horas_liquidas, 2),
+                "desconto_almoco": round(total_desconto_almoco, 2),
+                "media_diaria_bruta": round(media_diaria_bruta, 2),
+                "media_diaria_liquida": round(media_diaria_liquida, 2),
+                "quantidade": len(df_semana),
+                "dias_uteis": dias_uteis_trabalhados,
+                "dias_fim_semana": dias_fim_semana_trabalhados
             },
             "tipo": "resumo_semanal"
         }
@@ -321,7 +430,7 @@ class AgenteApontamentos:
     
     def consultar_periodo(self, data_inicio: str, data_fim: str, usuario: Optional[str] = None) -> Dict:
         """
-        Consulta dados de um período específico
+        Consulta dados de um período específico com cálculo de dias úteis e desconto de almoço
         
         Args:
             data_inicio: Data inicial (formato: YYYY-MM-DD ou DD/MM/YYYY)
@@ -329,7 +438,7 @@ class AgenteApontamentos:
             usuario: Nome do usuário (opcional, consulta geral se None)
         
         Returns:
-            Dicionário com estatísticas do período
+            Dicionário com estatísticas do período incluindo horas brutas e líquidas
         """
         if self.df is None or 'data' not in self.df.columns:
             return {"erro": "Dados não disponíveis", "tipo": "erro"}
@@ -355,25 +464,52 @@ class AgenteApontamentos:
                     "tipo": "info"
                 }
             
-            # Calcular estatísticas
-            total_horas = df_periodo['duracao_horas'].sum()
-            media_horas = df_periodo['duracao_horas'].mean()
+            # Calcular estatísticas brutas
+            total_horas_brutas = df_periodo['duracao_horas'].sum()
+            media_horas_brutas = df_periodo['duracao_horas'].mean()
             quantidade = len(df_periodo)
-            dias_trabalhados = df_periodo['data'].dt.date.nunique()
+            
+            # Calcular horas líquidas considerando dias úteis e desconto de almoço
+            total_horas_liquidas = 0
+            dias_uteis_trabalhados = 0
+            dias_fim_semana_trabalhados = 0
+            total_desconto_almoco = 0
+            
+            for data, grupo in df_periodo.groupby(df_periodo['data'].dt.date):
+                horas_dia = grupo['duracao_horas'].sum()
+                data_dt = pd.Timestamp(data)
+                classificacao = self.classificar_apontamento(data_dt, horas_dia)
+                
+                total_horas_liquidas += classificacao['horas_liquidas']
+                total_desconto_almoco += classificacao['desconto_almoco']
+                
+                if classificacao['dia_util']:
+                    dias_uteis_trabalhados += 1
+                else:
+                    dias_fim_semana_trabalhados += 1
+            
+            dias_trabalhados_total = dias_uteis_trabalhados + dias_fim_semana_trabalhados
+            media_horas_liquidas = total_horas_liquidas / dias_trabalhados_total if dias_trabalhados_total > 0 else 0
             
             # Ranking no período
             top_usuarios = df_periodo.groupby('s_nm_recurso')['duracao_horas'].sum().nlargest(5)
             
             resposta = f"📅 **Período: {inicio.date()} a {fim.date()}**\n\n"
             if usuario:
-                resposta += f"👤 Usuário: **{usuario}**\n"
-            resposta += f"⏱️ Total: **{total_horas:.2f}h**\n"
-            resposta += f"📊 Média: **{media_horas:.2f}h**\n"
-            resposta += f"📝 Apontamentos: **{quantidade}**\n"
-            resposta += f"📆 Dias trabalhados: **{dias_trabalhados}**\n"
+                resposta += f"👤 Usuário: **{usuario}**\n\n"
+            
+            resposta += f"⏱️ **Horas Brutas:** {total_horas_brutas:.2f}h\n" + \
+                       f"🍽️ **Desconto Almoço:** {total_desconto_almoco:.1f}h\n" + \
+                       f"✅ **Horas Líquidas:** {total_horas_liquidas:.2f}h\n\n" + \
+                       f"📊 **Média Bruta:** {media_horas_brutas:.2f}h/dia\n" + \
+                       f"📊 **Média Líquida:** {media_horas_liquidas:.2f}h/dia\n\n" + \
+                       f"📝 **Apontamentos:** {quantidade}\n" + \
+                       f"📅 **Dias Úteis:** {dias_uteis_trabalhados}\n" + \
+                       f"🏖️ **Fins de Semana:** {dias_fim_semana_trabalhados}\n" + \
+                       f"📆 **Total de Dias:** {dias_trabalhados_total}"
             
             if not usuario:
-                resposta += f"\n🏆 **Top 5 no período:**\n"
+                resposta += f"\n\n🏆 **Top 5 no período:**\n"
                 for i, (nome, horas) in enumerate(top_usuarios.items(), 1):
                     resposta += f"{i}. {nome}: {horas:.2f}h\n"
             
@@ -382,10 +518,15 @@ class AgenteApontamentos:
                 "dados": {
                     "data_inicio": str(inicio.date()),
                     "data_fim": str(fim.date()),
-                    "total_horas": round(total_horas, 2),
-                    "media_horas": round(media_horas, 2),
+                    "total_horas_brutas": round(total_horas_brutas, 2),
+                    "total_horas_liquidas": round(total_horas_liquidas, 2),
+                    "desconto_almoco": round(total_desconto_almoco, 2),
+                    "media_horas_brutas": round(media_horas_brutas, 2),
+                    "media_horas_liquidas": round(media_horas_liquidas, 2),
                     "quantidade": quantidade,
-                    "dias_trabalhados": dias_trabalhados,
+                    "dias_uteis": dias_uteis_trabalhados,
+                    "dias_fim_semana": dias_fim_semana_trabalhados,
+                    "dias_trabalhados": dias_trabalhados_total,
                     "top_usuarios": top_usuarios.to_dict() if not usuario else {}
                 },
                 "tipo": "periodo"
@@ -423,6 +564,250 @@ class AgenteApontamentos:
                 "anterior": round(total_anterior, 2)
             },
             "tipo": "comparacao"
+        }
+    
+    def contar_dias_uteis_periodo(self, data_inicio: str, data_fim: str) -> Dict:
+        """
+        Conta quantos dias úteis existem em um período
+        
+        Args:
+            data_inicio: Data inicial (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            data_fim: Data final (formato: YYYY-MM-DD ou DD/MM/YYYY)
+        
+        Returns:
+            Dicionário com contagem de dias úteis e detalhes
+        """
+        try:
+            # Converter strings para datetime
+            inicio = pd.to_datetime(data_inicio, dayfirst=True)
+            fim = pd.to_datetime(data_fim, dayfirst=True)
+            
+            # Contar dias úteis
+            dias_uteis = 0
+            dias_fim_semana = 0
+            data_atual = inicio
+            
+            lista_dias_uteis = []
+            lista_fins_semana = []
+            
+            while data_atual <= fim:
+                if self.eh_dia_util(data_atual):
+                    dias_uteis += 1
+                    lista_dias_uteis.append(data_atual.strftime('%d/%m/%Y'))
+                else:
+                    dias_fim_semana += 1
+                    lista_fins_semana.append(data_atual.strftime('%d/%m/%Y'))
+                data_atual += timedelta(days=1)
+            
+            total_dias = dias_uteis + dias_fim_semana
+            
+            resposta = f"📅 **Período: {inicio.date()} a {fim.date()}**\n\n" + \
+                       f"📊 **Dias Úteis:** {dias_uteis} dias\n" + \
+                       f"🏖️ **Fins de Semana:** {dias_fim_semana} dias\n" + \
+                       f"📆 **Total de Dias:** {total_dias} dias"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "data_inicio": str(inicio.date()),
+                    "data_fim": str(fim.date()),
+                    "dias_uteis": dias_uteis,
+                    "dias_fim_semana": dias_fim_semana,
+                    "total_dias": total_dias,
+                    "lista_dias_uteis": lista_dias_uteis,
+                    "lista_fins_semana": lista_fins_semana
+                },
+                "tipo": "contagem_dias_uteis"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao processar datas: {str(e)}\n💡 Use formato DD/MM/YYYY ou YYYY-MM-DD",
+                "tipo": "erro"
+            }
+    
+    def calcular_horas_esperadas_periodo(self, data_inicio: str, data_fim: str, horas_por_dia: float = 8.0) -> Dict:
+        """
+        Calcula quantas horas um colaborador deveria fazer em um período
+        
+        Args:
+            data_inicio: Data inicial (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            data_fim: Data final (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            horas_por_dia: Horas esperadas por dia útil (padrão: 8h)
+        
+        Returns:
+            Dicionário com cálculo de horas esperadas
+        """
+        # Primeiro contar dias úteis
+        resultado_dias = self.contar_dias_uteis_periodo(data_inicio, data_fim)
+        
+        if resultado_dias.get('tipo') == 'erro':
+            return resultado_dias
+        
+        dias_uteis = resultado_dias['dados']['dias_uteis']
+        horas_esperadas_brutas = dias_uteis * horas_por_dia
+        horas_almoco = dias_uteis * 1.0  # 1h de almoço por dia útil
+        horas_esperadas_liquidas = horas_esperadas_brutas - horas_almoco
+        
+        inicio = resultado_dias['dados']['data_inicio']
+        fim = resultado_dias['dados']['data_fim']
+        
+        resposta = f"📅 **Período: {inicio} a {fim}**\n\n" + \
+                   f"📊 **Dias Úteis:** {dias_uteis} dias\n" + \
+                   f"⏱️ **Horas por Dia:** {horas_por_dia:.1f}h\n\n" + \
+                   f"📈 **Horas Esperadas (Brutas):** {horas_esperadas_brutas:.1f}h\n" + \
+                   f"🍽️ **Desconto Almoço:** {horas_almoco:.1f}h\n" + \
+                   f"✅ **Horas Esperadas (Líquidas):** {horas_esperadas_liquidas:.1f}h"
+        
+        return {
+            "resposta": resposta,
+            "dados": {
+                "data_inicio": inicio,
+                "data_fim": fim,
+                "dias_uteis": dias_uteis,
+                "horas_por_dia": horas_por_dia,
+                "horas_esperadas_brutas": round(horas_esperadas_brutas, 1),
+                "horas_almoco": round(horas_almoco, 1),
+                "horas_esperadas_liquidas": round(horas_esperadas_liquidas, 1)
+            },
+            "tipo": "horas_esperadas"
+        }
+    
+    def dias_nao_apontados(self, data_inicio: str, data_fim: str, usuario: Optional[str] = None) -> Dict:
+        """
+        Identifica quais dias úteis não tiveram apontamentos
+        
+        Args:
+            data_inicio: Data inicial (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            data_fim: Data final (formato: YYYY-MM-DD ou DD/MM/YYYY)
+            usuario: Nome do usuário (opcional)
+        
+        Returns:
+            Dicionário com lista de dias não apontados
+        """
+        if self.df is None or 'data' not in self.df.columns:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        try:
+            # Converter strings para datetime
+            inicio = pd.to_datetime(data_inicio, dayfirst=True)
+            fim = pd.to_datetime(data_fim, dayfirst=True)
+            
+            # Filtrar por período
+            df_periodo = self.df[(self.df['data'] >= inicio) & (self.df['data'] <= fim)]
+            
+            # Se não especificar usuário, analisar todos
+            if not usuario:
+                # Pegar todos os usuários únicos do período
+                usuarios = df_periodo['s_nm_recurso'].unique()
+                
+                if len(usuarios) == 0:
+                    return {
+                        "resposta": f"❌ Nenhum usuário encontrado no período {inicio.date()} a {fim.date()}",
+                        "tipo": "info"
+                    }
+                
+                # Analisar cada usuário
+                resultado_usuarios = {}
+                for usr in usuarios:
+                    resultado_usuarios[usr] = self._analisar_dias_nao_apontados_usuario(inicio, fim, usr, df_periodo)
+                
+                # Montar resposta consolidada
+                resposta = f"📅 **Período: {inicio.date()} a {fim.date()}**\n\n"
+                resposta += f"👥 **Análise de {len(usuarios)} colaboradores**\n\n"
+                
+                usuarios_com_faltas = {usr: dados for usr, dados in resultado_usuarios.items() if dados['dias_nao_apontados'] > 0}
+                
+                if len(usuarios_com_faltas) == 0:
+                    resposta += "✅ **Todos os colaboradores apontaram em todos os dias úteis!**"
+                else:
+                    resposta += f"⚠️ **{len(usuarios_com_faltas)} colaborador(es) com dias não apontados:**\n\n"
+                    for usr, dados in sorted(usuarios_com_faltas.items(), key=lambda x: x[1]['dias_nao_apontados'], reverse=True)[:10]:
+                        resposta += f"• **{usr}**: {dados['dias_nao_apontados']} dia(s) não apontado(s)\n"
+                        if dados['lista_dias_faltantes']:
+                            resposta += f"  Dias: {', '.join(dados['lista_dias_faltantes'][:5])}"
+                            if len(dados['lista_dias_faltantes']) > 5:
+                                resposta += f" ... (+{len(dados['lista_dias_faltantes'])-5})"
+                            resposta += "\n"
+                
+                return {
+                    "resposta": resposta,
+                    "dados": {
+                        "data_inicio": str(inicio.date()),
+                        "data_fim": str(fim.date()),
+                        "total_usuarios": len(usuarios),
+                        "usuarios_com_faltas": len(usuarios_com_faltas),
+                        "detalhes": resultado_usuarios
+                    },
+                    "tipo": "dias_nao_apontados_geral"
+                }
+            
+            else:
+                # Análise individual
+                df_usuario = df_periodo[df_periodo['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
+                
+                if len(df_usuario) == 0:
+                    return {
+                        "resposta": f"❌ Usuário '{usuario}' não encontrado no período {inicio.date()} a {fim.date()}",
+                        "tipo": "erro"
+                    }
+                
+                resultado = self._analisar_dias_nao_apontados_usuario(inicio, fim, usuario, df_periodo)
+                
+                resposta = f"📅 **Período: {inicio.date()} a {fim.date()}**\n" + \
+                           f"👤 **Colaborador: {usuario}**\n\n" + \
+                           f"📊 **Dias Úteis no Período:** {resultado['dias_uteis_total']}\n" + \
+                           f"✅ **Dias Apontados:** {resultado['dias_apontados']}\n" + \
+                           f"❌ **Dias Não Apontados:** {resultado['dias_nao_apontados']}\n"
+                
+                if resultado['dias_nao_apontados'] > 0:
+                    resposta += f"\n⚠️ **Dias sem apontamento:**\n"
+                    for dia in resultado['lista_dias_faltantes']:
+                        resposta += f"• {dia}\n"
+                else:
+                    resposta += "\n🎉 **Parabéns! Todos os dias úteis foram apontados!**"
+                
+                return {
+                    "resposta": resposta,
+                    "dados": {
+                        "data_inicio": str(inicio.date()),
+                        "data_fim": str(fim.date()),
+                        "usuario": usuario,
+                        **resultado
+                    },
+                    "tipo": "dias_nao_apontados_individual"
+                }
+                
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao processar: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def _analisar_dias_nao_apontados_usuario(self, inicio: pd.Timestamp, fim: pd.Timestamp, usuario: str, df_periodo: pd.DataFrame) -> Dict:
+        """Função auxiliar para analisar dias não apontados de um usuário"""
+        # Filtrar dados do usuário
+        df_usuario = df_periodo[df_periodo['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
+        
+        # Pegar datas que o usuário apontou
+        datas_apontadas = set(df_usuario['data'].dt.date)
+        
+        # Listar todos os dias úteis do período
+        dias_uteis_periodo = []
+        data_atual = inicio
+        while data_atual <= fim:
+            if self.eh_dia_util(data_atual):
+                dias_uteis_periodo.append(data_atual.date())
+            data_atual += timedelta(days=1)
+        
+        # Identificar dias não apontados
+        dias_nao_apontados = [dia for dia in dias_uteis_periodo if dia not in datas_apontadas]
+        
+        return {
+            "dias_uteis_total": len(dias_uteis_periodo),
+            "dias_apontados": len(datas_apontadas.intersection(set(dias_uteis_periodo))),
+            "dias_nao_apontados": len(dias_nao_apontados),
+            "lista_dias_faltantes": [dia.strftime('%d/%m/%Y') for dia in sorted(dias_nao_apontados)]
         }
     
     def ajuda(self) -> Dict:
