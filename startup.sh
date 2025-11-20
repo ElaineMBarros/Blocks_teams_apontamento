@@ -17,6 +17,11 @@ else
     ls -la resultados/
 fi
 
+# Testar import antes de iniciar
+echo "🧪 Testando imports..."
+python -c "import bot.bot_api; print('✅ Import OK')" || { echo "❌ Erro no import!"; python -c "import bot.bot_api" 2>&1; exit 1; }
+
+echo "🚀 Iniciando gunicorn..."
 # Iniciar gunicorn com uvicorn workers
 exec gunicorn -w 4 \
     -k uvicorn.workers.UvicornWorker \
@@ -24,5 +29,6 @@ exec gunicorn -w 4 \
     --timeout 600 \
     --access-logfile - \
     --error-logfile - \
-    --log-level info \
+    --log-level debug \
+    --preload \
     bot.bot_api:app
