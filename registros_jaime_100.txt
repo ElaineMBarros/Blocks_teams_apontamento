@@ -1,0 +1,4160 @@
+======================================================================================================================================================
+100 PRIMEIROS REGISTROS COM 'JAIME'
+======================================================================================================================================================
+
+LEGENDA DAS COLUNAS:
+------------------------------------------------------------------------------------------------------------------------------------------------------
+s_id_apontamento         = ID do Apontamento
+s_ds_operacao            = Operação/Empresa
+s_nr_contrato            = Número do Contrato
+s_nr_cpf                 = CPF do Recurso
+s_id_recurso             = ID do Recurso
+s_nm_recurso             = Nome do Recurso (Funcionário)
+s_id_cargo               = ID do Cargo
+s_ds_cargo               = Descrição do Cargo
+d_dt_data                = Data do Apontamento
+d_dt_data_fim            = Data Fim
+d_dt_inicio_apontamento  = Data/Hora Início
+d_dt_fim_apontamento     = Data/Hora Fim
+f_hr_hora_inicio         = Hora Início (decimal)
+f_hr_hora_fim            = Hora Fim (decimal)
+n_fl_abatimento          = Flag Abatimento
+b_fl_validado            = Validado? (1=Sim)
+s_id_usuario_valida      = ID do Validador
+s_nm_usuario_valida      = Nome do Validador
+s_id_usuario             = ID do Usuário
+s_nm_usuario             = Nome do Usuário
+s_id_tipo_jornada        = ID Tipo Jornada
+s_ds_tipo_jornada        = Descrição Tipo Jornada
+s_id_divisao             = ID da Divisão
+s_ds_divisao             = Descrição da Divisão
+s_nm_sigla               = Sigla
+s_nm_cliente_operacional = Cliente Operacional
+======================================================================================================================================================
+- "Quantos apontamentos não foram validados?"
+
+- "Mostre o contrato 7874"
+
+- "Quem trabalha com JAVA?"
+
+- "Analistas Desenvolvedores Sênior"
+
+- "Dashboard executivo"
+
+- "Quais tecnologias temos?"
+
+- "Gerentes de Projetos do Azure"
+
+- ### Perguntas de Teste:
+
+1. __"Olá"__ - Card de boas-vindas
+2. __"Contrato 8446"__ - Mostra contrato + Top 10 recursos
+3. __"Quem trabalha com JAVA?"__ - Lista profissionais
+4. __"O recurso RECURSO_2296069147 apontou em que atividades?"__ - Atividades do recurso ⭐
+5. __"Dashboard executivo"__ - Visão completa
+6. __"Quantos apontamentos não foram validados?"__ - Status
+7. __"Analistas Desenvolvedores"__ - Consulta por perfil
+
+
+- E muitas mais!
+
+
+======================================================================================================================================================
+REGISTRO 579
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4465965
+   Operação: SDE - DDS
+   Contrato: E0230091 (cliente)
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3 ( 7874 contrato fornecedor - 3 item do contrato - Azure tecnologia - Gerente de projetos é o perfil - nível do item 3 )
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-17
+   Data Fim: nan
+   Início: 2025-11-17 08:06:00.000000
+   Fim: nan
+   Hora Início: 8.1
+   Hora Fim: nan
+
+✅ VALIDAÇÃO:
+   Validado: NÃO
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 1533
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4465708
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-17
+   Data Fim: nan
+   Início: 2025-11-17 08:00:00.000000
+   Fim: nan
+   Hora Início: 8.0
+   Hora Fim: nan
+
+✅ VALIDAÇÃO:
+   Validado: NÃO
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 3734
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4462347
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-14
+   Data Fim: 2025-11-14
+   Início: 2025-11-14 08:11:00.000000
+   Fim: 2025-11-14 17:14:00.000000
+   Hora Início: 8.18
+   Hora Fim: 17.23
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 4612
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4464453
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9486.0
+   Nome: Fabiana Rodrigues Dos Santos
+   CPF: 224.468.018-54
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-14
+   Data Fim: 2025-11-14
+   Início: 2025-11-14 09:01:00.000000
+   Fim: 2025-11-14 18:24:00.000000
+   Hora Início: 9.02
+   Hora Fim: 18.4
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 4896
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4462662
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3683.0
+   Nome: Fernando dos Reis Lopes
+   CPF: 293.685.448-24
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-14
+   Data Fim: 2025-11-14
+   Início: 2025-11-14 08:46:00.000000
+   Fim: 2025-11-14 18:00:00.000000
+   Hora Início: 8.77
+   Hora Fim: 18.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3627.0
+   Nome: Fernando dos Reis Lopes
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 5181
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4463212
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-14
+   Data Fim: 2025-11-14
+   Início: 2025-11-14 08:00:00.000000
+   Fim: 2025-11-14 17:00:00.000000
+   Hora Início: 8.0
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 5518
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4461638
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3681.0
+   Nome: Fabio Simao de Andrade
+   CPF: 183.559.818-80
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-14
+   Data Fim: 2025-11-14
+   Início: 2025-11-14 07:54:00.000000
+   Fim: 2025-11-14 17:02:00.000000
+   Hora Início: 7.9
+   Hora Fim: 17.03
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3625.0
+   Nome: Fabio Simao de Andrade
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 6803
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458170
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 07:59:00.000000
+   Fim: 2025-11-13 16:59:00.000000
+   Hora Início: 7.98
+   Hora Fim: 16.98
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 7562
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458893
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9844.0
+   Nome: Ronivaldo Santos Souza
+   CPF: 215.991.768-07
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 08:32:00.000000
+   Fim: 2025-11-13 17:32:00.000000
+   Hora Início: 8.53
+   Hora Fim: 17.53
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 7900
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4459277
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9488.0
+   Nome: Victor Albuquerque Dornelas
+   CPF: 103.224.714-27
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 09:00:00.000000
+   Fim: 2025-11-13 16:47:00.000000
+   Hora Início: 9.0
+   Hora Fim: 16.78
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9190.0
+   Nome: Victor Albuquerque Dornelas
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 7934
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4459377
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9694.0
+   Nome: Margarete Bispo dos Santos Silva
+   CPF: 176.251.898-80
+   Cargo: 8422-1-LIFERAY-ARQUITETO-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 09:05:00.000000
+   Fim: 2025-11-13 18:10:00.000000
+   Hora Início: 9.08
+   Hora Fim: 18.17
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9396.0
+   Nome: Margarete Bispo dos Santos Silva
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 8314
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4457920
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 07:52:00.000000
+   Fim: 2025-11-13 17:00:00.000000
+   Hora Início: 7.87
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 8336
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4457842
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3681.0
+   Nome: Fabio Simao de Andrade
+   CPF: 183.559.818-80
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 07:47:00.000000
+   Fim: 2025-11-13 17:05:00.000000
+   Hora Início: 7.78
+   Hora Fim: 17.08
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3625.0
+   Nome: Fabio Simao de Andrade
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 8395
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4459365
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9486.0
+   Nome: Fabiana Rodrigues Dos Santos
+   CPF: 224.468.018-54
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 09:04:00.000000
+   Fim: 2025-11-13 18:06:00.000000
+   Hora Início: 9.07
+   Hora Fim: 18.1
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 8412
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4459037
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3683.0
+   Nome: Fernando dos Reis Lopes
+   CPF: 293.685.448-24
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 08:50:00.000000
+   Fim: 2025-11-13 18:00:00.000000
+   Hora Início: 8.83
+   Hora Fim: 18.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3627.0
+   Nome: Fernando dos Reis Lopes
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 8547
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4463276
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10528.0
+   Nome: Ricardo Luis Alves Mendes
+   CPF: 114.301.308-57
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-13
+   Data Fim: 2025-11-13
+   Início: 2025-11-13 09:00:00.000000
+   Fim: 2025-11-13 18:00:00.000000
+   Hora Início: 9.0
+   Hora Fim: 18.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 10347
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4454898
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:02:00.000000
+   Fim: 2025-11-12 17:08:00.000000
+   Hora Início: 8.03
+   Hora Fim: 17.13
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 10746
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455936
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9407.0
+   Nome: Sergio Ovalle Marcelo
+   CPF: 435.912.038-90
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:27:00.000000
+   Fim: 2025-11-12 18:11:00.000000
+   Hora Início: 9.45
+   Hora Fim: 18.18
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9109.0
+   Nome: Sergio Ovalle Marcelo
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 10747
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455627
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9486.0
+   Nome: Fabiana Rodrigues Dos Santos
+   CPF: 224.468.018-54
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:59:00.000000
+   Fim: 2025-11-12 18:07:00.000000
+   Hora Início: 8.98
+   Hora Fim: 18.12
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9188.0
+   Nome: Fabiana Rodrigues Dos Santos
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 10813
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458399
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9392.0
+   Nome: Bruna Batista De Souza
+   CPF: 412.349.848-57
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:30:00.000000
+   Fim: 2025-11-12 18:04:00.000000
+   Hora Início: 9.5
+   Hora Fim: 18.07
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 10815
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455452
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9694.0
+   Nome: Margarete Bispo dos Santos Silva
+   CPF: 176.251.898-80
+   Cargo: 8422-1-LIFERAY-ARQUITETO-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:49:00.000000
+   Fim: 2025-11-12 18:04:00.000000
+   Hora Início: 8.82
+   Hora Fim: 18.07
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9396.0
+   Nome: Margarete Bispo dos Santos Silva
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11057
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458729
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9485.0
+   Nome: Eduardo Dias Cordeiro
+   CPF: 302.799.388-70
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:02:00.000000
+   Fim: 2025-11-12 18:01:00.000000
+   Hora Início: 9.03
+   Hora Fim: 18.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11073
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4454259
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3681.0
+   Nome: Fabio Simao de Andrade
+   CPF: 183.559.818-80
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 07:45:00.000000
+   Fim: 2025-11-12 17:08:00.000000
+   Hora Início: 7.75
+   Hora Fim: 17.13
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3625.0
+   Nome: Fabio Simao de Andrade
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11081
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455427
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3683.0
+   Nome: Fernando dos Reis Lopes
+   CPF: 293.685.448-24
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:46:00.000000
+   Fim: 2025-11-12 18:02:00.000000
+   Hora Início: 8.77
+   Hora Fim: 18.03
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3627.0
+   Nome: Fernando dos Reis Lopes
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11096
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455933
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10528.0
+   Nome: Ricardo Luis Alves Mendes
+   CPF: 114.301.308-57
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:26:00.000000
+   Fim: 2025-11-12 18:26:00.000000
+   Hora Início: 9.43
+   Hora Fim: 18.43
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11115
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4454472
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9400.0
+   Nome: Paulo Goncalves
+   CPF: 036.103.318-44
+   Cargo: 7873-1-DOT NET-ANALISTA DE TESTES-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 07:55:00.000000
+   Fim: 2025-11-12 17:00:00.000000
+   Hora Início: 7.92
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9102.0
+   Nome: Paulo Goncalves
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11206
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455920
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7547.0
+   Nome: Maria Iris Vital Da Silva
+   CPF: 104.078.974-96
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:22:00.000000
+   Fim: 2025-11-12 18:10:00.000000
+   Hora Início: 9.37
+   Hora Fim: 18.17
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 7498.0
+   Nome: Maria Iris Vital Da Silva
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11209
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455323
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9463.0
+   Nome: Sidnei Antonio De Oliveira
+   CPF: 074.244.528-35
+   Cargo: 8418-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:32:00.000000
+   Fim: 2025-11-12 18:00:00.000000
+   Hora Início: 8.53
+   Hora Fim: 18.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9165.0
+   Nome: Sidnei Antonio De Oliveira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11242
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455701
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9488.0
+   Nome: Victor Albuquerque Dornelas
+   CPF: 103.224.714-27
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:00:00.000000
+   Fim: 2025-11-12 18:11:00.000000
+   Hora Início: 9.0
+   Hora Fim: 18.18
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9190.0
+   Nome: Victor Albuquerque Dornelas
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11247
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455522
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9487.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+   CPF: 099.240.489-46
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:54:00.000000
+   Fim: 2025-11-12 17:55:00.000000
+   Hora Início: 8.9
+   Hora Fim: 17.92
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9189.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11286
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455995
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9844.0
+   Nome: Ronivaldo Santos Souza
+   CPF: 215.991.768-07
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:54:00.000000
+   Fim: 2025-11-12 18:54:00.000000
+   Hora Início: 9.9
+   Hora Fim: 18.9
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11292
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455886
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9406.0
+   Nome: Rafael Gonçalves Oliveir
+   CPF: 410.880.578-02
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 09:13:00.000000
+   Fim: 2025-11-12 18:37:00.000000
+   Hora Início: 9.22
+   Hora Fim: 18.62
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9108.0
+   Nome: Rafael Gonçalves Oliveir
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11325
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455033
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9497.0
+   Nome: Luiz Gracia Dio Neto
+   CPF: 951.504.558-49
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:07:00.000000
+   Fim: 2025-11-12 17:01:00.000000
+   Hora Início: 8.12
+   Hora Fim: 17.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9199.0
+   Nome: Luiz Gracia Dio Neto
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11336
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4454996
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9804.0
+   Nome: Eric Fonseca Rocha
+   CPF: 380.665.978-86
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:06:00.000000
+   Fim: 2025-11-12 17:41:00.000000
+   Hora Início: 8.1
+   Hora Fim: 17.68
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9505.0
+   Nome: Eric Fonseca Rocha
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11551
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4456210
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9491.0
+   Nome: Dassaev Rodrigues Tavares
+   CPF: 432.839.678-14
+   Cargo: 8446-1-JAVA-UX DESIGNER-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 12:14:00.000000
+   Fim: 2025-11-12 18:00:00.000000
+   Hora Início: 12.23
+   Hora Fim: 18.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9193.0
+   Nome: Dassaev Rodrigues Tavares
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 11849
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4455001
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-12
+   Data Fim: 2025-11-12
+   Início: 2025-11-12 08:00:00.000000
+   Fim: 2025-11-12 17:00:00.000000
+   Hora Início: 8.0
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 12369
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452044
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9491.0
+   Nome: Dassaev Rodrigues Tavares
+   CPF: 432.839.678-14
+   Cargo: 8446-1-JAVA-UX DESIGNER-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:00:00.000000
+   Fim: 2025-11-11 17:59:00.000000
+   Hora Início: 9.0
+   Hora Fim: 17.98
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9193.0
+   Nome: Dassaev Rodrigues Tavares
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 12497
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452072
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9488.0
+   Nome: Victor Albuquerque Dornelas
+   CPF: 103.224.714-27
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:00:00.000000
+   Fim: 2025-11-11 18:02:00.000000
+   Hora Início: 9.0
+   Hora Fim: 18.03
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9190.0
+   Nome: Victor Albuquerque Dornelas
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13432
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4451596
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9497.0
+   Nome: Luiz Gracia Dio Neto
+   CPF: 951.504.558-49
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:23:00.000000
+   Fim: 2025-11-11 17:20:00.000000
+   Hora Início: 8.38
+   Hora Fim: 17.33
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9199.0
+   Nome: Luiz Gracia Dio Neto
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13492
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452241
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9406.0
+   Nome: Rafael Gonçalves Oliveir
+   CPF: 410.880.578-02
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:12:00.000000
+   Fim: 2025-11-11 18:34:00.000000
+   Hora Início: 9.2
+   Hora Fim: 18.57
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9108.0
+   Nome: Rafael Gonçalves Oliveir
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13526
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452356
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9694.0
+   Nome: Margarete Bispo dos Santos Silva
+   CPF: 176.251.898-80
+   Cargo: 8422-1-LIFERAY-ARQUITETO-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:44:00.000000
+   Fim: 2025-11-11 18:51:00.000000
+   Hora Início: 9.73
+   Hora Fim: 18.85
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9396.0
+   Nome: Margarete Bispo dos Santos Silva
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13543
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4451783
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9844.0
+   Nome: Ronivaldo Santos Souza
+   CPF: 215.991.768-07
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:45:00.000000
+   Fim: 2025-11-11 17:45:00.000000
+   Hora Início: 8.75
+   Hora Fim: 17.75
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13550
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452251
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10356.0
+   Nome: Lucas Teixeira Nogueira
+   CPF: 394.737.898-07
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:13:00.000000
+   Fim: 2025-11-11 20:25:00.000000
+   Hora Início: 9.22
+   Hora Fim: 20.42
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 10060.0
+   Nome: Lucas Teixeira Nogueira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13553
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4451809
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9487.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+   CPF: 099.240.489-46
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:47:00.000000
+   Fim: 2025-11-11 17:57:00.000000
+   Hora Início: 8.78
+   Hora Fim: 17.95
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9189.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13572
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4451902
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9486.0
+   Nome: Fabiana Rodrigues Dos Santos
+   CPF: 224.468.018-54
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:54:00.000000
+   Fim: 2025-11-11 18:10:00.000000
+   Hora Início: 8.9
+   Hora Fim: 18.17
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9188.0
+   Nome: Fabiana Rodrigues Dos Santos
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13578
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452170
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9804.0
+   Nome: Eric Fonseca Rocha
+   CPF: 380.665.978-86
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:04:00.000000
+   Fim: 2025-11-11 18:37:00.000000
+   Hora Início: 9.07
+   Hora Fim: 18.62
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9505.0
+   Nome: Eric Fonseca Rocha
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13593
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452293
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9463.0
+   Nome: Sidnei Antonio De Oliveira
+   CPF: 074.244.528-35
+   Cargo: 8418-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:19:00.000000
+   Fim: 2025-11-11 18:25:00.000000
+   Hora Início: 9.32
+   Hora Fim: 18.42
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9165.0
+   Nome: Sidnei Antonio De Oliveira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13625
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4450759
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 07:54:00.000000
+   Fim: 2025-11-11 17:00:00.000000
+   Hora Início: 7.9
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13638
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4450793
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9400.0
+   Nome: Paulo Goncalves
+   CPF: 036.103.318-44
+   Cargo: 7873-1-DOT NET-ANALISTA DE TESTES-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 07:55:00.000000
+   Fim: 2025-11-11 17:00:00.000000
+   Hora Início: 7.92
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9102.0
+   Nome: Paulo Goncalves
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13661
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4451853
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3683.0
+   Nome: Fernando dos Reis Lopes
+   CPF: 293.685.448-24
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:51:00.000000
+   Fim: 2025-11-11 18:01:00.000000
+   Hora Início: 8.85
+   Hora Fim: 18.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3627.0
+   Nome: Fernando dos Reis Lopes
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13666
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458714
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9485.0
+   Nome: Eduardo Dias Cordeiro
+   CPF: 302.799.388-70
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:55:00.000000
+   Fim: 2025-11-11 18:01:00.000000
+   Hora Início: 8.92
+   Hora Fim: 18.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13718
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4450750
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3681.0
+   Nome: Fabio Simao de Andrade
+   CPF: 183.559.818-80
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 07:54:00.000000
+   Fim: 2025-11-11 17:11:00.000000
+   Hora Início: 7.9
+   Hora Fim: 17.18
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3625.0
+   Nome: Fabio Simao de Andrade
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13737
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452445
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9392.0
+   Nome: Bruna Batista De Souza
+   CPF: 412.349.848-57
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 10:08:00.000000
+   Fim: 2025-11-11 18:08:00.000000
+   Hora Início: 10.13
+   Hora Fim: 18.13
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9094.0
+   Nome: Bruna Batista De Souza
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 13815
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4452328
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9407.0
+   Nome: Sergio Ovalle Marcelo
+   CPF: 435.912.038-90
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 09:33:00.000000
+   Fim: 2025-11-11 18:28:00.000000
+   Hora Início: 9.55
+   Hora Fim: 18.47
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9109.0
+   Nome: Sergio Ovalle Marcelo
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 14593
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4451490
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-11
+   Data Fim: 2025-11-11
+   Início: 2025-11-11 08:14:00.000000
+   Fim: 2025-11-11 17:36:00.000000
+   Hora Início: 8.23
+   Hora Fim: 17.6
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 15778
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4446901
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3681.0
+   Nome: Fabio Simao de Andrade
+   CPF: 183.559.818-80
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 07:48:00.000000
+   Fim: 2025-11-10 17:01:00.000000
+   Hora Início: 7.8
+   Hora Fim: 17.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3625.0
+   Nome: Fabio Simao de Andrade
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16185
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4447398
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9804.0
+   Nome: Eric Fonseca Rocha
+   CPF: 380.665.978-86
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:00:00.000000
+   Fim: 2025-11-10 17:11:00.000000
+   Hora Início: 8.0
+   Hora Fim: 17.18
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9505.0
+   Nome: Eric Fonseca Rocha
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16190
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448660
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9497.0
+   Nome: Luiz Gracia Dio Neto
+   CPF: 951.504.558-49
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:37:00.000000
+   Fim: 2025-11-10 17:26:00.000000
+   Hora Início: 9.62
+   Hora Fim: 17.43
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9199.0
+   Nome: Luiz Gracia Dio Neto
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16202
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448570
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9406.0
+   Nome: Rafael Gonçalves Oliveir
+   CPF: 410.880.578-02
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:15:00.000000
+   Fim: 2025-11-10 17:51:00.000000
+   Hora Início: 9.25
+   Hora Fim: 17.85
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9108.0
+   Nome: Rafael Gonçalves Oliveir
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16205
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448641
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9407.0
+   Nome: Sergio Ovalle Marcelo
+   CPF: 435.912.038-90
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:30:00.000000
+   Fim: 2025-11-10 19:17:00.000000
+   Hora Início: 9.5
+   Hora Fim: 19.28
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9109.0
+   Nome: Sergio Ovalle Marcelo
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16241
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448342
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9488.0
+   Nome: Victor Albuquerque Dornelas
+   CPF: 103.224.714-27
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:00:00.000000
+   Fim: 2025-11-10 19:41:00.000000
+   Hora Início: 9.0
+   Hora Fim: 19.68
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9190.0
+   Nome: Victor Albuquerque Dornelas
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16250
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448353
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9392.0
+   Nome: Bruna Batista De Souza
+   CPF: 412.349.848-57
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:01:00.000000
+   Fim: 2025-11-10 17:03:00.000000
+   Hora Início: 9.02
+   Hora Fim: 17.05
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9094.0
+   Nome: Bruna Batista De Souza
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16261
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448766
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7547.0
+   Nome: Maria Iris Vital Da Silva
+   CPF: 104.078.974-96
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:02:00.000000
+   Fim: 2025-11-10 18:07:00.000000
+   Hora Início: 9.03
+   Hora Fim: 18.12
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16264
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458686
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9485.0
+   Nome: Eduardo Dias Cordeiro
+   CPF: 302.799.388-70
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:05:00.000000
+   Fim: 2025-11-10 18:13:00.000000
+   Hora Início: 9.08
+   Hora Fim: 18.22
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16270
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448526
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9463.0
+   Nome: Sidnei Antonio De Oliveira
+   CPF: 074.244.528-35
+   Cargo: 8418-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:10:00.000000
+   Fim: 2025-11-10 18:31:00.000000
+   Hora Início: 9.17
+   Hora Fim: 18.52
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9165.0
+   Nome: Sidnei Antonio De Oliveira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16555
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448146
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9486.0
+   Nome: Fabiana Rodrigues Dos Santos
+   CPF: 224.468.018-54
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:54:00.000000
+   Fim: 2025-11-10 18:08:00.000000
+   Hora Início: 8.9
+   Hora Fim: 18.13
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9188.0
+   Nome: Fabiana Rodrigues Dos Santos
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16563
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4446618
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9694.0
+   Nome: Margarete Bispo dos Santos Silva
+   CPF: 176.251.898-80
+   Cargo: 8422-1-LIFERAY-ARQUITETO-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:02:00.000000
+   Fim: 2025-11-10 18:26:00.000000
+   Hora Início: 8.03
+   Hora Fim: 18.43
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16577
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448259
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9487.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+   CPF: 099.240.489-46
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:59:00.000000
+   Fim: 2025-11-10 18:02:00.000000
+   Hora Início: 8.98
+   Hora Fim: 18.03
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9189.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16590
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448134
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9491.0
+   Nome: Dassaev Rodrigues Tavares
+   CPF: 432.839.678-14
+   Cargo: 8446-1-JAVA-UX DESIGNER-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:53:00.000000
+   Fim: 2025-11-10 18:01:00.000000
+   Hora Início: 8.88
+   Hora Fim: 18.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9193.0
+   Nome: Dassaev Rodrigues Tavares
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16601
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448045
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3683.0
+   Nome: Fernando dos Reis Lopes
+   CPF: 293.685.448-24
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:45:00.000000
+   Fim: 2025-11-10 18:00:00.000000
+   Hora Início: 8.75
+   Hora Fim: 18.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3627.0
+   Nome: Fernando dos Reis Lopes
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16637
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448511
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9844.0
+   Nome: Ronivaldo Santos Souza
+   CPF: 215.991.768-07
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:08:00.000000
+   Fim: 2025-11-10 18:08:00.000000
+   Hora Início: 9.13
+   Hora Fim: 18.13
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16756
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4447062
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9400.0
+   Nome: Paulo Goncalves
+   CPF: 036.103.318-44
+   Cargo: 7873-1-DOT NET-ANALISTA DE TESTES-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 07:55:00.000000
+   Fim: 2025-11-10 17:00:00.000000
+   Hora Início: 7.92
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9102.0
+   Nome: Paulo Goncalves
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16765
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4447158
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 07:58:00.000000
+   Fim: 2025-11-10 17:00:00.000000
+   Hora Início: 7.97
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16773
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448559
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10528.0
+   Nome: Ricardo Luis Alves Mendes
+   CPF: 114.301.308-57
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:14:00.000000
+   Fim: 2025-11-10 18:14:00.000000
+   Hora Início: 9.23
+   Hora Fim: 18.23
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 16864
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4448740
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10356.0
+   Nome: Lucas Teixeira Nogueira
+   CPF: 394.737.898-07
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 09:58:00.000000
+   Fim: 2025-11-10 18:20:00.000000
+   Hora Início: 9.97
+   Hora Fim: 18.33
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 10060.0
+   Nome: Lucas Teixeira Nogueira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 17148
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4447447
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-10
+   Data Fim: 2025-11-10
+   Início: 2025-11-10 08:01:00.000000
+   Fim: 2025-11-10 17:14:00.000000
+   Hora Início: 8.02
+   Hora Fim: 17.23
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 19657
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4443891
+   Operação: nan
+   Contrato: E0220045
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7883.0
+   Nome: Tiago Jose Santos Andrade Jaime
+   CPF: 136.182.067-55
+   Cargo: 7874-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:06:00.000000
+   Fim: 2025-11-07 17:18:00.000000
+   Hora Início: 8.1
+   Hora Fim: 17.3
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: nan
+   Nome Validador: nan
+
+👥 USUÁRIO:
+   ID: 7744.0
+   Nome: Tiago Jose Santos Andrade Jaime
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 1020.0
+   Divisão: Gerência de Sistemas Fazenda
+   Sigla: GFZ
+   Cliente: nan
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 20148
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4443342
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9400.0
+   Nome: Paulo Goncalves
+   CPF: 036.103.318-44
+   Cargo: 7873-1-DOT NET-ANALISTA DE TESTES-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 07:55:00.000000
+   Fim: 2025-11-07 17:00:00.000000
+   Hora Início: 7.92
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9102.0
+   Nome: Paulo Goncalves
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 20153
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4443121
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9414.0
+   Nome: Jaime Henrique Sampaio
+   CPF: 034.008.728-57
+   Cargo: 7874-3-AZURE-GERENTE DE PROJETOS-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 07:46:00.000000
+   Fim: 2025-11-07 17:00:00.000000
+   Hora Início: 7.77
+   Hora Fim: 17.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 21849
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444181
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3681.0
+   Nome: Fabio Simao de Andrade
+   CPF: 183.559.818-80
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:30:00.000000
+   Fim: 2025-11-07 17:41:00.000000
+   Hora Início: 8.5
+   Hora Fim: 17.68
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3625.0
+   Nome: Fabio Simao de Andrade
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 21909
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444701
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10356.0
+   Nome: Lucas Teixeira Nogueira
+   CPF: 394.737.898-07
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:06:00.000000
+   Fim: 2025-11-07 19:45:00.000000
+   Hora Início: 9.1
+   Hora Fim: 19.75
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 10060.0
+   Nome: Lucas Teixeira Nogueira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 21959
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444688
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9392.0
+   Nome: Bruna Batista De Souza
+   CPF: 412.349.848-57
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 1
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:05:00.000000
+   Fim: 2025-11-07 18:02:00.000000
+   Hora Início: 9.08
+   Hora Fim: 18.03
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9094.0
+   Nome: Bruna Batista De Souza
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 21993
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4467117
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9394.0
+   Nome: Gustavo Sergio De Oliveira
+   CPF: 442.358.628-20
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 10:00:00.000000
+   Fim: 2025-11-07 19:00:00.000000
+   Hora Início: 10.0
+   Hora Fim: 19.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22006
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444295
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 3683.0
+   Nome: Fernando dos Reis Lopes
+   CPF: 293.685.448-24
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:44:00.000000
+   Fim: 2025-11-07 18:01:00.000000
+   Hora Início: 8.73
+   Hora Fim: 18.02
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 3627.0
+   Nome: Fernando dos Reis Lopes
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22041
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444871
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9407.0
+   Nome: Sergio Ovalle Marcelo
+   CPF: 435.912.038-90
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:51:00.000000
+   Fim: 2025-11-07 18:27:00.000000
+   Hora Início: 9.85
+   Hora Fim: 18.45
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9109.0
+   Nome: Sergio Ovalle Marcelo
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22042
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444620
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9486.0
+   Nome: Fabiana Rodrigues Dos Santos
+   CPF: 224.468.018-54
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:01:00.000000
+   Fim: 2025-11-07 18:20:00.000000
+   Hora Início: 9.02
+   Hora Fim: 18.33
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9188.0
+   Nome: Fabiana Rodrigues Dos Santos
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22060
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444323
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9463.0
+   Nome: Sidnei Antonio De Oliveira
+   CPF: 074.244.528-35
+   Cargo: 8418-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:47:00.000000
+   Fim: 2025-11-07 18:09:00.000000
+   Hora Início: 8.78
+   Hora Fim: 18.15
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9165.0
+   Nome: Sidnei Antonio De Oliveira
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22069
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444347
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9491.0
+   Nome: Dassaev Rodrigues Tavares
+   CPF: 432.839.678-14
+   Cargo: 8446-1-JAVA-UX DESIGNER-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:49:00.000000
+   Fim: 2025-11-07 18:08:00.000000
+   Hora Início: 8.82
+   Hora Fim: 18.13
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9193.0
+   Nome: Dassaev Rodrigues Tavares
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22138
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444836
+   Operação: SDE - DDS
+   Contrato: E0230091
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 10528.0
+   Nome: Ricardo Luis Alves Mendes
+   CPF: 114.301.308-57
+   Cargo: 7689-1-INTERSYST-ANALISTA DE SISTEMAS-NÍVEL 2
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:35:00.000000
+   Fim: 2025-11-07 18:35:00.000000
+   Hora Início: 9.58
+   Hora Fim: 18.58
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: SDE
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22151
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4458653
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9485.0
+   Nome: Eduardo Dias Cordeiro
+   CPF: 302.799.388-70
+   Cargo: 8446-1-JAVA-ANALISTA DE REQUISITOS/SISTEMAS-NÍVEL PLENO
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:55:00.000000
+   Fim: 2025-11-07 18:03:00.000000
+   Hora Início: 8.92
+   Hora Fim: 18.05
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22235
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444477
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 7547.0
+   Nome: Maria Iris Vital Da Silva
+   CPF: 104.078.974-96
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:57:00.000000
+   Fim: 2025-11-07 17:53:00.000000
+   Hora Início: 8.95
+   Hora Fim: 17.88
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 7498.0
+   Nome: Maria Iris Vital Da Silva
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22243
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4442926
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9694.0
+   Nome: Margarete Bispo dos Santos Silva
+   CPF: 176.251.898-80
+   Cargo: 8422-1-LIFERAY-ARQUITETO-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 07:00:00.000000
+   Fim: 2025-11-07 13:00:00.000000
+   Hora Início: 7.0
+   Hora Fim: 13.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22244
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4463362
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9694.0
+   Nome: Margarete Bispo dos Santos Silva
+   CPF: 176.251.898-80
+   Cargo: 8422-1-LIFERAY-ARQUITETO-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 19:00:00.000000
+   Fim: 2025-11-07 21:00:00.000000
+   Hora Início: 19.0
+   Hora Fim: 21.0
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22270
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444211
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9844.0
+   Nome: Ronivaldo Santos Souza
+   CPF: 215.991.768-07
+   Cargo: 7689-4-DEL/MO/WOR-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:32:00.000000
+   Fim: 2025-11-07 17:32:00.000000
+   Hora Início: 8.53
+   Hora Fim: 17.53
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22313
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444904
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9406.0
+   Nome: Rafael Gonçalves Oliveir
+   CPF: 410.880.578-02
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:59:00.000000
+   Fim: 2025-11-07 18:56:00.000000
+   Hora Início: 9.98
+   Hora Fim: 18.93
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9108.0
+   Nome: Rafael Gonçalves Oliveir
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22314
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4443218
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9497.0
+   Nome: Luiz Gracia Dio Neto
+   CPF: 951.504.558-49
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 07:51:00.000000
+   Fim: 2025-11-07 16:39:00.000000
+   Hora Início: 7.85
+   Hora Fim: 16.65
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9199.0
+   Nome: Luiz Gracia Dio Neto
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22342
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444341
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9487.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+   CPF: 099.240.489-46
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 08:49:00.000000
+   Fim: 2025-11-07 18:05:00.000000
+   Hora Início: 8.82
+   Hora Fim: 18.08
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9189.0
+   Nome: Gian Fabrizio Figueiredo Zonetti
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22388
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4444960
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9488.0
+   Nome: Victor Albuquerque Dornelas
+   CPF: 103.224.714-27
+   Cargo: 8446-1-JAVA-ANALISTA DESENVOLVEDOR-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-07
+   Data Fim: 2025-11-07
+   Início: 2025-11-07 09:01:00.000000
+   Fim: 2025-11-07 18:02:00.000000
+   Hora Início: 9.02
+   Hora Fim: 18.03
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9116.0
+   Nome: Jaime Henrique Sampaio
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22479
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4441257
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9406.0
+   Nome: Rafael Gonçalves Oliveir
+   CPF: 410.880.578-02
+   Cargo: 7873-1-DOT NET-ANALISTA DESENVOLVEDOR-NÍVEL 3
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-06
+   Data Fim: 2025-11-06
+   Início: 2025-11-06 09:37:00.000000
+   Fim: 2025-11-06 18:27:00.000000
+   Hora Início: 9.62
+   Hora Fim: 18.45
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9108.0
+   Nome: Rafael Gonçalves Oliveir
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão
+
+======================================================================================================================================================
+REGISTRO 22699
+======================================================================================================================================================
+
+🔹 IDENTIFICAÇÃO:
+   ID Apontamento: 4440481
+   Operação: DESENVOLVE SP - DDS
+   Contrato: E0240282
+
+👤 RECURSO (FUNCIONÁRIO):
+   ID: 9497.0
+   Nome: Luiz Gracia Dio Neto
+   CPF: 951.504.558-49
+   Cargo: 8446-1-JAVA-GERENTE DE PROJETOS-NÍVEL SÊNIOR
+
+📅 DATA E HORÁRIO:
+   Data: 2025-11-06
+   Data Fim: 2025-11-06
+   Início: 2025-11-06 08:23:00.000000
+   Fim: 2025-11-06 17:20:00.000000
+   Hora Início: 8.38
+   Hora Fim: 17.33
+
+✅ VALIDAÇÃO:
+   Validado: SIM
+   ID Validador: 9116.0
+   Nome Validador: Jaime Henrique Sampaio
+
+👥 USUÁRIO:
+   ID: 9199.0
+   Nome: Luiz Gracia Dio Neto
+
+🏢 DIVISÃO/GERÊNCIA:
+   ID Divisão: 432.0
+   Divisão: Gerência de Sistemas Palácio
+   Sigla: GPL
+   Cliente: DESENVOLVE SP
+
+⏰ JORNADA:
+   Tipo: Padrão

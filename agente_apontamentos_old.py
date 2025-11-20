@@ -26,36 +26,13 @@ class AgenteApontamentos:
     def carregar_dados(self) -> bool:
         """Carrega os dados mais recentes de apontamentos"""
         try:
-            # Buscar arquivo anonimizado e decupado (COMPLETO com contratos)
-            arquivos = glob.glob("resultados/dados_anonimizados_decupado_*.csv")
+            arquivos = glob.glob("resultados/dados_com_duracao_*.csv")
             if not arquivos:
-                # Fallback: tentar dados_com_duracao
-                arquivos = glob.glob("resultados/dados_com_duracao_*.csv")
-            
-            if not arquivos:
-                print("⚠️ Nenhum dado encontrado.")
+                print("⚠️ Nenhum dado encontrado. Execute: python analise_duracao_trabalho.py")
                 return False
             
             arquivo_mais_recente = max(arquivos)
-            print(f"📁 Carregando: {arquivo_mais_recente}")
-            self.df = pd.read_csv(arquivo_mais_recente, encoding='utf-8-sig', low_memory=False)
-            
-            # Calcular duração se não existir
-            if 'duracao_horas' not in self.df.columns:
-                print("⏱️ Calculando duração...")
-                self.df['d_dt_inicio_apontamento'] = pd.to_datetime(
-                    self.df['d_dt_inicio_apontamento'], errors='coerce'
-                )
-                self.df['d_dt_fim_apontamento'] = pd.to_datetime(
-                    self.df['d_dt_fim_apontamento'], errors='coerce'
-                )
-                
-                # Calcular duração em horas
-                duracao = (self.df['d_dt_fim_apontamento'] - self.df['d_dt_inicio_apontamento'])
-                self.df['duracao_horas'] = duracao.dt.total_seconds() / 3600
-                
-                # Remover valores inválidos
-                self.df = self.df[self.df['duracao_horas'] > 0].copy()
+            self.df = pd.read_csv(arquivo_mais_recente, encoding='utf-8-sig')
             
             # Converter colunas de data
             if 'd_dt_data' in self.df.columns:
@@ -175,9 +152,6 @@ class AgenteApontamentos:
         
         elif any(palavra in pergunta_lower for palavra in ['comparar', 'comparação']):
             return self.comparar_periodos()
-        
-        elif any(palavra in pergunta_lower for palavra in ['contrato', 'contratos']):
-            return self.listar_contratos()
         
         else:
             return self.ajuda()
@@ -564,76 +538,6 @@ class AgenteApontamentos:
                 "tipo": "erro"
             }
     
-    def detalhar_apontamentos_por_dia(self, data_inicio: str, data_fim: str, usuario: Optional[str] = None) -> Dict:
-        """
-        Detalha apontamentos dia a dia no período especificado
-        
-        Args:
-            data_inicio: Data inicial (formato: YYYY-MM-DD ou DD/MM/YYYY)
-            data_fim: Data final (formato: YYYY-MM-DD ou DD/MM/YYYY)
-            usuario: Nome do usuário (opcional, consulta geral se None)
-        
-        Returns:
-            Dicionário com detalhamento dia a dia dos apontamentos
-        """
-        if self.df is None or 'data' not in self.df.columns:
-            return {"erro": "Dados não disponíveis", "tipo": "erro"}
-        
-        try:
-            # Converter strings para datetime
-            inicio = pd.to_datetime(data_inicio, dayfirst=True)
-            fim = pd.to_datetime(data_fim, dayfirst=True)
-            
-            # Filtrar por período
-            df_periodo = self.df[(self.df['data'] >= inicio) & (self.df['data'] <= fim)]
-            
-            # Filtrar por usuário se especificado
-            if usuario:
-                df_periodo = df_periodo[df_periodo['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
-            
-            if len(df_periodo) == 0:
-                msg = f"📅 Nenhum apontamento encontrado entre {inicio.date()} e {fim.date()}"
-                if usuario:
-                    msg += f" para {usuario}"
-                return {"resposta": msg, "tipo": "info"}
-            
-            # Agrupar por dia
-            agrupado_por_dia = df_periodo.groupby(df_periodo['data'].dt.date).agg({
-                'duracao_horas': 'sum',
-                's_id_apontamento': 'count',
-                's_ds_cargo': lambda x: x.mode()[0] if len(x.mode()) > 0 else 'N/A'
-            }).sort_index()
-            
-            resposta = f"📅 **Apontamentos por Dia - {inicio.date()} a {fim.date()}**\n"
-            if usuario:
-                resposta += f"👤 Recurso: **{usuario}**\n"
-            resposta += f"\n📊 **Total: {len(agrupado_por_dia)} dias com apontamentos**\n\n"
-            
-            # Listar cada dia
-            for data, row in agrupado_por_dia.iterrows():
-                data_dt = pd.Timestamp(data)
-                dia_semana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][data_dt.weekday()]
-                emoji_dia = '📅' if data_dt.weekday() < 5 else '🏖️'
-                
-                resposta += f"{emoji_dia} **{data.strftime('%d/%m/%Y')} ({dia_semana})**\n"
-                resposta += f"   ⏱️ {row['duracao_horas']:.2f}h | "
-                resposta += f"📝 {int(row['s_id_apontamento'])} apontamentos\n"
-            
-            # Converter chaves datetime.date para string antes de retornar
-            dados_serializavel = {str(data): valores for data, valores in agrupado_por_dia.to_dict('index').items()}
-            
-            return {
-                "resposta": resposta,
-                "dados": dados_serializavel,
-                "tipo": "detalhamento_diario"
-            }
-            
-        except Exception as e:
-            return {
-                "resposta": f"❌ Erro ao processar datas: {str(e)}\n💡 Use formato DD/MM/YYYY ou YYYY-MM-DD",
-                "tipo": "erro"
-            }
-    
     def comparar_periodos(self) -> Dict:
         """Compara semana atual com anterior"""
         hoje = pd.Timestamp.now()
@@ -904,97 +808,6 @@ class AgenteApontamentos:
             "dias_apontados": len(datas_apontadas.intersection(set(dias_uteis_periodo))),
             "dias_nao_apontados": len(dias_nao_apontados),
             "lista_dias_faltantes": [dia.strftime('%d/%m/%Y') for dia in sorted(dias_nao_apontados)]
-        }
-    
-    def listar_contratos(self) -> Dict:
-        """Lista todos os contratos com apontamentos"""
-        if self.df is None or 's_nr_contrato' not in self.df.columns:
-            return {"erro": "Dados de contratos não disponíveis", "tipo": "erro"}
-        
-        # Agrupar por contrato
-        contratos = self.df.groupby('s_nr_contrato').agg({
-            'duracao_horas': 'sum',
-            's_id_apontamento': 'count',
-            's_nm_recurso': 'nunique'
-        }).sort_values('duracao_horas', ascending=False)
-        
-        contratos.columns = ['total_horas', 'apontamentos', 'recursos']
-        
-        resposta = f"📋 **Contratos com Apontamentos** ({len(contratos)} contratos)\n\n"
-        
-        # Mostrar TODOS os contratos
-        for i, (contrato, row) in enumerate(contratos.iterrows(), 1):
-            resposta += f"{i}. **{contrato}**\n"
-            resposta += f"   ⏱️ {row['total_horas']:.2f}h | "
-            resposta += f"📝 {int(row['apontamentos'])} apontamentos | "
-            resposta += f"👥 {int(row['recursos'])} recursos\n\n"
-        
-        return {
-            "resposta": resposta,
-            "dados": contratos.to_dict('index'),
-            "tipo": "contratos"
-        }
-    
-    def recursos_por_contrato(self, contrato: str) -> Dict:
-        """Lista recursos que trabalham em um contrato específico"""
-        if self.df is None:
-            return {"erro": "Dados de contratos não disponíveis", "tipo": "erro"}
-        
-        # Normalizar contrato (remover espaços e converter para string)
-        contrato_busca = str(contrato).strip()
-        
-        # Buscar em s_nr_contrato (contratos EXTERNOS com E) OU contrato_fornecedor (contratos INTERNOS numéricos)
-        df_contrato = pd.DataFrame()
-        
-        if 's_nr_contrato' in self.df.columns:
-            df_externo = self.df[self.df['s_nr_contrato'].astype(str).str.strip() == contrato_busca]
-            df_contrato = pd.concat([df_contrato, df_externo], ignore_index=True)
-        
-        if 'contrato_fornecedor' in self.df.columns:
-            # Tentar como número float (ex: 7873.0)
-            try:
-                contrato_num = float(contrato_busca)
-                df_interno = self.df[self.df['contrato_fornecedor'] == contrato_num]
-                df_contrato = pd.concat([df_contrato, df_interno], ignore_index=True)
-            except ValueError:
-                pass  # Não é número, só busca em s_nr_contrato
-        
-        if len(df_contrato) == 0:
-            return {
-                "resposta": f"❌ Contrato '{contrato}' não encontrado nos registros.",
-                "tipo": "erro"
-            }
-        
-        # Agrupar por recurso
-        recursos = df_contrato.groupby('s_nm_recurso').agg({
-            'duracao_horas': 'sum',
-            's_id_apontamento': 'count',
-            's_ds_cargo': 'first',
-            'tecnologia': 'first',
-            'perfil': 'first'
-        }).sort_values('duracao_horas', ascending=False)
-        
-        resposta = f"📋 **Contrato: {contrato}**\n\n"
-        resposta += f"👥 **{len(recursos)} recursos trabalhando**\n\n"
-        
-        for i, (nome, row) in enumerate(recursos.head(20).iterrows(), 1):
-            resposta += f"{i}. **{nome}**\n"
-            resposta += f"   ⏱️ {row['duracao_horas']:.2f}h | "
-            resposta += f"📝 {int(row['s_id_apontamento'])} apontamentos\n"
-            if pd.notna(row.get('perfil')):
-                resposta += f"   💼 {row.get('perfil', 'N/A')}"
-            if pd.notna(row.get('tecnologia')):
-                resposta += f" | 💻 {row.get('tecnologia', 'N/A')}\n"
-            else:
-                resposta += "\n"
-        
-        if len(recursos) > 20:
-            resposta += f"\n... e mais {len(recursos) - 20} recursos\n"
-        
-        return {
-            "resposta": resposta,
-            "dados": recursos.to_dict('index'),
-            "tipo": "recursos_contrato"
         }
     
     def ajuda(self) -> Dict:

@@ -111,8 +111,12 @@ async def process_message(turn_context: TurnContext):
     Processa mensagens recebidas do Teams
     """
     try:
-        # Obter informações do usuário
+        # Obter informações do usuário e conversação
         user_name = turn_context.activity.from_property.name
+        conversation_id = turn_context.activity.conversation.id
+        
+        # Log da sessão
+        logger.info(f"🔐 Sessão: {conversation_id[:30]}... | Usuário: {user_name}")
         
         # Obter mensagem do texto ou do botão (value)
         user_message = None
@@ -163,8 +167,8 @@ async def process_message(turn_context: TurnContext):
             # Usar IA conversacional se disponível
             if conversacao_ia:
                 try:
-                    resultado = conversacao_ia.processar_mensagem(user_message, user_name)
-                    logger.info(f"✅ Processado com IA conversacional")
+                    resultado = conversacao_ia.processar_mensagem(user_message, user_name, conversation_id)
+                    logger.info(f"✅ Processado com IA conversacional (sessão isolada)")
                 except Exception as e:
                     logger.error(f"❌ Erro na IA, usando fallback: {e}")
                     resultado = agente.responder_pergunta(user_message, user_name)
@@ -329,6 +333,21 @@ async def health():
         "agente_available": agente is not None,
         "ia_conversacional_available": conversacao_ia is not None,
         "environment": config.ENVIRONMENT
+    }
+
+
+@app.get("/sessions")
+async def get_sessions():
+    """
+    Endpoint de monitoramento de sessões ativas
+    """
+    if conversacao_ia and hasattr(conversacao_ia, 'session_manager'):
+        sessions_info = conversacao_ia.session_manager.get_all_sessions_info()
+        return sessions_info
+    return {
+        "total_sessions": 0,
+        "sessions": [],
+        "message": "Session manager não disponível"
     }
 
 
