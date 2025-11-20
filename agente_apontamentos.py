@@ -12,6 +12,14 @@ import glob
 import calendar
 import os
 from pathlib import Path
+from io import BytesIO
+
+# Tentar importar azure-storage-blob
+try:
+    from azure.storage.blob import BlobServiceClient
+    AZURE_STORAGE_AVAILABLE = True
+except ImportError:
+    AZURE_STORAGE_AVAILABLE = False
 
 class AgenteApontamentos:
     """
@@ -28,23 +36,46 @@ class AgenteApontamentos:
     def carregar_dados(self) -> bool:
         """Carrega os dados mais recentes de apontamentos"""
         try:
-            # Determinar diretório base (onde está o script ou /home/site/wwwroot no Azure)
-            base_dir = Path(__file__).parent
-            resultados_dir = base_dir / "resultados"
+            # Tentar carregar do Azure Blob Storage primeiro
+            azure_conn_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
             
-            # Buscar arquivo anonimizado e decupado (COMPLETO com contratos)
-            arquivos = list(resultados_dir.glob("dados_anonimizados_decupado_*.csv"))
-            if not arquivos:
-                # Fallback: tentar dados_com_duracao
-                arquivos = list(resultados_dir.glob("dados_com_duracao_*.csv"))
+            if azure_conn_str and AZURE_STORAGE_AVAILABLE:
+                try:
+                    print("📦 Tentando carregar CSV do Azure Blob Storage...")
+                    blob_service = BlobServiceClient.from_connection_string(azure_conn_str)
+                    container_client = blob_service.get_container_client("dados")
+                    blob_client = container_client.get_blob_client("dados_anonimizados_decupado_20251118_211544.csv")
+                    
+                    # Download do blob para memória
+                    blob_data = blob_client.download_blob()
+                    csv_bytes = blob_data.readall()
+                    
+                    print(f"✅ CSV baixado do Azure Storage ({len(csv_bytes)/1024/1024:.1f}MB)")
+                    self.df = pd.read_csv(BytesIO(csv_bytes), encoding='utf-8-sig', low_memory=False)
+                    print(f"✅ Dados carregados do Azure Storage: {len(self.df)} registros")
+                except Exception as e:
+                    print(f"⚠️ Erro ao carregar do Azure Storage: {e}")
+                    print("🔄 Tentando carregar do sistema de arquivos local...")
             
-            if not arquivos:
-                print(f"⚠️ Nenhum dado encontrado em {resultados_dir}")
-                return False
-            
-            arquivo_mais_recente = str(max(arquivos))
-            print(f"📁 Carregando: {arquivo_mais_recente}")
-            self.df = pd.read_csv(arquivo_mais_recente, encoding='utf-8-sig', low_memory=False)
+            # Fallback: carregar do sistema de arquivos local
+            if self.df is None:
+                # Determinar diretório base (onde está o script ou /home/site/wwwroot no Azure)
+                base_dir = Path(__file__).parent
+                resultados_dir = base_dir / "resultados"
+                
+                # Buscar arquivo anonimizado e decupado (COMPLETO com contratos)
+                arquivos = list(resultados_dir.glob("dados_anonimizados_decupado_*.csv"))
+                if not arquivos:
+                    # Fallback: tentar dados_com_duracao
+                    arquivos = list(resultados_dir.glob("dados_com_duracao_*.csv"))
+                
+                if not arquivos:
+                    print(f"⚠️ Nenhum dado encontrado em {resultados_dir}")
+                    return False
+                
+                arquivo_mais_recente = str(max(arquivos))
+                print(f"📁 Carregando: {arquivo_mais_recente}")
+                self.df = pd.read_csv(arquivo_mais_recente, encoding='utf-8-sig', low_memory=False)
             
             # Calcular duração se não existir
             if 'duracao_horas' not in self.df.columns:
