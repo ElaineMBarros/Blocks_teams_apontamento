@@ -10,10 +10,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copiar requirements primeiro (cache de layers)
-COPY requirements.txt .
+COPY requirements_railway.txt .
 
 # Instalar dependências Python
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements_railway.txt
 
 # Copiar código da aplicação
 COPY . .
