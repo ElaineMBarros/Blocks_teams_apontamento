@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 import glob
 import calendar
+import os
+from pathlib import Path
 
 class AgenteApontamentos:
     """
@@ -26,17 +28,21 @@ class AgenteApontamentos:
     def carregar_dados(self) -> bool:
         """Carrega os dados mais recentes de apontamentos"""
         try:
+            # Determinar diretório base (onde está o script ou /home/site/wwwroot no Azure)
+            base_dir = Path(__file__).parent
+            resultados_dir = base_dir / "resultados"
+            
             # Buscar arquivo anonimizado e decupado (COMPLETO com contratos)
-            arquivos = glob.glob("resultados/dados_anonimizados_decupado_*.csv")
+            arquivos = list(resultados_dir.glob("dados_anonimizados_decupado_*.csv"))
             if not arquivos:
                 # Fallback: tentar dados_com_duracao
-                arquivos = glob.glob("resultados/dados_com_duracao_*.csv")
+                arquivos = list(resultados_dir.glob("dados_com_duracao_*.csv"))
             
             if not arquivos:
-                print("⚠️ Nenhum dado encontrado.")
+                print(f"⚠️ Nenhum dado encontrado em {resultados_dir}")
                 return False
             
-            arquivo_mais_recente = max(arquivos)
+            arquivo_mais_recente = str(max(arquivos))
             print(f"📁 Carregando: {arquivo_mais_recente}")
             self.df = pd.read_csv(arquivo_mais_recente, encoding='utf-8-sig', low_memory=False)
             
