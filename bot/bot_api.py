@@ -137,16 +137,22 @@ async def process_message(turn_context: TurnContext):
         # Mensagens especiais
         if user_message.lower() in ["oi", "olá", "ola", "hello", "hi", "start", "começar", "iniciar"]:
             # Card de boas-vindas
-            card = create_welcome_card()
-            attachment = Attachment(
-                content_type="application/vnd.microsoft.card.adaptive",
-                content=card
-            )
-            reply = Activity(
-                type=ActivityTypes.message,
-                attachments=[attachment]
-            )
-            await turn_context.send_activity(reply)
+            try:
+                card = create_welcome_card()
+                attachment = Attachment(
+                    content_type="application/vnd.microsoft.card.adaptive",
+                    content=card
+                )
+                reply = Activity(
+                    type=ActivityTypes.message,
+                    attachments=[attachment]
+                )
+                await turn_context.send_activity(reply)
+                logger.info("✅ Card de boas-vindas enviado")
+            except Exception as e:
+                logger.error(f"❌ Erro ao enviar card de boas-vindas: {e}")
+                # Fallback para mensagem simples
+                await turn_context.send_activity("Olá! Bem-vindo ao Bot de Apontamentos. Digite 'ajuda' para ver os comandos disponíveis.")
             return
         
         # Comando de ajuda
@@ -263,18 +269,27 @@ async def process_message(turn_context: TurnContext):
     except Exception as e:
         logger.error(f"❌ Erro ao processar mensagem: {e}", exc_info=True)
         
-        error_card = create_error_card(
-            f"Desculpe, ocorreu um erro ao processar sua solicitação: {str(e)}"
-        )
-        attachment = Attachment(
-            content_type="application/vnd.microsoft.card.adaptive",
-            content=error_card
-        )
-        reply = Activity(
-            type=ActivityTypes.message,
-            attachments=[attachment]
-        )
-        await turn_context.send_activity(reply)
+        try:
+            # Tentar enviar card de erro
+            error_card = create_error_card(
+                f"Desculpe, ocorreu um erro ao processar sua solicitação."
+            )
+            attachment = Attachment(
+                content_type="application/vnd.microsoft.card.adaptive",
+                content=error_card
+            )
+            reply = Activity(
+                type=ActivityTypes.message,
+                attachments=[attachment]
+            )
+            await turn_context.send_activity(reply)
+        except Exception as inner_e:
+            logger.error(f"❌ Erro ao enviar mensagem de erro: {inner_e}")
+            # Fallback final - mensagem de texto simples
+            try:
+                await turn_context.send_activity("Desculpe, ocorreu um erro ao processar sua mensagem.")
+            except:
+                pass  # Se nem isso funcionar, apenas loga
 
 
 @app.post("/api/messages")
@@ -283,11 +298,13 @@ async def messages(request: Request):
     Endpoint principal que recebe mensagens do Microsoft Teams
     """
     if not adapter:
+        logger.error("❌ Bot adapter não está configurado")
         raise HTTPException(status_code=500, detail="Bot adapter não configurado")
     
     try:
         # Obter o body da requisição
         body = await request.json()
+        logger.debug(f"📥 Recebido body: {body.get('type', 'unknown')}")
         
         # Obter header de autorização
         auth_header = request.headers.get("Authorization", "")
