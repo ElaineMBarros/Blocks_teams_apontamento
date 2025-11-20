@@ -74,10 +74,11 @@ app.add_middleware(
 try:
     bot_settings = BotFrameworkAdapterSettings(
         app_id=config.BOT_APP_ID,
-        app_password=config.BOT_APP_PASSWORD
+        app_password=config.BOT_APP_PASSWORD,
+        app_tenant_id=config.BOT_TENANT_ID  # Necessário para Single Tenant
     )
     adapter = BotFrameworkAdapter(bot_settings)
-    logger.info("✅ Bot Framework Adapter configurado")
+    logger.info("✅ Bot Framework Adapter configurado (Single Tenant)")
 except Exception as e:
     logger.error(f"❌ Erro ao configurar Bot Adapter: {e}")
     adapter = None
