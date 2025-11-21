@@ -82,16 +82,16 @@ async def lifespan(app: FastAPI):
     
     try:
         # Configuração para Single Tenant (Azure Bot Service)
+        # IMPORTANTE: app_tenant_id não é parâmetro do BotFrameworkAdapterSettings
+        # A autenticação Single Tenant é feita via app_id e app_password
         bot_settings = BotFrameworkAdapterSettings(
             app_id=config.BOT_APP_ID,
-            app_password=config.BOT_APP_PASSWORD,
-            app_tenant_id=config.BOT_TENANT_ID
+            app_password=config.BOT_APP_PASSWORD
         )
         adapter = BotFrameworkAdapter(bot_settings)
         
         logger.info(f"✅ Bot Framework Adapter criado com sucesso")
         logger.info(f"   - App ID: {config.BOT_APP_ID[:8]}...")
-        logger.info(f"   - Tenant ID: {config.BOT_TENANT_ID[:8]}...")
         logger.info(f"   - Worker PID: {os.getpid()}")
     except Exception as e:
         logger.error(f"❌ ERRO ao criar adapter: {e}", exc_info=True)
