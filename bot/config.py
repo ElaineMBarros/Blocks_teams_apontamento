@@ -57,6 +57,8 @@ class Config:
             required.append("BOT_APP_ID")
         if not cls.BOT_APP_PASSWORD:
             required.append("BOT_APP_PASSWORD")
+        if not cls.BOT_TENANT_ID:
+            required.append("BOT_TENANT_ID (necessário para Single Tenant)")
         
         if required:
             raise ValueError(f"Configurações obrigatórias faltando: {', '.join(required)}")
