@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 from botbuilder.core import BotFrameworkAdapter, BotFrameworkAdapterSettings, TurnContext
 from botbuilder.schema import Activity, ActivityTypes, Attachment
 import logging
@@ -65,11 +66,48 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Inicializar FastAPI
+# Variável global para o adapter (será inicializada no lifespan)
+adapter = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Gerencia o ciclo de vida da aplicação.
+    Inicializa o adapter quando o worker inicia.
+    """
+    global adapter
+    
+    logger.info("🚀 Worker iniciando - criando Bot Framework Adapter...")
+    logger.info(f"   - Process ID: {os.getpid()}")
+    
+    try:
+        # Configuração para Single Tenant (Azure Bot Service)
+        bot_settings = BotFrameworkAdapterSettings(
+            app_id=config.BOT_APP_ID,
+            app_password=config.BOT_APP_PASSWORD,
+            app_tenant_id=config.BOT_TENANT_ID
+        )
+        adapter = BotFrameworkAdapter(bot_settings)
+        
+        logger.info(f"✅ Bot Framework Adapter criado com sucesso")
+        logger.info(f"   - App ID: {config.BOT_APP_ID[:8]}...")
+        logger.info(f"   - Tenant ID: {config.BOT_TENANT_ID[:8]}...")
+        logger.info(f"   - Worker PID: {os.getpid()}")
+    except Exception as e:
+        logger.error(f"❌ ERRO ao criar adapter: {e}", exc_info=True)
+        adapter = None
+    
+    yield  # Aplicação roda aqui
+    
+    # Cleanup ao encerrar
+    logger.info(f"🛑 Worker {os.getpid()} encerrando")
+
+# Inicializar FastAPI com lifespan
 app = FastAPI(
     title="Agente de Apontamentos Bot API",
     description="API para bot do Microsoft Teams",
-    version="0.1.0"
+    version="0.1.0",
+    lifespan=lifespan
 )
 
 # Configurar CORS
@@ -80,32 +118,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Configurar Bot Framework Adapter
-logger.info("🔧 Iniciando configuração do Bot Framework Adapter...")
-try:
-    # Configuração para Single Tenant (Azure Bot Service)
-    # O app_tenant_id é obrigatório para bots Single Tenant
-    bot_settings = BotFrameworkAdapterSettings(
-        app_id=config.BOT_APP_ID,
-        app_password=config.BOT_APP_PASSWORD,
-        app_tenant_id=config.BOT_TENANT_ID  # Necessário para Single Tenant
-    )
-    adapter = BotFrameworkAdapter(bot_settings)
-    
-    # Log das configurações (sem expor senha)
-    logger.info(f"✅ Bot Framework Adapter configurado:")
-    logger.info(f"   - App ID: {config.BOT_APP_ID[:8]}...")
-    logger.info(f"   - Tenant ID: {config.BOT_TENANT_ID[:8]}...")
-    logger.info(f"   - Adapter object: {adapter}")
-    logger.info(f"   - Adapter is None?: {adapter is None}")
-except Exception as e:
-    logger.error(f"❌ ERRO AO CONFIGURAR BOT ADAPTER: {e}", exc_info=True)
-    logger.error(f"   - App ID fornecido: {config.BOT_APP_ID[:8] if config.BOT_APP_ID else 'VAZIO'}...")
-    logger.error(f"   - Tenant ID fornecido: {config.BOT_TENANT_ID[:8] if config.BOT_TENANT_ID else 'VAZIO'}...")
-    adapter = None
-    
-logger.info(f"🎯 VERIFICAÇÃO FINAL após try/except: adapter = {adapter}")
 
 # Inicializar Agente (será recarregado a cada hot-reload)
 def get_agente():
@@ -321,12 +333,8 @@ async def messages(request: Request):
     """
     Endpoint principal que recebe mensagens do Microsoft Teams
     """
-    logger.info(f"📨 /api/messages chamado - adapter value: {adapter}")
-    logger.info(f"📨 /api/messages chamado - adapter is None?: {adapter is None}")
-    
     if not adapter:
         logger.error("❌ Bot adapter não está configurado")
-        logger.error(f"❌ adapter = {adapter}")
         raise HTTPException(status_code=500, detail="Bot adapter não configurado")
     
     try:
