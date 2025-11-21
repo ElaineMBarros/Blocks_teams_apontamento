@@ -82,6 +82,7 @@ app.add_middleware(
 )
 
 # Configurar Bot Framework Adapter
+logger.info("🔧 Iniciando configuração do Bot Framework Adapter...")
 try:
     # Configuração para Single Tenant (Azure Bot Service)
     # O app_tenant_id é obrigatório para bots Single Tenant
@@ -96,11 +97,15 @@ try:
     logger.info(f"✅ Bot Framework Adapter configurado:")
     logger.info(f"   - App ID: {config.BOT_APP_ID[:8]}...")
     logger.info(f"   - Tenant ID: {config.BOT_TENANT_ID[:8]}...")
+    logger.info(f"   - Adapter object: {adapter}")
+    logger.info(f"   - Adapter is None?: {adapter is None}")
 except Exception as e:
     logger.error(f"❌ ERRO AO CONFIGURAR BOT ADAPTER: {e}", exc_info=True)
     logger.error(f"   - App ID fornecido: {config.BOT_APP_ID[:8] if config.BOT_APP_ID else 'VAZIO'}...")
     logger.error(f"   - Tenant ID fornecido: {config.BOT_TENANT_ID[:8] if config.BOT_TENANT_ID else 'VAZIO'}...")
     adapter = None
+    
+logger.info(f"🎯 VERIFICAÇÃO FINAL após try/except: adapter = {adapter}")
 
 # Inicializar Agente (será recarregado a cada hot-reload)
 def get_agente():
@@ -316,8 +321,12 @@ async def messages(request: Request):
     """
     Endpoint principal que recebe mensagens do Microsoft Teams
     """
+    logger.info(f"📨 /api/messages chamado - adapter value: {adapter}")
+    logger.info(f"📨 /api/messages chamado - adapter is None?: {adapter is None}")
+    
     if not adapter:
         logger.error("❌ Bot adapter não está configurado")
+        logger.error(f"❌ adapter = {adapter}")
         raise HTTPException(status_code=500, detail="Bot adapter não configurado")
     
     try:
