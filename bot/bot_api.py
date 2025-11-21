@@ -87,9 +87,7 @@ try:
     bot_settings = BotFrameworkAdapterSettings(
         app_id=config.BOT_APP_ID,
         app_password=config.BOT_APP_PASSWORD,
-        app_tenant_id=config.BOT_TENANT_ID,  # Necessário para Single Tenant
-        # Authority específica para o tenant (melhora autenticação)
-        authority=f"https://login.microsoftonline.com/{config.BOT_TENANT_ID}"
+        app_tenant_id=config.BOT_TENANT_ID  # Necessário para Single Tenant
     )
     adapter = BotFrameworkAdapter(bot_settings)
     
@@ -97,9 +95,10 @@ try:
     logger.info(f"✅ Bot Framework Adapter configurado:")
     logger.info(f"   - App ID: {config.BOT_APP_ID[:8]}...")
     logger.info(f"   - Tenant ID: {config.BOT_TENANT_ID[:8]}...")
-    logger.info(f"   - Authority: https://login.microsoftonline.com/{config.BOT_TENANT_ID}")
 except Exception as e:
-    logger.error(f"❌ Erro ao configurar Bot Adapter: {e}")
+    logger.error(f"❌ ERRO AO CONFIGURAR BOT ADAPTER: {e}", exc_info=True)
+    logger.error(f"   - App ID fornecido: {config.BOT_APP_ID[:8] if config.BOT_APP_ID else 'VAZIO'}...")
+    logger.error(f"   - Tenant ID fornecido: {config.BOT_TENANT_ID[:8] if config.BOT_TENANT_ID else 'VAZIO'}...")
     adapter = None
 
 # Inicializar Agente (será recarregado a cada hot-reload)
