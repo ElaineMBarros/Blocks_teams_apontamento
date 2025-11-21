@@ -1,6 +1,7 @@
 """
 API FastAPI para Bot do Microsoft Teams
 Endpoint principal para receber e processar mensagens
+Versão: 1.0.1 - Deploy forçado para logs diagnósticos
 """
 import sys
 import os
