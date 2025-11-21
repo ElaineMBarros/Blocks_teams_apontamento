@@ -21,8 +21,8 @@ COPY . .
 # Porta padrão
 ENV PORT=8000
 
-# Comando de inicialização
-CMD gunicorn -w 4 \
+# Comando de inicialização com SINGLE WORKER (fix para adapter global)
+CMD gunicorn -w 1 \
     -k uvicorn.workers.UvicornWorker \
     --bind=0.0.0.0:$PORT \
     --timeout 600 \
