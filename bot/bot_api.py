@@ -15,6 +15,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from botbuilder.core import BotFrameworkAdapter, BotFrameworkAdapterSettings, TurnContext
+from botbuilder.core.authentication import SimpleCredentialProvider, AuthenticationConfiguration
 from botbuilder.schema import Activity, ActivityTypes, Attachment
 import logging
 
@@ -82,11 +83,27 @@ async def lifespan(app: FastAPI):
     
     try:
         # Configuração para Single Tenant (Azure Bot Service)
-        # IMPORTANTE: app_tenant_id não é parâmetro do BotFrameworkAdapterSettings
-        # A autenticação Single Tenant é feita via app_id e app_password
-        bot_settings = BotFrameworkAdapterSettings(
+        # IMPORTANTE: Para Single Tenant, precisamos usar CredentialProvider e AuthenticationConfiguration
+        
+        # Criar credential provider
+        credential_provider = SimpleCredentialProvider(
             app_id=config.BOT_APP_ID,
             app_password=config.BOT_APP_PASSWORD
+        )
+        
+        # Criar configuração de autenticação para Single Tenant
+        # Validar apenas o Tenant ID específico
+        auth_config = AuthenticationConfiguration(
+            required_endorsements=None,
+            claims_validator=None,
+            tenant_ids=[config.BOT_TENANT_ID]  # Lista de Tenant IDs permitidos
+        )
+        
+        # Criar adapter com credenciais e configuração de autenticação
+        bot_settings = BotFrameworkAdapterSettings(
+            app_id=config.BOT_APP_ID,
+            app_password=config.BOT_APP_PASSWORD,
+            auth_configuration=auth_config
         )
         adapter = BotFrameworkAdapter(bot_settings)
         
