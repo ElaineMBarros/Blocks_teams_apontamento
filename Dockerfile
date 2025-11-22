@@ -1,4 +1,4 @@
-# Dockerfile para Azure App Service
+# Dockerfile para Railway
 FROM python:3.11-slim
 
 # Instalar dependências do sistema
@@ -18,15 +18,8 @@ RUN pip install --no-cache-dir -r requirements_railway.txt
 # Copiar código da aplicação
 COPY . .
 
-# Porta padrão
+# Porta padrão (Railway define dinamicamente via variável PORT)
 ENV PORT=8000
 
-# Comando de inicialização com SINGLE WORKER (fix para adapter global)
-CMD gunicorn -w 1 \
-    -k uvicorn.workers.UvicornWorker \
-    --bind=0.0.0.0:$PORT \
-    --timeout 600 \
-    --access-logfile - \
-    --error-logfile - \
-    --log-level info \
-    bot.bot_api:app
+# Comando de inicialização usando api_simples.py
+CMD ["python", "api_simples.py"]
