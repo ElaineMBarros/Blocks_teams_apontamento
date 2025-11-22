@@ -57,8 +57,14 @@ async def root():
         "versao": "1.0",
         "status": "online",
         "agente_disponivel": agente is not None,
+        "registros": len(agente.df) if agente and agente.df is not None else 0,
         "ia_disponivel": conversacao_ia is not None
     }
+
+@app.get("/health")
+async def health():
+    """Health check para Railway"""
+    return {"status": "ok"}
 
 @app.post("/chat", response_model=Resposta)
 async def chat(mensagem: Mensagem):
@@ -66,7 +72,11 @@ async def chat(mensagem: Mensagem):
     Endpoint principal para conversar com o bot
     """
     if not agente:
-        raise HTTPException(status_code=503, detail="Agente não disponível")
+        return Resposta(
+            resposta="⚠️ Sistema em manutenção. Os dados ainda estão sendo carregados. Por favor, tente novamente em alguns minutos.",
+            tipo="aviso",
+            dados={}
+        )
     
     try:
         # Usar IA conversacional se disponível
