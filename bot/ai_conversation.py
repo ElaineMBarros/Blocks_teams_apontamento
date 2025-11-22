@@ -252,9 +252,20 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/11/2025", data_fim="15/
 User: "quais são os apontamentos de novembro?"
 Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/11/2025", data_fim="30/11/2025", usuario=None)
 
+User: "quem apontou no período de 10/10/2025 a 10/11/2025?"
+Assistant: FERRAMENTA: consultar_periodo(data_inicio="10/10/2025", data_fim="10/11/2025", usuario=None)
+
+User: "pode indicar quem apontou no período de 10/10/2025 a 10/11/2025 - visão resumida"
+Assistant: FERRAMENTA: consultar_periodo(data_inicio="10/10/2025", data_fim="10/11/2025", usuario=None)
+
+User: "mostre quem trabalhou entre 01/09 e 30/09"
+Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2025", data_fim="30/09/2025", usuario=None)
+
 **IMPORTANTE:** 
-- Perguntas sobre "quantos apontamentos", "total de horas", "resumo do período" → usar consultar_periodo()
-- Perguntas sobre "apontamentos POR DIA", "detalhar por dia", "abrir por dia" → usar detalhar_apontamentos_por_dia()"""
+- Perguntas sobre "quem apontou", "quantos apontamentos", "total de horas", "resumo do período" → usar consultar_periodo()
+- Perguntas sobre "apontamentos POR DIA", "detalhar por dia", "abrir por dia" → usar detalhar_apontamentos_por_dia()
+- SEMPRE converter datas para o formato DD/MM/YYYY
+- Se o ano não for mencionado, assumir 2025"""
     
     def _extrair_ferramenta(self, resposta_ia: str) -> Optional[Tuple[str, Dict]]:
         """

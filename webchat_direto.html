@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot de Apontamentos - Chat Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 900px;
+            height: 700px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .chat-header {
+            background: #5a6c7d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .status-bar {
+            background: rgba(0,0,0,0.05);
+            padding: 8px 20px;
+            font-size: 0.85em;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6b7c8f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: #4a5f7a;
+        }
+
+        .message-content {
+            max-width: 70%;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-content {
+            background: #4a5f7a;
+            color: white;
+        }
+
+        .message-content p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .message-time {
+            font-size: 0.75em;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        /* Estilos para cards de dados */
+        .stats-card {
+            background: #f0f2f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #4a5f7a;
+        }
+
+        .tabela-card {
+            margin-top: 10px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dados-tabela {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dados-tabela thead {
+            background: #5a6c7d;
+            color: white;
+        }
+
+        .dados-tabela th,
+        .dados-tabela td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .dados-tabela tbody tr:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .dados-tabela tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tabela-info {
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85em;
+            color: #666;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .resposta-bot {
+            margin-bottom: 10px;
+            line-height: 2.2;
+            white-space: pre-line;
+        }
+
+        .resposta-bot br {
+            display: block;
+            content: "";
+            margin: 8px 0;
+        }
+
+        /* Estilos para emojis e labels */
+        .message-content {
+            font-size: 0.95em;
+            line-height: 2;
+        }
+
+        .message-content p {
+            margin: 0;
+            line-height: 2;
+            white-space: pre-line;
+        }
+
+        /* Estilos para Ranking */
+        .ranking-card {
+            background: #e8eaed;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .ranking-header {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ranking-item {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .ranking-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .ranking-item.rank-1 {
+            background: #d5e3f0;
+            font-weight: bold;
+            border-left: 4px solid #4a5f7a;
+        }
+
+        .ranking-item.rank-2 {
+            background: #e0e7ee;
+            border-left: 4px solid #6b7c8f;
+        }
+
+        .ranking-item.rank-3 {
+            background: #e8ecf1;
+            border-left: 4px solid #8a9ba8;
+        }
+
+        .rank-position {
+            font-size: 1.5em;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .rank-info {
+            flex: 1;
+        }
+
+        .rank-recurso {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .rank-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .rank-horas {
+            font-weight: 600;
+            color: #4a5f7a;
+        }
+
+        .rank-apontamentos {
+            color: #888;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            width: fit-content;
+            margin-bottom: 15px;
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6b7c8f;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #5a6c7d;
+        }
+
+        .send-button {
+            background: #5a6c7d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            background: #4a5f7a;
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.02);
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .quick-action-btn {
+            background: white;
+            border: 2px solid #5a6c7d;
+            color: #5a6c7d;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .quick-action-btn:hover {
+            background: #5a6c7d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: #f44336;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 Bot de Apontamentos</h1>
+            <p>Assistente Inteligente para Consulta de Horas</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-dot"></div>
+            <span id="status-text">Online e pronto para ajudar</span>
+        </div>
+
+        <div class="error-message" id="error-message"></div>
+
+        <div class="quick-actions">
+            <button class="quick-action-btn" onclick="enviarMensagemRapida('olá')">👋 Olá</button>
+            <button class="quick-action-btn" onclick="enviarMensagemRapida('qual a média de horas?')">📊 Média de Horas</button>
+            <button class="quick-action-btn" onclick="enviarMensagemRapida('mostra o ranking')">🏆 Ranking</button>
+            <button class="quick-action-btn" onclick="enviarMensagemRapida('minhas horas')">⏱️ Minhas Horas</button>
+            <button class="quick-action-btn" onclick="enviarMensagemRapida('ajuda')">❓ Ajuda</button>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+            <!-- Mensagem inicial -->
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Olá! Sou o assistente de apontamentos. Como posso ajudar você hoje?</p>
+                    <div class="message-time">Agora</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="chat-input-area">
+            <input 
+                type="text" 
+                class="chat-input" 
+                id="chat-input" 
+                placeholder="Digite sua mensagem..."
+                onkeypress="handleKeyPress(event)"
+            >
+            <button class="send-button" id="send-button" onclick="enviarMensagem()">
+                Enviar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8001';
+        let sessionId = 'web-' + Math.random().toString(36).substring(7);
+
+        function getHoraAtual() {
+            const now = new Date();
+            return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function adicionarMensagem(texto, isUser = false) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '👤' : '🤖'}</div>
+                <div class="message-content">
+                    <p>${texto}</p>
+                    <div class="message-time">${getHoraAtual()}</div>
+                </div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function adicionarMensagemHTML(html, isUser = false) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '👤' : '🤖'}</div>
+                <div class="message-content">
+                    ${html}
+                    <div class="message-time">${getHoraAtual()}</div>
+                </div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function mostrarDigitando(mostrar = true) {
+            const indicator = document.getElementById('typing-indicator');
+            indicator.className = mostrar ? 'typing-indicator show' : 'typing-indicator';
+            
+            if (mostrar) {
+                const messagesDiv = document.getElementById('chat-messages');
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
+
+        function mostrarErro(mensagem) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = mensagem;
+            errorDiv.className = 'error-message show';
+            
+            setTimeout(() => {
+                errorDiv.className = 'error-message';
+            }, 5000);
+        }
+
+        async function enviarMensagem() {
+            const input = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            const texto = input.value.trim();
+            
+            if (!texto) return;
+            
+            // Adicionar mensagem do usuário
+            adicionarMensagem(texto, true);
+            input.value = '';
+            
+            // Desabilitar input
+            input.disabled = true;
+            sendButton.disabled = true;
+            
+            // Mostrar indicador de digitação
+            mostrarDigitando(true);
+            
+            try {
+                const response = await fetch(`${API_URL}/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        texto: texto,
+                        usuario: 'Usuário Web',
+                        sessao: sessionId
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Simular delay de resposta
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                mostrarDigitando(false);
+                
+                // Adicionar mensagem com suporte a HTML
+                adicionarMensagemHTML(data.resposta, false);
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                mostrarDigitando(false);
+                mostrarErro('Erro ao conectar com o servidor. Certifique-se de que a API está rodando.');
+                adicionarMensagem('Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.', false);
+            } finally {
+                // Reabilitar input
+                input.disabled = false;
+                sendButton.disabled = false;
+                input.focus();
+            }
+        }
+
+        function enviarMensagemRapida(texto) {
+            const input = document.getElementById('chat-input');
+            input.value = texto;
+            enviarMensagem();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                enviarMensagem();
+            }
+        }
+
+        // Verificar se API está online ao carregar
+        async function verificarAPI() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                if (response.ok) {
+                    document.getElementById('status-text').textContent = 'Online e pronto para ajudar';
+                }
+            } catch (error) {
+                document.getElementById('status-text').textContent = 'Aguardando servidor...';
+                mostrarErro('Servidor não está respondendo. Inicie a API com: python api_simples.py');
+            }
+        }
+
+        // Verificar API ao carregar
+        verificarAPI();
+        
+        // Focar no input ao carregar
+        document.getElementById('chat-input').focus();
+    </script>
+</body>
+</html>

@@ -44,13 +44,6 @@ for pergunta, usuario in perguntas:
         print(f"\n⚠️ Resposta inesperada: {resultado}\n")
     
     if resultado.get('dados'):
-        print(f"📦 Dados retornados: {type(resultado['dados']).__name__}")
-
-print("=" * 80)
-print("\n✅ TESTE COMPLETO!")
-print("\n💡 O que isso prova:")
-print("   ✅ Bot está funcionando")
-print("   ✅ Agente processa os comandos")
 print("   ✅ Lógica está correta")
 print("   ✅ Cards seriam gerados corretamente")
 print("\n📱 Para VER os Adaptive Cards bonitos:")

@@ -178,6 +178,38 @@ class AgenteApontamentos:
         if usuario and usuario.lower() in ['user', 'bot', 'test user', 'usuario teste']:
             usuario = None
         
+        # Detectar consulta por período (ex: "10/10/2025 a 10/11/2025" ou "de 10/10 até 10/11")
+        import re
+        # Aceitar formatos: DD/MM/YYYY, DD/MM/YYY, DD/MM/YY, DD/MM (sem ano)
+        padrao_periodo = r'(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)\s*(?:a|até|ate|at)\s*(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)'
+        match_periodo = re.search(padrao_periodo, pergunta)
+        
+        if match_periodo:
+            data_inicio = match_periodo.group(1).replace('-', '/')
+            data_fim = match_periodo.group(2).replace('-', '/')
+            
+            # Adicionar ano padrão 2025 se não tiver ano
+            if data_inicio.count('/') == 1:  # DD/MM
+                data_inicio += '/2025'
+            elif len(data_inicio.split('/')[-1]) < 4:  # Ano incompleto
+                data_inicio = '/'.join(data_inicio.split('/')[:-1]) + '/2025'
+                
+            if data_fim.count('/') == 1:  # DD/MM
+                data_fim += '/2025'
+            elif len(data_fim.split('/')[-1]) < 4:  # Ano incompleto
+                data_fim = '/'.join(data_fim.split('/')[:-1]) + '/2025'
+            
+            # Se a pergunta menciona "quem", "quais", "recursos", "ranking", "top", "média" (sem "meu/minha"), buscar TODOS
+            buscar_todos = any(palavra in pergunta_lower for palavra in ['quem', 'quais', 'recursos', 'pessoas', 'ranking', 'top'])
+            buscar_todos = buscar_todos or ('média' in pergunta_lower and not any(p in pergunta_lower for p in ['meu', 'minha', 'mim']))
+            buscar_todos = buscar_todos or ('media' in pergunta_lower and not any(p in pergunta_lower for p in ['meu', 'minha', 'mim']))
+            
+            # Sempre buscar todos se for consulta geral de período (não específica do usuário)
+            if buscar_todos or usuario in ['Usuário Web', 'User', None]:
+                return self.consultar_periodo(data_inicio, data_fim, None)
+            else:
+                return self.consultar_periodo(data_inicio, data_fim, usuario)
+        
         # Mapeamento de perguntas para funções
         if any(palavra in pergunta_lower for palavra in ['média', 'media', 'quanto tempo']):
             # Se a pergunta menciona um nome específico, buscar por ele
@@ -217,7 +249,24 @@ class AgenteApontamentos:
             return self.listar_contratos()
         
         else:
-            return self.ajuda()
+            # Resposta padrão para perguntas fora do contexto
+            if any(palavra in pergunta_lower for palavra in ['tempo', 'clima', 'ajuda', 'help', 'prompt']):
+                return {
+                    "resposta": "🤖 Olá! Sou especializado em **apontamentos de horas**.\n\n" +
+                               "Posso ajudar você com:\n" +
+                               "• 📊 Estatísticas e médias de horas\n" +
+                               "• 📅 Consultas por período\n" +
+                               "• 🏆 Rankings de produtividade\n" +
+                               "• 📝 Detalhamento de apontamentos\n\n" +
+                               "💡 **Exemplos:**\n" +
+                               "• \"Qual a média de horas no período de 01/09/2025 a 30/09/2025?\"\n" +
+                               "• \"Quem apontou entre 10/10/2025 e 20/10/2025?\"\n" +
+                               "• \"Mostre o ranking de horas\"\n\n" +
+                               "Como posso ajudar você com apontamentos? 😊",
+                    "tipo": "info"
+                }
+            else:
+                return self.ajuda()
     
     def duracao_media_geral(self) -> Dict:
         """Retorna duração média geral"""
@@ -532,6 +581,9 @@ class AgenteApontamentos:
             media_horas_brutas = df_periodo['duracao_horas'].mean()
             quantidade = len(df_periodo)
             
+            # Calcular número de dias corridos no período
+            dias_corridos = (fim - inicio).days + 1
+            
             # Calcular horas líquidas considerando dias úteis e desconto de almoço
             total_horas_liquidas = 0
             dias_uteis_trabalhados = 0
@@ -552,7 +604,13 @@ class AgenteApontamentos:
                     dias_fim_semana_trabalhados += 1
             
             dias_trabalhados_total = dias_uteis_trabalhados + dias_fim_semana_trabalhados
-            media_horas_liquidas = total_horas_liquidas / dias_trabalhados_total if dias_trabalhados_total > 0 else 0
+            
+            # Média por dia CORRIDO do período (não por apontamento individual)
+            media_horas_brutas_dia = total_horas_brutas / dias_corridos if dias_corridos > 0 else 0
+            media_horas_liquidas_dia = total_horas_liquidas / dias_corridos if dias_corridos > 0 else 0
+            
+            # Número de recursos únicos no período
+            num_recursos = df_periodo['s_nm_recurso'].nunique() if not usuario else 1
             
             # Ranking no período
             top_usuarios = df_periodo.groupby('s_nm_recurso')['duracao_horas'].sum().nlargest(5)
@@ -560,16 +618,16 @@ class AgenteApontamentos:
             resposta = f"📅 **Período: {inicio.date()} a {fim.date()}**\n\n"
             if usuario:
                 resposta += f"👤 Usuário: **{usuario}**\n\n"
+            else:
+                resposta += f"👥 **Recursos Únicos:** {num_recursos}\n\n"
             
-            resposta += f"⏱️ **Horas Brutas:** {total_horas_brutas:.2f}h\n" + \
+            resposta += f"⏱️ **Total de Horas (soma de todos):** {total_horas_brutas:.2f}h\n" + \
                        f"🍽️ **Desconto Almoço:** {total_desconto_almoco:.1f}h\n" + \
                        f"✅ **Horas Líquidas:** {total_horas_liquidas:.2f}h\n\n" + \
-                       f"📊 **Média Bruta:** {media_horas_brutas:.2f}h/dia\n" + \
-                       f"📊 **Média Líquida:** {media_horas_liquidas:.2f}h/dia\n\n" + \
-                       f"📝 **Apontamentos:** {quantidade}\n" + \
-                       f"📅 **Dias Úteis:** {dias_uteis_trabalhados}\n" + \
-                       f"🏖️ **Fins de Semana:** {dias_fim_semana_trabalhados}\n" + \
-                       f"📆 **Total de Dias:** {dias_trabalhados_total}"
+                       f"📊 **Média Geral por Dia Corrido:** {media_horas_brutas_dia:.2f}h/dia\n" + \
+                       f"📝 **Total de Apontamentos:** {quantidade}\n" + \
+                       f"📅 **Dias com Apontamento:** {dias_trabalhados_total} (úteis: {dias_uteis_trabalhados}, FDS: {dias_fim_semana_trabalhados})\n" + \
+                       f"📆 **Dias Corridos no Período:** {dias_corridos}"
             
             if not usuario:
                 resposta += f"\n\n🏆 **Top 5 no período:**\n"
@@ -584,12 +642,14 @@ class AgenteApontamentos:
                     "total_horas_brutas": round(total_horas_brutas, 2),
                     "total_horas_liquidas": round(total_horas_liquidas, 2),
                     "desconto_almoco": round(total_desconto_almoco, 2),
-                    "media_horas_brutas": round(media_horas_brutas, 2),
-                    "media_horas_liquidas": round(media_horas_liquidas, 2),
+                    "media_horas_brutas_dia": round(media_horas_brutas_dia, 2),
+                    "media_horas_liquidas_dia": round(media_horas_liquidas_dia, 2),
+                    "media_por_apontamento": round(media_horas_brutas, 2),
                     "quantidade": quantidade,
                     "dias_uteis": dias_uteis_trabalhados,
                     "dias_fim_semana": dias_fim_semana_trabalhados,
                     "dias_trabalhados": dias_trabalhados_total,
+                    "dias_corridos": dias_corridos,
                     "top_usuarios": top_usuarios.to_dict() if not usuario else {}
                 },
                 "tipo": "periodo"

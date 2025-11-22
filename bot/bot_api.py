@@ -1,7 +1,7 @@
 """
 API FastAPI para Bot do Microsoft Teams
 Endpoint principal para receber e processar mensagens
-Versão: 1.0.2 - Single Tenant com AuthenticationConfiguration
+Versão: 1.0.3 - Single Tenant com permissões configuradas
 """
 import sys
 import os
