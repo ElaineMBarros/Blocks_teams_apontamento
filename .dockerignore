@@ -21,3 +21,5 @@ manifest
 .env
 .deployment
 startup.sh
+resultados/
+*.csv
