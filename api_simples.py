@@ -225,5 +225,7 @@ async def health():
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Iniciando API Simples na porta 8001...")
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    import os
+    port = int(os.getenv("PORT", 8001))
+    print(f"🚀 Iniciando API Simples na porta {port}...")
+    uvicorn.run(app, host="0.0.0.0", port=port)
