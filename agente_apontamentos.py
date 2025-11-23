@@ -670,15 +670,18 @@ class AgenteApontamentos:
             if usuario:
                 resposta += f"👤 Usuário: **{usuario}**\n\n"
             else:
-                resposta += f"👥 **Recursos Únicos:** {num_recursos}\n\n"
+                resposta += f"👥 **Recursos Únicos:** {num_recursos} pessoas\n\n"
             
-            resposta += f"⏱️ **Total de Horas (soma de todos):** {total_horas_brutas:.2f}h\n" + \
-                       f"🍽️ **Desconto Almoço:** {total_desconto_almoco:.1f}h\n" + \
-                       f"✅ **Horas Líquidas:** {total_horas_liquidas:.2f}h\n\n" + \
-                       f"📊 **Média Geral por Dia Corrido:** {media_horas_brutas_dia:.2f}h/dia\n" + \
+            # Calcular médias por pessoa
+            media_horas_por_pessoa = total_horas_brutas / num_recursos if num_recursos > 0 else 0
+            media_horas_pessoa_dia_util = media_horas_por_pessoa / dias_uteis_trabalhados if dias_uteis_trabalhados > 0 else 0
+            
+            resposta += f"⏱️ **Total de Horas (soma geral):** {total_horas_brutas:.2f}h\n" + \
+                       f"📊 **Média por Pessoa no Período:** {media_horas_por_pessoa:.2f}h/pessoa\n" + \
+                       f"📈 **Média por Pessoa/Dia Útil:** {media_horas_pessoa_dia_util:.2f}h/pessoa/dia\n\n" + \
                        f"📝 **Total de Apontamentos:** {quantidade}\n" + \
-                       f"📅 **Dias com Apontamento:** {dias_trabalhados_total} (úteis: {dias_uteis_trabalhados}, FDS: {dias_fim_semana_trabalhados})\n" + \
-                       f"📆 **Dias Corridos no Período:** {dias_corridos}"
+                       f"📅 **Dias com Registro:** {dias_trabalhados_total} (úteis: {dias_uteis_trabalhados}, FDS: {dias_fim_semana_trabalhados})\n" + \
+                       f"📆 **Dias Corridos:** {dias_corridos}"
             
             if not usuario:
                 resposta += f"\n\n🏆 **Top 5 no período:**\n"
