@@ -95,6 +95,8 @@ class ConversacaoIA:
             
             # Fallback para OpenAI direto
             openai_key = os.getenv("OPENAI_API_KEY")
+            print(f"🔍 DEBUG - OPENAI_API_KEY existe: {bool(openai_key)}, tamanho: {len(openai_key) if openai_key else 0}", flush=True)
+            
             if openai_key:
                 self.client = OpenAI(api_key=openai_key)
                 self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
