@@ -212,6 +212,34 @@ class AgenteApontamentos:
             "desconto_almoco": 1.0 if dia_util and horas > 0 else 0.0
         }
     
+    def extrair_datas(self, texto: str) -> List[str]:
+        """
+        Extrai datas de um texto em formato DD/MM/YYYY ou DD/MM
+        
+        Args:
+            texto: Texto para extrair datas
+        
+        Returns:
+            Lista de datas encontradas (no formato DD/MM/YYYY)
+        """
+        import re
+        datas = []
+        
+        # Padrão para DD/MM/YYYY, DD/MM/YY ou DD/MM
+        padrao = r'(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)'
+        matches = re.findall(padrao, texto)
+        
+        for match in matches:
+            data = match.replace('-', '/')
+            # Adicionar ano padrão 2025 se não tiver
+            if data.count('/') == 1:  # DD/MM
+                data += '/2025'
+            elif len(data.split('/')[-1]) < 4:  # Ano incompleto
+                data = '/'.join(data.split('/')[:-1]) + '/2025'
+            datas.append(data)
+        
+        return datas
+    
     def responder_pergunta(self, pergunta: str, usuario: Optional[str] = None) -> Dict:
         """
         Interpreta e responde perguntas sobre apontamentos
@@ -249,6 +277,10 @@ class AgenteApontamentos:
                 data_fim += '/2025'
             elif len(data_fim.split('/')[-1]) < 4:  # Ano incompleto
                 data_fim = '/'.join(data_fim.split('/')[:-1]) + '/2025'
+            
+            # Se a pergunta menciona "contrato", redirecionar para listar_contratos
+            if 'contrato' in pergunta_lower:
+                return self.listar_contratos(inicio=data_inicio, fim=data_fim)
             
             # Se a pergunta menciona "quem", "quais", "recursos", "ranking", "top", "média" (sem "meu/minha"), buscar TODOS
             buscar_todos = any(palavra in pergunta_lower for palavra in ['quem', 'quais', 'recursos', 'pessoas', 'ranking', 'top'])
