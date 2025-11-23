@@ -83,18 +83,9 @@ async def chat(mensagem: Mensagem):
         )
     
     try:
-        # Usar IA conversacional se disponível
-        if conversacao_ia:
-            print(f"🤖 Usando IA conversacional...", flush=True)
-            resultado = conversacao_ia.processar_mensagem(
-                mensagem.texto,
-                mensagem.usuario,
-                mensagem.sessao
-            )
-        else:
-            print(f"📊 Usando agente direto...", flush=True)
-            resultado = agente.responder_pergunta(mensagem.texto, mensagem.usuario)
-        
+        # TEMPORÁRIO: Usar sempre agente direto para debug
+        print(f"📊 Usando agente direto (debug mode)...", flush=True)
+        resultado = agente.responder_pergunta(mensagem.texto, mensagem.usuario)
         print(f"✅ Resultado obtido: {type(resultado)}", flush=True)
         
         # Formatar resposta com HTML se tiver dados estruturados
