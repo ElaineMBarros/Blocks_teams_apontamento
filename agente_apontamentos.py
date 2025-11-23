@@ -38,6 +38,12 @@ class AgenteApontamentos:
     def carregar_dados(self) -> bool:
         """Carrega os dados mais recentes de apontamentos"""
         try:
+            # DEBUG: Listar TODAS as variáveis de ambiente
+            print("🔍 DEBUG: Variáveis de ambiente disponíveis:", flush=True)
+            for key in sorted(os.environ.keys()):
+                if 'AZURE' in key or 'STORAGE' in key or 'PORT' in key:
+                    print(f"   {key} = {os.environ[key][:50]}..." if len(os.environ[key]) > 50 else f"   {key} = {os.environ[key]}", flush=True)
+            
             # Tentar carregar do Azure Blob Storage primeiro
             azure_conn_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
             
