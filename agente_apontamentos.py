@@ -38,32 +38,36 @@ class AgenteApontamentos:
     def carregar_dados(self) -> bool:
         """Carrega os dados mais recentes de apontamentos"""
         try:
-            # DEBUG: Listar TODAS as variáveis de ambiente
-            print("🔍 DEBUG: Variáveis de ambiente disponíveis:", flush=True)
-            for key in sorted(os.environ.keys()):
-                if 'AZURE' in key or 'STORAGE' in key or 'PORT' in key:
-                    print(f"   {key} = {os.environ[key][:50]}..." if len(os.environ[key]) > 50 else f"   {key} = {os.environ[key]}", flush=True)
-            
-            # Tentar carregar do Azure Blob Storage primeiro
+            # Tentar carregar connection string em ordem de prioridade:
+            # 1. Variável de ambiente (se Railway funcionar no futuro)
+            # 2. Arquivo config_azure.py (fallback confiável)
             azure_conn_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
             
-            # Se não encontrar, tentar versão Base64
             if not azure_conn_str:
-                azure_conn_str_b64 = os.getenv('AZURE_STORAGE_CONNECTION_STRING_B64')
-                if azure_conn_str_b64:
-                    import base64
-                    azure_conn_str = base64.b64decode(azure_conn_str_b64).decode('utf-8')
-                    print("🔓 Connection string decodificada de Base64", flush=True)
+                try:
+                    from config_azure import AZURE_STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, BLOB_FILE_NAME
+                    azure_conn_str = AZURE_STORAGE_CONNECTION_STRING
+                    container_name = BLOB_CONTAINER_NAME
+                    blob_name = BLOB_FILE_NAME
+                    print("📋 Usando configuração do arquivo config_azure.py", flush=True)
+                except ImportError:
+                    print("⚠️ Arquivo config_azure.py não encontrado", flush=True)
+                    container_name = "dados"
+                    blob_name = "dados_anonimizados_decupado_20251118_211544.csv"
+            else:
+                print("📋 Usando AZURE_STORAGE_CONNECTION_STRING de variável de ambiente", flush=True)
+                container_name = "dados"
+                blob_name = "dados_anonimizados_decupado_20251118_211544.csv"
             
             print(f"🔍 AZURE_STORAGE_CONNECTION_STRING definida: {bool(azure_conn_str)}", flush=True)
             print(f"🔍 AZURE_STORAGE_AVAILABLE: {AZURE_STORAGE_AVAILABLE}", flush=True)
             
             if azure_conn_str and AZURE_STORAGE_AVAILABLE:
                 try:
-                    print("📦 Tentando carregar CSV do Azure Blob Storage...")
+                    print(f"📦 Tentando carregar CSV do Azure Blob Storage: {container_name}/{blob_name}", flush=True)
                     blob_service = BlobServiceClient.from_connection_string(azure_conn_str)
-                    container_client = blob_service.get_container_client("dados")
-                    blob_client = container_client.get_blob_client("dados_anonimizados_decupado_20251118_211544.csv")
+                    container_client = blob_service.get_container_client(container_name)
+                    blob_client = container_client.get_blob_client(blob_name)
                     
                     # Download do blob para memória
                     blob_data = blob_client.download_blob()
