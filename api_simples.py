@@ -73,6 +73,8 @@ async def chat(mensagem: Mensagem):
     """
     Endpoint principal para conversar com o bot
     """
+    print(f"📨 Mensagem recebida: {mensagem.texto[:50]}... de {mensagem.usuario}", flush=True)
+    
     if not agente:
         return Resposta(
             resposta="⚠️ Sistema em manutenção. Os dados ainda estão sendo carregados. Por favor, tente novamente em alguns minutos.",
@@ -83,13 +85,17 @@ async def chat(mensagem: Mensagem):
     try:
         # Usar IA conversacional se disponível
         if conversacao_ia:
+            print(f"🤖 Usando IA conversacional...", flush=True)
             resultado = conversacao_ia.processar_mensagem(
                 mensagem.texto,
                 mensagem.usuario,
                 mensagem.sessao
             )
         else:
+            print(f"📊 Usando agente direto...", flush=True)
             resultado = agente.responder_pergunta(mensagem.texto, mensagem.usuario)
+        
+        print(f"✅ Resultado obtido: {type(resultado)}", flush=True)
         
         # Formatar resposta com HTML se tiver dados estruturados
         resposta_texto = resultado.get('resposta', 'Sem resposta')
@@ -106,6 +112,9 @@ async def chat(mensagem: Mensagem):
         )
     
     except Exception as e:
+        print(f"❌ ERRO no chat: {type(e).__name__}: {str(e)}", flush=True)
+        import traceback
+        print(traceback.format_exc(), flush=True)
         raise HTTPException(status_code=500, detail=f"Erro ao processar: {str(e)}")
 
 def formatar_resposta_html(texto, dados):
