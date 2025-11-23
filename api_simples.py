@@ -7,7 +7,16 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
+import os
 from pathlib import Path
+
+# Carregar variáveis de ambiente
+from dotenv import load_dotenv
+load_dotenv()  # Carrega .env se existir
+
+# DEBUG: Mostrar variáveis carregadas
+print(f"🔍 DEBUG STARTUP - OPENAI_API_KEY definida: {bool(os.getenv('OPENAI_API_KEY'))}", flush=True)
+print(f"🔍 DEBUG STARTUP - OPENAI_MODEL: {os.getenv('OPENAI_MODEL', 'não definido')}", flush=True)
 
 # Adicionar path do projeto
 sys.path.insert(0, str(Path(__file__).parent))
