@@ -297,7 +297,12 @@ class AgenteApontamentos:
             return self.comparar_periodos()
         
         elif any(palavra in pergunta_lower for palavra in ['contrato', 'contratos']):
-            return self.listar_contratos()
+            # Verificar se tem período especificado
+            datas = self.extrair_datas(pergunta)
+            if datas and len(datas) >= 2:
+                return self.listar_contratos(inicio=datas[0], fim=datas[1])
+            else:
+                return self.listar_contratos()
         
         else:
             # Resposta padrão para perguntas fora do contexto
@@ -1057,13 +1062,25 @@ class AgenteApontamentos:
             "lista_dias_faltantes": [dia.strftime('%d/%m/%Y') for dia in sorted(dias_nao_apontados)]
         }
     
-    def listar_contratos(self) -> Dict:
-        """Lista todos os contratos com apontamentos"""
+    def listar_contratos(self, inicio: str = None, fim: str = None) -> Dict:
+        """Lista todos os contratos com apontamentos, opcionalmente filtrado por período"""
         if self.df is None or 's_nr_contrato' not in self.df.columns:
             return {"erro": "Dados de contratos não disponíveis", "tipo": "erro"}
         
+        df = self.df.copy()
+        
+        # Filtrar por período se fornecido
+        if inicio and fim:
+            df['data'] = pd.to_datetime(df['d_dt_data'], errors='coerce')
+            inicio_dt = pd.to_datetime(inicio)
+            fim_dt = pd.to_datetime(fim)
+            df = df[(df['data'] >= inicio_dt) & (df['data'] <= fim_dt)]
+            periodo_texto = f" ({inicio} a {fim})"
+        else:
+            periodo_texto = ""
+        
         # Agrupar por contrato
-        contratos = self.df.groupby('s_nr_contrato').agg({
+        contratos = df.groupby('s_nr_contrato').agg({
             'duracao_horas': 'sum',
             's_id_apontamento': 'count',
             's_nm_recurso': 'nunique'
@@ -1071,7 +1088,7 @@ class AgenteApontamentos:
         
         contratos.columns = ['total_horas', 'apontamentos', 'recursos']
         
-        resposta = f"📋 **Contratos com Apontamentos** ({len(contratos)} contratos)\n\n"
+        resposta = f"📋 **Contratos com Apontamentos{periodo_texto}** ({len(contratos)} contratos)\n\n"
         
         # Mostrar TODOS os contratos
         for i, (contrato, row) in enumerate(contratos.iterrows(), 1):
