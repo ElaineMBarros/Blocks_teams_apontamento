@@ -45,8 +45,15 @@ class AgenteApontamentos:
             if CSV_URL:
                 try:
                     import requests
-                    print(f"🌐 Tentando carregar CSV via URL: {CSV_URL[:50]}...", flush=True)
-                    response = requests.get(CSV_URL, timeout=60)
+                    print(f"🌐 Tentando carregar CSV via URL: {CSV_URL[:80]}...", flush=True)
+                    
+                    # Headers para evitar bloqueio do HostGator
+                    headers = {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                        'Accept': 'text/csv,text/plain,*/*'
+                    }
+                    
+                    response = requests.get(CSV_URL, headers=headers, timeout=120)
                     response.raise_for_status()
                     
                     csv_bytes = response.content
