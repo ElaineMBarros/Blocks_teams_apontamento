@@ -60,7 +60,10 @@ class AgenteApontamentos:
                     print(f"✅ CSV baixado via HTTP ({len(csv_bytes)/1024/1024:.1f}MB)", flush=True)
                     self.df = pd.read_csv(BytesIO(csv_bytes), encoding='utf-8-sig', low_memory=False)
                     print(f"✅ Dados carregados via URL: {len(self.df)} registros", flush=True)
-                    return True
+                    print(f"🔍 Colunas disponíveis: {list(self.df.columns[:10])}...", flush=True)
+                    # NÃO retornar aqui - continuar para calcular duração
+                except Exception as e:
+                    print(f"⚠️ Erro ao carregar via URL: {e}", flush=True)
                 except Exception as e:
                     print(f"⚠️ Erro ao carregar via URL: {e}", flush=True)
             
@@ -100,7 +103,7 @@ class AgenteApontamentos:
                     print(f"✅ CSV baixado do Azure Storage ({len(csv_bytes)/1024/1024:.1f}MB)", flush=True)
                     self.df = pd.read_csv(BytesIO(csv_bytes), encoding='utf-8-sig', low_memory=False)
                     print(f"✅ Dados carregados do Azure Storage: {len(self.df)} registros", flush=True)
-                    return True
+                    # NÃO retornar aqui - continuar para calcular duração
                 except Exception as e:
                     print(f"⚠️ Erro ao carregar do Azure Storage: {e}", flush=True)
                     print("🔄 Tentando carregar do sistema de arquivos local...", flush=True)
