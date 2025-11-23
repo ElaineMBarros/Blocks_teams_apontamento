@@ -40,6 +40,15 @@ class AgenteApontamentos:
         try:
             # Tentar carregar do Azure Blob Storage primeiro
             azure_conn_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+            
+            # Se não encontrar, tentar versão Base64
+            if not azure_conn_str:
+                azure_conn_str_b64 = os.getenv('AZURE_STORAGE_CONNECTION_STRING_B64')
+                if azure_conn_str_b64:
+                    import base64
+                    azure_conn_str = base64.b64decode(azure_conn_str_b64).decode('utf-8')
+                    print("🔓 Connection string decodificada de Base64", flush=True)
+            
             print(f"🔍 AZURE_STORAGE_CONNECTION_STRING definida: {bool(azure_conn_str)}", flush=True)
             print(f"🔍 AZURE_STORAGE_AVAILABLE: {AZURE_STORAGE_AVAILABLE}", flush=True)
             
