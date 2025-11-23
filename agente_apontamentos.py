@@ -40,6 +40,8 @@ class AgenteApontamentos:
         try:
             # Tentar carregar do Azure Blob Storage primeiro
             azure_conn_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+            print(f"🔍 AZURE_STORAGE_CONNECTION_STRING definida: {bool(azure_conn_str)}", flush=True)
+            print(f"🔍 AZURE_STORAGE_AVAILABLE: {AZURE_STORAGE_AVAILABLE}", flush=True)
             
             if azure_conn_str and AZURE_STORAGE_AVAILABLE:
                 try:

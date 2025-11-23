@@ -14,10 +14,12 @@ sys.path.insert(0, str(Path(__file__).parent))
 # Importar o agente
 try:
     from agente_apontamentos import AgenteApontamentos
+    print("🔧 Inicializando agente...", flush=True)
     agente = AgenteApontamentos()
-    print(f"✅ Agente carregado com {len(agente.df) if agente.df is not None else 0} registros")
+    registros = len(agente.df) if agente.df is not None else 0
+    print(f"✅ Agente carregado com {registros} registros", flush=True)
 except Exception as e:
-    print(f"⚠️ Erro ao carregar agente: {e}")
+    print(f"⚠️ Erro ao carregar agente: {e}", flush=True)
     agente = None
 
 # Importar IA conversacional
