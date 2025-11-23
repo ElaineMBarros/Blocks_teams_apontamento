@@ -38,9 +38,26 @@ class AgenteApontamentos:
     def carregar_dados(self) -> bool:
         """Carrega os dados mais recentes de apontamentos"""
         try:
-            # Tentar carregar connection string em ordem de prioridade:
-            # 1. Variável de ambiente (se Railway funcionar no futuro)
-            # 2. Arquivo config_azure.py (fallback confiável)
+            # URL do CSV no HostGator (fallback confiável)
+            CSV_URL = os.getenv('CSV_URL', 'https://multibeat.com.br/apontamentos/dados/dados_anonimizados_decupado_20251118_211544.csv')
+            
+            # Método 1: Tentar carregar via URL HTTP (HostGator ou Azure público)
+            if CSV_URL:
+                try:
+                    import requests
+                    print(f"🌐 Tentando carregar CSV via URL: {CSV_URL[:50]}...", flush=True)
+                    response = requests.get(CSV_URL, timeout=60)
+                    response.raise_for_status()
+                    
+                    csv_bytes = response.content
+                    print(f"✅ CSV baixado via HTTP ({len(csv_bytes)/1024/1024:.1f}MB)", flush=True)
+                    self.df = pd.read_csv(BytesIO(csv_bytes), encoding='utf-8-sig', low_memory=False)
+                    print(f"✅ Dados carregados via URL: {len(self.df)} registros", flush=True)
+                    return True
+                except Exception as e:
+                    print(f"⚠️ Erro ao carregar via URL: {e}", flush=True)
+            
+            # Método 2: Tentar Azure Blob Storage com connection string
             azure_conn_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
             
             if not azure_conn_str:
@@ -73,14 +90,15 @@ class AgenteApontamentos:
                     blob_data = blob_client.download_blob()
                     csv_bytes = blob_data.readall()
                     
-                    print(f"✅ CSV baixado do Azure Storage ({len(csv_bytes)/1024/1024:.1f}MB)")
+                    print(f"✅ CSV baixado do Azure Storage ({len(csv_bytes)/1024/1024:.1f}MB)", flush=True)
                     self.df = pd.read_csv(BytesIO(csv_bytes), encoding='utf-8-sig', low_memory=False)
-                    print(f"✅ Dados carregados do Azure Storage: {len(self.df)} registros")
+                    print(f"✅ Dados carregados do Azure Storage: {len(self.df)} registros", flush=True)
+                    return True
                 except Exception as e:
-                    print(f"⚠️ Erro ao carregar do Azure Storage: {e}")
-                    print("🔄 Tentando carregar do sistema de arquivos local...")
+                    print(f"⚠️ Erro ao carregar do Azure Storage: {e}", flush=True)
+                    print("🔄 Tentando carregar do sistema de arquivos local...", flush=True)
             
-            # Fallback: carregar do sistema de arquivos local
+            # Método 3: Fallback - carregar do sistema de arquivos local
             if self.df is None:
                 # Determinar diretório base (onde está o script ou /home/site/wwwroot no Azure)
                 base_dir = Path(__file__).parent

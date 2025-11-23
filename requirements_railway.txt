@@ -8,6 +8,9 @@ pandas==2.3.3
 # Azure Storage
 azure-storage-blob==12.19.0
 
+# HTTP Requests
+requests==2.31.0
+
 # Utilities
 python-dotenv==1.1.1
 
