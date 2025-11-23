@@ -27,9 +27,9 @@ except Exception as e:
 try:
     from bot.ai_conversation import ConversacaoIA
     conversacao_ia = ConversacaoIA(agente) if agente else None
-    print("✅ IA Conversacional carregada")
+    print("✅ IA Conversacional carregada", flush=True)
 except Exception as e:
-    print(f"⚠️ IA não disponível: {e}")
+    print(f"⚠️ IA não disponível: {e}", flush=True)
     conversacao_ia = None
 
 app = FastAPI(title="Bot de Apontamentos - API Simples")

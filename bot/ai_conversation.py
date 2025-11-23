@@ -63,10 +63,10 @@ class ConversacaoIA:
         # Inicializar SessionManager
         if SESSION_MANAGER_AVAILABLE:
             self.session_manager = SessionManager()
-            print("✅ SessionManager inicializado - sessões isoladas ativas")
+            print("✅ SessionManager inicializado - sessões isoladas ativas", flush=True)
         else:
             self.session_manager = None
-            print("⚠️ Usando histórico global (sem isolamento de sessões)")
+            print("⚠️ Usando histórico global (sem isolamento de sessões)", flush=True)
         
         # Configurar cliente OpenAI
         self._configurar_cliente()
@@ -90,7 +90,7 @@ class ConversacaoIA:
                     azure_endpoint=azure_endpoint
                 )
                 self.model = azure_deployment
-                print("✅ Azure OpenAI configurado")
+                print(f"✅ Azure OpenAI configurado - modelo: {azure_deployment}", flush=True)
                 return
             
             # Fallback para OpenAI direto
@@ -98,13 +98,13 @@ class ConversacaoIA:
             if openai_key:
                 self.client = OpenAI(api_key=openai_key)
                 self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-                print("✅ OpenAI configurado")
+                print(f"✅ OpenAI configurado - modelo: {self.model}", flush=True)
                 return
             
-            print("⚠️ Nenhuma chave de API configurada - modo fallback")
+            print("⚠️ Nenhuma chave de API configurada - modo fallback", flush=True)
             
         except Exception as e:
-            print(f"⚠️ Erro ao configurar OpenAI: {e}")
+            print(f"⚠️ Erro ao configurar OpenAI: {e}", flush=True)
     
     def _obter_contexto_dados(self) -> str:
         """Prepara contexto sobre os dados disponíveis"""
