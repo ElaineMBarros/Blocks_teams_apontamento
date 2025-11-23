@@ -18,8 +18,10 @@ from io import BytesIO
 try:
     from azure.storage.blob import BlobServiceClient
     AZURE_STORAGE_AVAILABLE = True
-except ImportError:
+    print("✅ Azure Storage Blob SDK disponível")
+except ImportError as e:
     AZURE_STORAGE_AVAILABLE = False
+    print(f"⚠️ Azure Storage Blob SDK não disponível: {e}")
 
 class AgenteApontamentos:
     """
