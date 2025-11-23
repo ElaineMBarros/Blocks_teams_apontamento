@@ -2,6 +2,7 @@
 API REST Simples para o Bot de Apontamentos
 SEM dependência do Azure Bot Service
 """
+from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -50,7 +51,7 @@ class Mensagem(BaseModel):
 class Resposta(BaseModel):
     resposta: str
     tipo: str
-    dados: dict = {}
+    dados: Any = {}
 
 @app.get("/")
 async def root():

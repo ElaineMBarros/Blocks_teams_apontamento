@@ -525,8 +525,19 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2025", data_fim="30/
     
     def _fallback_processar(self, mensagem: str, usuario: str) -> Dict:
         """Fallback quando IA não está disponível"""
-        # Usar lógica existente do agente
-        return self.agente.responder_pergunta(mensagem, usuario)
+        try:
+            # Usar lógica existente do agente
+            print(f"🔄 Fallback: usando agente direto para '{mensagem[:50]}'", flush=True)
+            return self.agente.responder_pergunta(mensagem, usuario)
+        except Exception as e:
+            print(f"❌ ERRO no fallback: {type(e).__name__}: {str(e)}", flush=True)
+            import traceback
+            print(traceback.format_exc(), flush=True)
+            return {
+                "resposta": f"⚠️ Desculpe, ocorreu um erro ao processar sua mensagem: {str(e)}",
+                "tipo": "erro",
+                "dados": {}
+            }
     
     def limpar_historico(self, usuario: str):
         """Limpa histórico de conversação de um usuário"""
