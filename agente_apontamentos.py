@@ -278,6 +278,27 @@ class AgenteApontamentos:
             elif len(data_fim.split('/')[-1]) < 4:  # Ano incompleto
                 data_fim = '/'.join(data_fim.split('/')[:-1]) + '/2025'
             
+            # Se a pergunta menciona "deveria fazer" ou "horas esperadas", chamar análise detalhada
+            if any(palavra in pergunta_lower for palavra in ['deveria fazer', 'deveria ter', 'esperadas', 'quantas horas o colaborador']):
+                # Extrair nome do colaborador da pergunta
+                if usuario and usuario not in ['Usuário Web', 'User']:
+                    return self.horas_esperadas_colaborador(usuario, data_inicio, data_fim)
+                else:
+                    # Tentar extrair nome da pergunta
+                    # Padrão: "colaborador NOME deveria" ou "NOME deveria"
+                    match_nome = re.search(r'colaborador\s+(\w+)', pergunta_lower)
+                    if not match_nome:
+                        match_nome = re.search(r'(\w+)\s+deveria', pergunta_lower)
+                    
+                    if match_nome:
+                        nome_colaborador = match_nome.group(1)
+                        return self.horas_esperadas_colaborador(nome_colaborador, data_inicio, data_fim)
+                    else:
+                        return {
+                            "resposta": "❌ Por favor, especifique o nome do colaborador. Exemplo: 'Quantas horas o colaborador João deveria fazer de 01/09 a 30/09?'",
+                            "tipo": "erro"
+                        }
+            
             # Se a pergunta menciona "contrato", redirecionar para listar_contratos
             if 'contrato' in pergunta_lower:
                 return self.listar_contratos(inicio=data_inicio, fim=data_fim)
@@ -335,6 +356,38 @@ class AgenteApontamentos:
                 return self.listar_contratos(inicio=datas[0], fim=datas[1])
             else:
                 return self.listar_contratos()
+        
+        elif any(palavra in pergunta_lower for palavra in ['esqueceu', 'esqueci', 'saída', 'saida', 'bateu a saída', 'bateu saida', 'faltou', 'horário de saída']):
+            # Detectar verificação de saídas esquecidas
+            # Extrair nome do colaborador e período (se houver)
+            datas = self.extrair_datas(pergunta)
+            
+            # Determinar usuário
+            if usuario and usuario not in ['Usuário Web', 'User']:
+                nome_usuario = usuario
+            else:
+                # Tentar extrair nome da pergunta
+                import re
+                match_nome = re.search(r'(?:recurso|colaborador|usuário|usuario)\s+(\w+)', pergunta_lower)
+                if not match_nome:
+                    # Procurar por RECURSO_ seguido de números
+                    match_nome = re.search(r'(RECURSO_\d+)', pergunta, re.IGNORECASE)
+                
+                if match_nome:
+                    nome_usuario = match_nome.group(1)
+                else:
+                    return {
+                        "resposta": "❌ Por favor, especifique o nome do colaborador. Exemplo: 'O recurso RECURSO_123 esqueceu de informar horário de saída?'",
+                        "tipo": "erro"
+                    }
+            
+            # Chamar função de verificação
+            if len(datas) >= 2:
+                return self.verificar_saidas_esquecidas(nome_usuario, datas[0], datas[1])
+            elif len(datas) == 1:
+                return self.verificar_saidas_esquecidas(nome_usuario, data_inicio=datas[0])
+            else:
+                return self.verificar_saidas_esquecidas(nome_usuario)
         
         else:
             # Resposta padrão para perguntas fora do contexto
@@ -1197,6 +1250,273 @@ class AgenteApontamentos:
             "tipo": "recursos_contrato"
         }
     
+    def horas_esperadas_colaborador(self, usuario: str, data_inicio: str, data_fim: str) -> Dict:
+        """
+        Calcula quantas horas o colaborador deveria fazer no período (dias úteis × jornada)
+        e lista todos os apontamentos detalhados com contrato, horários e indicação de almoço
+        
+        Args:
+            usuario: Nome do colaborador
+            data_inicio: Data inicial (formato: DD/MM/YYYY ou YYYY-MM-DD)
+            data_fim: Data final (formato: DD/MM/YYYY ou YYYY-MM-DD)
+        
+        Returns:
+            Dicionário com horas esperadas vs realizadas e lista detalhada de apontamentos
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        try:
+            # Converter strings para datetime
+            inicio = pd.to_datetime(data_inicio, dayfirst=True)
+            fim = pd.to_datetime(data_fim, dayfirst=True)
+            
+            # Filtrar apontamentos do usuário no período
+            df_usuario = self.df[
+                (self.df['s_nm_recurso'].str.contains(usuario, case=False, na=False)) &
+                (self.df['data'] >= inicio) & 
+                (self.df['data'] <= fim)
+            ]
+            
+            if len(df_usuario) == 0:
+                return {
+                    "resposta": f"❌ Nenhum apontamento encontrado para '{usuario}' entre {inicio.date()} e {fim.date()}",
+                    "tipo": "erro"
+                }
+            
+            # Calcular dias úteis no período
+            dias_uteis = 0
+            data_atual = inicio
+            while data_atual <= fim:
+                if self.eh_dia_util(data_atual):
+                    dias_uteis += 1
+                data_atual += timedelta(days=1)
+            
+            # Jornada padrão: 8h/dia (pode ajustar conforme necessário)
+            JORNADA_DIARIA = 8.0
+            horas_esperadas = dias_uteis * JORNADA_DIARIA
+            
+            # Calcular horas realizadas (brutas)
+            horas_realizadas = df_usuario['duracao_horas'].sum()
+            
+            # Agrupar apontamentos por dia
+            apontamentos_detalhados = []
+            for data, grupo in df_usuario.groupby(df_usuario['data'].dt.date):
+                for _, apontamento in grupo.iterrows():
+                    # Extrair informações
+                    contrato = apontamento.get('s_nr_contrato', 'N/A')
+                    operacao = apontamento.get('s_ds_operacao', 'N/A')
+                    hora_inicio = apontamento.get('f_hr_hora_inicio', 'N/A')
+                    hora_fim = apontamento.get('f_hr_hora_fim', 'N/A')
+                    duracao = apontamento.get('duracao_horas', 0)
+                    
+                    # Determinar se teve almoço (se trabalhou mais de 6h no dia e é dia útil)
+                    data_dt = pd.Timestamp(data)
+                    horas_dia = grupo['duracao_horas'].sum()
+                    tem_almoco = self.eh_dia_util(data_dt) and duracao > 0
+                    
+                    apontamentos_detalhados.append({
+                        'data': str(data),
+                        'contrato': contrato,
+                        'operacao': operacao,
+                        'hora_inicio': hora_inicio,
+                        'hora_fim': hora_fim,
+                        'duracao': duracao,
+                        'tem_almoco': tem_almoco
+                    })
+            
+            # Ordenar por data
+            apontamentos_detalhados.sort(key=lambda x: x['data'])
+            
+            # Montar resposta
+            nome_completo = df_usuario['s_nm_recurso'].iloc[0]
+            diferenca = horas_realizadas - horas_esperadas
+            percentual = (horas_realizadas / horas_esperadas * 100) if horas_esperadas > 0 else 0
+            
+            resposta = f"👤 **Colaborador:** {nome_completo}\n"
+            resposta += f"📅 **Período:** {inicio.date()} a {fim.date()}\n\n"
+            resposta += f"📊 **Análise de Horas:**\n"
+            resposta += f"• **Dias Úteis no Período:** {dias_uteis} dias\n"
+            resposta += f"• **Horas Esperadas (8h/dia):** {horas_esperadas:.2f}h\n"
+            resposta += f"• **Horas Realizadas:** {horas_realizadas:.2f}h\n"
+            
+            if diferenca >= 0:
+                resposta += f"• **Diferença:** +{diferenca:.2f}h ({percentual:.1f}%) ✅\n\n"
+            else:
+                resposta += f"• **Diferença:** {diferenca:.2f}h ({percentual:.1f}%) ⚠️\n\n"
+            
+            resposta += f"📝 **Apontamentos Detalhados ({len(apontamentos_detalhados)} registros):**\n\n"
+            
+            for apt in apontamentos_detalhados:
+                almoco_icon = "🍽️" if apt['tem_almoco'] else "⏱️"
+                resposta += f"{almoco_icon} **{apt['data']}** - {apt['hora_inicio']} às {apt['hora_fim']} ({apt['duracao']:.2f}h)\n"
+                resposta += f"   📋 Contrato: {apt['contrato']}\n"
+                resposta += f"   💼 Operação: {apt['operacao']}\n"
+                if apt['tem_almoco']:
+                    resposta += f"   🍽️ Almoço: Sim (1h descontada)\n"
+                resposta += "\n"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "colaborador": nome_completo,
+                    "periodo": {
+                        "inicio": str(inicio.date()),
+                        "fim": str(fim.date()),
+                        "dias_uteis": dias_uteis
+                    },
+                    "horas": {
+                        "esperadas": round(horas_esperadas, 2),
+                        "realizadas": round(horas_realizadas, 2),
+                        "diferenca": round(diferenca, 2),
+                        "percentual": round(percentual, 1)
+                    },
+                    "apontamentos": apontamentos_detalhados
+                },
+                "tipo": "analise_colaborador"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao processar: {str(e)}",
+                "tipo": "erro"
+            }
+
+    def verificar_saidas_esquecidas(self, usuario: str, data_inicio: Optional[str] = None, data_fim: Optional[str] = None) -> Dict:
+        """
+        Verifica se o recurso esqueceu de informar horário de saída em algum dia
+        (tem hora de entrada mas não tem hora de saída ou hora de saída inválida)
+        
+        Args:
+            usuario: Nome do colaborador
+            data_inicio: Data inicial opcional (formato: DD/MM/YYYY)
+            data_fim: Data final opcional (formato: DD/MM/YYYY)
+        
+        Returns:
+            Dicionário com lista de apontamentos com saída esquecida
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        try:
+            # Filtrar por usuário
+            df_usuario = self.df[self.df['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
+            
+            if len(df_usuario) == 0:
+                return {
+                    "resposta": f"❌ Usuário '{usuario}' não encontrado nos registros.",
+                    "tipo": "erro"
+                }
+            
+            # Filtrar por período se especificado
+            if data_inicio and data_fim:
+                inicio = pd.to_datetime(data_inicio, dayfirst=True)
+                fim = pd.to_datetime(data_fim, dayfirst=True)
+                df_usuario = df_usuario[(df_usuario['data'] >= inicio) & (df_usuario['data'] <= fim)]
+                periodo_msg = f" entre {inicio.date()} e {fim.date()}"
+            elif data_inicio:
+                inicio = pd.to_datetime(data_inicio, dayfirst=True)
+                df_usuario = df_usuario[df_usuario['data'] >= inicio]
+                periodo_msg = f" a partir de {inicio.date()}"
+            elif data_fim:
+                fim = pd.to_datetime(data_fim, dayfirst=True)
+                df_usuario = df_usuario[df_usuario['data'] <= fim]
+                periodo_msg = f" até {fim.date()}"
+            else:
+                periodo_msg = ""
+            
+            # Detectar apontamentos com problemas na saída
+            problemas = []
+            
+            for _, apontamento in df_usuario.iterrows():
+                hora_inicio = apontamento.get('f_hr_hora_inicio', None)
+                hora_fim = apontamento.get('f_hr_hora_fim', None)
+                data = apontamento.get('data', None)
+                contrato = apontamento.get('s_nr_contrato', 'N/A')
+                operacao = apontamento.get('s_ds_operacao', 'N/A')
+                
+                # Verificar se tem entrada mas não tem saída ou saída inválida
+                tem_problema = False
+                tipo_problema = ""
+                
+                if pd.notna(hora_inicio) and hora_inicio not in [None, '', 'N/A']:
+                    # Tem hora de entrada
+                    if pd.isna(hora_fim) or hora_fim in [None, '', 'N/A', 0]:
+                        tem_problema = True
+                        tipo_problema = "❌ Sem horário de saída"
+                    elif hora_fim == hora_inicio:
+                        tem_problema = True
+                        tipo_problema = "⚠️ Horário de entrada = saída"
+                    elif hora_fim < hora_inicio:
+                        tem_problema = True
+                        tipo_problema = "⚠️ Horário de saída antes da entrada"
+                
+                if tem_problema:
+                    problemas.append({
+                        'data': str(data.date()) if pd.notna(data) else 'N/A',
+                        'tipo_problema': tipo_problema,
+                        'hora_inicio': hora_inicio,
+                        'hora_fim': hora_fim if pd.notna(hora_fim) else 'NÃO INFORMADA',
+                        'contrato': contrato,
+                        'operacao': operacao
+                    })
+            
+            # Ordenar por data
+            problemas.sort(key=lambda x: x['data'])
+            
+            # Montar resposta
+            nome_completo = df_usuario['s_nm_recurso'].iloc[0]
+            
+            if len(problemas) == 0:
+                resposta = f"✅ **Colaborador:** {nome_completo}\n"
+                resposta += f"📅 **Período:** {periodo_msg if periodo_msg else 'Todos os registros'}\n\n"
+                resposta += f"🎉 **Nenhum problema encontrado!**\n"
+                resposta += f"Todos os {len(df_usuario)} apontamentos têm horários de entrada e saída válidos."
+                
+                return {
+                    "resposta": resposta,
+                    "dados": {
+                        "colaborador": nome_completo,
+                        "problemas": 0,
+                        "total_apontamentos": len(df_usuario)
+                    },
+                    "tipo": "verificacao_saidas"
+                }
+            
+            resposta = f"⚠️ **Colaborador:** {nome_completo}\n"
+            resposta += f"📅 **Período:** {periodo_msg if periodo_msg else 'Todos os registros'}\n\n"
+            resposta += f"❌ **Encontrados {len(problemas)} problema(s) de horário:**\n\n"
+            
+            for problema in problemas:
+                resposta += f"{problema['tipo_problema']}\n"
+                resposta += f"📅 **Data:** {problema['data']}\n"
+                resposta += f"🕐 **Entrada:** {problema['hora_inicio']}\n"
+                resposta += f"🕐 **Saída:** {problema['hora_fim']}\n"
+                resposta += f"📋 **Contrato:** {problema['contrato']}\n"
+                resposta += f"💼 **Operação:** {problema['operacao']}\n"
+                resposta += "\n"
+            
+            resposta += f"📊 **Total analisado:** {len(df_usuario)} apontamentos\n"
+            resposta += f"⚠️ **Com problemas:** {len(problemas)} ({len(problemas)/len(df_usuario)*100:.1f}%)"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "colaborador": nome_completo,
+                    "problemas": len(problemas),
+                    "total_apontamentos": len(df_usuario),
+                    "percentual_problemas": round(len(problemas)/len(df_usuario)*100, 1),
+                    "detalhes": problemas
+                },
+                "tipo": "verificacao_saidas"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao processar: {str(e)}",
+                "tipo": "erro"
+            }
+
     def ajuda(self) -> Dict:
         """Retorna mensagem de ajuda"""
         return {
