@@ -350,12 +350,36 @@ class AgenteApontamentos:
             return self.comparar_periodos()
         
         elif any(palavra in pergunta_lower for palavra in ['contrato', 'contratos']):
-            # Verificar se tem período especificado
-            datas = self.extrair_datas(pergunta)
-            if datas and len(datas) >= 2:
-                return self.listar_contratos(inicio=datas[0], fim=datas[1])
+            # Verificar se a pergunta é sobre contratos de um recurso específico
+            import re
+            if any(palavra in pergunta_lower for palavra in ['recurso', 'colaborador', 'apontou em', 'trabalhou em', 'quais contratos o', 'quais contratos a']):
+                # Extrair nome do recurso
+                match_nome = re.search(r'(?:recurso|colaborador)\s+(\w+)', pergunta_lower)
+                if not match_nome:
+                    match_nome = re.search(r'(RECURSO_\d+)', pergunta, re.IGNORECASE)
+                
+                if match_nome:
+                    nome_recurso = match_nome.group(1)
+                    datas = self.extrair_datas(pergunta)
+                    
+                    if len(datas) >= 2:
+                        return self.contratos_por_recurso(nome_recurso, datas[0], datas[1])
+                    elif len(datas) == 1:
+                        return self.contratos_por_recurso(nome_recurso, data_inicio=datas[0])
+                    else:
+                        return self.contratos_por_recurso(nome_recurso)
+                else:
+                    return {
+                        "resposta": "❌ Por favor, especifique o nome do recurso. Exemplo: 'Em quais contratos o recurso RECURSO_123 apontou?'",
+                        "tipo": "erro"
+                    }
             else:
-                return self.listar_contratos()
+                # Listagem geral de contratos
+                datas = self.extrair_datas(pergunta)
+                if datas and len(datas) >= 2:
+                    return self.listar_contratos(inicio=datas[0], fim=datas[1])
+                else:
+                    return self.listar_contratos()
         
         elif any(palavra in pergunta_lower for palavra in ['esqueceu', 'esqueci', 'saída', 'saida', 'bateu a saída', 'bateu saida', 'faltou', 'horário de saída']):
             # Detectar verificação de saídas esquecidas
@@ -1188,6 +1212,80 @@ class AgenteApontamentos:
             "tipo": "contratos"
         }
     
+    def contratos_por_recurso(self, recurso: str, data_inicio: Optional[str] = None, data_fim: Optional[str] = None) -> Dict:
+        """Lista contratos em que um recurso específico apontou horas"""
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        try:
+            # Filtrar por recurso
+            df_recurso = self.df[self.df['s_nm_recurso'].str.contains(recurso, case=False, na=False)]
+            
+            if len(df_recurso) == 0:
+                return {
+                    "resposta": f"❌ Recurso '{recurso}' não encontrado nos registros.",
+                    "tipo": "erro"
+                }
+            
+            # Filtrar por período se especificado
+            if data_inicio and data_fim:
+                inicio = pd.to_datetime(data_inicio, dayfirst=True)
+                fim = pd.to_datetime(data_fim, dayfirst=True)
+                df_recurso = df_recurso[(df_recurso['data'] >= inicio) & (df_recurso['data'] <= fim)]
+                periodo_msg = f" entre {inicio.date()} e {fim.date()}"
+            elif data_inicio:
+                inicio = pd.to_datetime(data_inicio, dayfirst=True)
+                df_recurso = df_recurso[df_recurso['data'] >= inicio]
+                periodo_msg = f" a partir de {inicio.date()}"
+            elif data_fim:
+                fim = pd.to_datetime(data_fim, dayfirst=True)
+                df_recurso = df_recurso[df_recurso['data'] <= fim]
+                periodo_msg = f" até {fim.date()}"
+            else:
+                periodo_msg = ""
+            
+            if len(df_recurso) == 0:
+                return {
+                    "resposta": f"❌ Nenhum apontamento encontrado para '{recurso}'{periodo_msg}",
+                    "tipo": "erro"
+                }
+            
+            # Agrupar por contrato
+            contratos = df_recurso.groupby('s_nr_contrato').agg({
+                'duracao_horas': 'sum',
+                's_id_apontamento': 'count',
+                's_ds_operacao': lambda x: ', '.join(x.unique()[:3])  # Top 3 operações
+            }).sort_values('duracao_horas', ascending=False)
+            
+            nome_completo = df_recurso['s_nm_recurso'].iloc[0]
+            
+            resposta = f"👤 **Recurso:** {nome_completo}\n"
+            resposta += f"📅 **Período:** {periodo_msg if periodo_msg else 'Todos os registros'}\n\n"
+            resposta += f"📋 **Contratos com Apontamentos ({len(contratos)} contrato(s)):**\n\n"
+            
+            for i, (contrato, row) in enumerate(contratos.iterrows(), 1):
+                resposta += f"{i}. **{contrato}**\n"
+                resposta += f"   ⏱️ Total: {row['duracao_horas']:.2f}h\n"
+                resposta += f"   📝 Apontamentos: {int(row['s_id_apontamento'])}\n"
+                resposta += f"   💼 Operações: {row['s_ds_operacao']}\n\n"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "recurso": nome_completo,
+                    "periodo": periodo_msg,
+                    "total_contratos": len(contratos),
+                    "contratos": contratos.to_dict('index')
+                },
+                "tipo": "contratos_recurso"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao processar: {str(e)}",
+                "tipo": "erro"
+            }
+
     def recursos_por_contrato(self, contrato: str) -> Dict:
         """Lista recursos que trabalham em um contrato específico"""
         if self.df is None:
