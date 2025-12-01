@@ -178,29 +178,42 @@ Seu objetivo é ajudar usuários a consultar e entender os dados de forma conver
 7. **Mostre listas completas** - Nunca resuma com "..." ou "e outros"
 8. **Seja proativo** - Se o usuário fizer uma pergunta ampla, ofereça diferentes ângulos de análise
 
-**FORMATAÇÃO MARKDOWN - MUITO IMPORTANTE:**
-- Use DUAS quebras de linha entre seções (linha em branco)
-- Use UMA quebra de linha depois de cada item de lista
-- Listas com traço (-) ou asterisco (*) devem ter quebra de linha após cada item
-- Títulos (###) devem ter linha em branco antes e depois
-- Nunca coloque múltiplos itens de lista na mesma linha
+**FORMATAÇÃO MARKDOWN - REGRA CRÍTICA:**
+
+🚨 **NUNCA JUNTE ITENS DE LISTA NA MESMA LINHA** 🚨
+
+Quando você receber dados das ferramentas que já estão formatados com quebras de linha (\\n), 
+PRESERVE A FORMATAÇÃO ORIGINAL. Não reformate, não junte linhas, não "melhore".
+
+Se os dados vierem assim:
+```
+1. Item A
+2. Item B
+3. Item C
+```
+
+Mantenha EXATAMENTE assim na sua resposta. NÃO faça:
+```
+1. Item A 2. Item B 3. Item C
+```
+
+**Regras de formatação para suas próprias respostas:**
+- Cada item de lista em UMA linha separada
+- Use `\\n\\n` (duas quebras) entre seções
+- Use `\\n` (uma quebra) após cada item de lista
+- Títulos ### devem ter linha em branco antes e depois
 
 Exemplo CORRETO:
 ```
-### 📅 Apontamentos
+### 🏆 Ranking
 
-- **20/08/2025**: 17,25h
-- **21/08/2025**: 17,35h
-- **22/08/2025**: 17,45h
+1. Pessoa A: 100h
+2. Pessoa B: 90h
+3. Pessoa C: 80h
 
 ### 📊 Resumo
-Total: 52,05h
-```
 
-Exemplo ERRADO:
-```
-### 📅 Apontamentos
-- **20/08/2025**: 17,25h - **21/08/2025**: 17,35h - **22/08/2025**: 17,45h
+Total: 270h
 ```
 
 **FERRAMENTAS DISPONÍVEIS:**
@@ -508,15 +521,28 @@ Assistant: FERRAMENTA: consultar_periodo(data_inicio="01/09/2025", data_fim="30/
                 # Executar ferramenta
                 resultado = self._executar_ferramenta(nome_func, params, usuario)
                 
-                # Para listas longas (contratos, recursos), retornar DIRETO sem IA
-                if nome_func in ['listar_contratos', 'recursos_por_contrato']:
+                # Para funções que já retornam formatação perfeita, retornar DIRETO sem reformatar
+                # Isso evita que a IA junte itens de lista na mesma linha
+                funcoes_diretas = [
+                    'listar_contratos', 
+                    'recursos_por_contrato', 
+                    'ranking_funcionarios',
+                    'detalhar_apontamentos_por_dia',
+                    'consultar_periodo',
+                    'horas_esperadas_colaborador',
+                    'verificar_saidas_esquecidas',
+                    'contratos_por_recurso'
+                ]
+                
+                if nome_func in funcoes_diretas:
+                    # Retornar direto - não deixar IA reformatar
                     resposta_final = resultado.get('resposta', 'Sem dados')
                 else:
-                    # Pedir para IA formatar resposta (só para outros casos)
+                    # Pedir para IA formatar resposta (só para casos simples)
                     mensagens.append({"role": "assistant", "content": resposta_ia})
                     mensagens.append({
                         "role": "user", 
-                        "content": f"RESULTADO DA FERRAMENTA: {json.dumps(resultado, default=_serializar_para_json, ensure_ascii=False)}\n\nAgora formate isso de forma amigável e concisa para o usuário."
+                        "content": f"RESULTADO DA FERRAMENTA: {json.dumps(resultado, default=_serializar_para_json, ensure_ascii=False)}\n\n🚨 IMPORTANTE: Se a resposta tiver itens de lista (linhas separadas), PRESERVE as quebras de linha. Não junte tudo na mesma linha.\n\nAgora apresente isso de forma amigável para o usuário."
                     })
                     
                     response = self.client.chat.completions.create(
