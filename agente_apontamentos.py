@@ -39,7 +39,7 @@ class AgenteApontamentos:
         """Carrega os dados mais recentes de apontamentos"""
         try:
             # URL do CSV no HostGator (fallback confiável)
-            CSV_URL = os.getenv('CSV_URL', 'https://multibeat.com.br/apontamentos/dados/dados_anonimizados_decupado_20251118_211544.csv')
+            CSV_URL = os.getenv('CSV_URL', 'https://multibeat.com.br/apontamentos/dados/dados_20251205_204254_separado.csv')
             
             # Método 1: Tentar carregar via URL HTTP (HostGator ou Azure público)
             if CSV_URL:
