@@ -131,20 +131,21 @@ class AgenteApontamentos:
             # Calcular duração se não existir
             if 'duracao_horas' not in self.df.columns:
                 print("⏱️ Calculando duração...")
-                # Usar colunas corretas do CSV novo
-                col_inicio = 'd_dt_inicio_apontamento' if 'd_dt_inicio_apontamento' in self.df.columns else 'd_dt_data'
-                col_fim = 'd_dt_fim_apontamento' if 'd_dt_fim_apontamento' in self.df.columns else 'd_dt_data_fim'
                 
-                self.df[col_inicio] = pd.to_datetime(
-                    self.df[col_inicio], errors='coerce'
-                )
-                self.df[col_fim] = pd.to_datetime(
-                    self.df[col_fim], errors='coerce'
-                )
-                
-                # Calcular duração em horas
-                duracao = (self.df[col_fim] - self.df[col_inicio])
-                self.df['duracao_horas'] = duracao.dt.total_seconds() / 3600
+                # CSV novo já tem horas calculadas em f_hr_hora_inicio e f_hr_hora_fim
+                if 'f_hr_hora_fim' in self.df.columns and 'f_hr_hora_inicio' in self.df.columns:
+                    print("   Usando colunas f_hr_hora_inicio e f_hr_hora_fim")
+                    self.df['duracao_horas'] = self.df['f_hr_hora_fim'] - self.df['f_hr_hora_inicio']
+                else:
+                    # Fallback: calcular usando timestamps
+                    col_inicio = 'd_dt_inicio_apontamento' if 'd_dt_inicio_apontamento' in self.df.columns else 'd_dt_data'
+                    col_fim = 'd_dt_fim_apontamento' if 'd_dt_fim_apontamento' in self.df.columns else 'd_dt_data_fim'
+                    
+                    self.df[col_inicio] = pd.to_datetime(self.df[col_inicio], errors='coerce')
+                    self.df[col_fim] = pd.to_datetime(self.df[col_fim], errors='coerce')
+                    
+                    duracao = (self.df[col_fim] - self.df[col_inicio])
+                    self.df['duracao_horas'] = duracao.dt.total_seconds() / 3600
                 
                 # Remover valores inválidos
                 self.df = self.df[self.df['duracao_horas'] > 0].copy()
