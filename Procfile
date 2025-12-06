@@ -1,1 +1,1 @@
-web: python api_simples.py
+web: uvicorn bot.bot_api:app --host 0.0.0.0 --port $PORT
