@@ -131,15 +131,19 @@ class AgenteApontamentos:
             # Calcular duração se não existir
             if 'duracao_horas' not in self.df.columns:
                 print("⏱️ Calculando duração...")
-                self.df['d_dt_inicio_apontamento'] = pd.to_datetime(
-                    self.df['d_dt_inicio_apontamento'], errors='coerce'
+                # Usar colunas corretas do CSV novo
+                col_inicio = 'd_dt_inicio_apontamento' if 'd_dt_inicio_apontamento' in self.df.columns else 'd_dt_data'
+                col_fim = 'd_dt_fim_apontamento' if 'd_dt_fim_apontamento' in self.df.columns else 'd_dt_data_fim'
+                
+                self.df[col_inicio] = pd.to_datetime(
+                    self.df[col_inicio], errors='coerce'
                 )
-                self.df['d_dt_fim_apontamento'] = pd.to_datetime(
-                    self.df['d_dt_fim_apontamento'], errors='coerce'
+                self.df[col_fim] = pd.to_datetime(
+                    self.df[col_fim], errors='coerce'
                 )
                 
                 # Calcular duração em horas
-                duracao = (self.df['d_dt_fim_apontamento'] - self.df['d_dt_inicio_apontamento'])
+                duracao = (self.df[col_fim] - self.df[col_inicio])
                 self.df['duracao_horas'] = duracao.dt.total_seconds() / 3600
                 
                 # Remover valores inválidos
