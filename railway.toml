@@ -1,11 +1,2 @@
-[build]
-builder = "nixpacks"
-
-[build.nixpacksPlan]
-providers = ["python"]
-
-[build.nixpacksPlan.phases.install]
-cmds = ["pip install -r requirements.txt"]
-
 [deploy]
 startCommand = "python bot/bot_api.py"

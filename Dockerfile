@@ -10,16 +10,16 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copiar requirements primeiro (cache de layers)
-COPY requirements_railway.txt .
+COPY requirements.txt .
 
 # Instalar dependências Python
-RUN pip install --no-cache-dir -r requirements_railway.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código da aplicação
 COPY . .
 
 # Porta padrão (Railway define dinamicamente via variável PORT)
-ENV PORT=8000
+ENV PORT=8080
 
-# Comando de inicialização usando api_simples.py
-CMD ["python", "api_simples.py"]
+# Comando de inicialização usando bot_api.py
+CMD ["python", "bot/bot_api.py"]
