@@ -18,7 +18,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar código da aplicação
 COPY . .
 
-# Porta padrão (Railway injeta variáveis em runtime, não em build-time)
+# Copiar .env (fallback se Railway não passar variáveis)
+COPY .env .env
+
+# Porta padrão
 ENV PORT=8080
 
 # Comando de inicialização usando bot_api.py
