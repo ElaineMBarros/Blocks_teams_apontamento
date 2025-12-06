@@ -34,11 +34,12 @@ from bot.adaptive_cards import (
 )
 
 # Validar configurações obrigatórias no início
+# Suporta MICROSOFT_APP_* (Railway) e BOT_APP_* (Azure Functions)
 try:
     config.validate()
     print("✅ Configurações validadas com sucesso")
-    print(f"   - App ID: {config.BOT_APP_ID[:8]}...")
-    print(f"   - Tenant ID: {config.BOT_TENANT_ID[:8]}...")
+    print(f"   - App ID: {config.BOT_APP_ID[:8] if config.BOT_APP_ID else 'VAZIO'}...")
+    print(f"   - Tenant ID: {config.BOT_TENANT_ID[:8] if config.BOT_TENANT_ID else 'VAZIO'}...")
 except ValueError as e:
     print(f"❌ ERRO DE CONFIGURAÇÃO: {e}")
     print("⚠️ Bot não iniciará corretamente sem as variáveis obrigatórias!")
