@@ -1,4 +1,4 @@
 [build]
 
 [deploy]
-startCommand = "uvicorn bot.bot_api:app --host 0.0.0.0 --port ${PORT}"
+startCommand = "python bot/bot_api.py"

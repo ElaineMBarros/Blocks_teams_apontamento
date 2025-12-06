@@ -422,7 +422,7 @@ if __name__ == "__main__":
     print(f"🤖 INICIANDO BOT FRAMEWORK API NA PORTA {config.PORT}...")
     logger.info(f"🤖 Iniciando Bot Framework API na porta {config.PORT}...")
     uvicorn.run(
-        "bot_api:app",
+        app,
         host="0.0.0.0",
         port=config.PORT,
         reload=config.DEBUG
