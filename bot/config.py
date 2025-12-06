@@ -11,10 +11,10 @@ load_dotenv()
 class Config:
     """Configurações da aplicação"""
     
-    # Azure Bot Service
-    BOT_APP_ID = os.getenv("BOT_APP_ID", "")
-    BOT_APP_PASSWORD = os.getenv("BOT_APP_PASSWORD", "")
-    BOT_TENANT_ID = os.getenv("BOT_TENANT_ID", "")
+    # Azure Bot Service (aceita MICROSOFT_APP_* ou BOT_APP_*)
+    BOT_APP_ID = os.getenv("MICROSOFT_APP_ID") or os.getenv("BOT_APP_ID", "")
+    BOT_APP_PASSWORD = os.getenv("MICROSOFT_APP_PASSWORD") or os.getenv("BOT_APP_PASSWORD", "")
+    BOT_TENANT_ID = os.getenv("MICROSOFT_APP_TENANTID") or os.getenv("BOT_TENANT_ID", "")
     
     # Microsoft Fabric
     FABRIC_ENDPOINT = os.getenv("FABRIC_ENDPOINT", "")
