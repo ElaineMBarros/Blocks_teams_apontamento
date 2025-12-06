@@ -33,6 +33,13 @@ from bot.adaptive_cards import (
     create_help_card
 )
 
+# DEBUG: Verificar variáveis de ambiente
+print("🔍 DEBUG - Verificando variáveis de ambiente:")
+print(f"   MICROSOFT_APP_ID: {os.getenv('MICROSOFT_APP_ID', 'NÃO ENCONTRADA')[:20]}...")
+print(f"   MICROSOFT_APP_PASSWORD: {'***' if os.getenv('MICROSOFT_APP_PASSWORD') else 'NÃO ENCONTRADA'}")
+print(f"   MICROSOFT_APP_TENANTID: {os.getenv('MICROSOFT_APP_TENANTID', 'NÃO ENCONTRADA')[:20]}...")
+print(f"   BOT_APP_ID (config): {config.BOT_APP_ID[:20] if config.BOT_APP_ID else 'VAZIO'}...")
+
 # Validar configurações obrigatórias no início
 # Suporta MICROSOFT_APP_* (Railway) e BOT_APP_* (Azure Functions)
 try:
