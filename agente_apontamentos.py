@@ -1615,6 +1615,473 @@ class AgenteApontamentos:
                 "tipo": "erro"
             }
 
+    # ========== NOVAS FUNÇÕES PARA ATIVIDADES ==========
+    
+    def listar_atividades(self, top_n: int = 20) -> Dict:
+        """
+        Lista todas as atividades disponíveis no sistema
+        
+        Args:
+            top_n: Número máximo de atividades a exibir (padrão: 20)
+        
+        Returns:
+            Dicionário com lista de atividades
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            # Contar atividades únicas
+            atividades = self.df['s_ds_atividade'].dropna().value_counts().head(top_n)
+            
+            if len(atividades) == 0:
+                return {
+                    "resposta": "❌ Nenhuma atividade encontrada nos dados.",
+                    "tipo": "info"
+                }
+            
+            resposta = f"📋 **Atividades Disponíveis** (Top {min(top_n, len(atividades))})\n\n"
+            
+            for i, (atividade, count) in enumerate(atividades.items(), 1):
+                resposta += f"{i}. **{atividade}**\n"
+                resposta += f"   └─ {count} apontamentos\n\n"
+            
+            resposta += f"📊 **Total de atividades únicas:** {self.df['s_ds_atividade'].nunique()}"
+            
+            return {
+                "resposta": resposta,
+                "dados": atividades.to_dict(),
+                "tipo": "lista_atividades"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao listar atividades: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def ranking_atividades(self, top_n: int = 10, metrica: str = "horas") -> Dict:
+        """
+        Ranking de atividades mais realizadas
+        
+        Args:
+            top_n: Número de atividades no ranking
+            metrica: "horas" ou "quantidade" (número de apontamentos)
+        
+        Returns:
+            Dicionário com ranking de atividades
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            df_atividades = self.df[self.df['s_ds_atividade'].notna()]
+            
+            if len(df_atividades) == 0:
+                return {
+                    "resposta": "❌ Nenhuma atividade encontrada nos dados.",
+                    "tipo": "info"
+                }
+            
+            if metrica == "horas":
+                ranking = df_atividades.groupby('s_ds_atividade')['duracao_horas'].agg(['sum', 'count']).sort_values('sum', ascending=False).head(top_n)
+                titulo = "🏆 **Top Atividades por Horas Trabalhadas**"
+                metrica_label = "h"
+            else:
+                ranking = df_atividades.groupby('s_ds_atividade').size().sort_values(ascending=False).head(top_n)
+                titulo = "🏆 **Top Atividades por Quantidade**"
+                metrica_label = "apontamentos"
+            
+            resposta = f"{titulo}\n\n"
+            
+            if metrica == "horas":
+                for i, (atividade, row) in enumerate(ranking.iterrows(), 1):
+                    resposta += f"{i}. **{atividade}**\n"
+                    resposta += f"   └─ {row['sum']:.2f}h ({int(row['count'])} apontamentos)\n\n"
+            else:
+                for i, (atividade, count) in enumerate(ranking.items(), 1):
+                    resposta += f"{i}. **{atividade}**\n"
+                    resposta += f"   └─ {count} {metrica_label}\n\n"
+            
+            return {
+                "resposta": resposta,
+                "dados": ranking.to_dict() if metrica != "horas" else ranking.to_dict('index'),
+                "tipo": "ranking_atividades"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao gerar ranking: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def apontamentos_por_atividade(self, atividade: str, data_inicio: Optional[str] = None, data_fim: Optional[str] = None) -> Dict:
+        """
+        Busca apontamentos de uma atividade específica
+        
+        Args:
+            atividade: Nome ou parte do nome da atividade
+            data_inicio: Data inicial (opcional)
+            data_fim: Data final (opcional)
+        
+        Returns:
+            Dicionário com apontamentos da atividade
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            # Filtrar por atividade (case insensitive, busca parcial)
+            df_filtrado = self.df[self.df['s_ds_atividade'].str.contains(atividade, case=False, na=False)]
+            
+            # Filtrar por período se especificado
+            if data_inicio and data_fim:
+                inicio = pd.to_datetime(data_inicio, dayfirst=True)
+                fim = pd.to_datetime(data_fim, dayfirst=True)
+                df_filtrado = df_filtrado[(df_filtrado['data'] >= inicio) & (df_filtrado['data'] <= fim)]
+                periodo_msg = f" ({inicio.date()} a {fim.date()})"
+            else:
+                periodo_msg = ""
+            
+            if len(df_filtrado) == 0:
+                return {
+                    "resposta": f"❌ Nenhum apontamento encontrado para atividade '{atividade}'{periodo_msg}",
+                    "tipo": "info"
+                }
+            
+            # Estatísticas
+            total_horas = df_filtrado['duracao_horas'].sum()
+            total_apontamentos = len(df_filtrado)
+            usuarios_unicos = df_filtrado['s_nm_recurso'].nunique()
+            atividade_exata = df_filtrado['s_ds_atividade'].mode()[0] if len(df_filtrado) > 0 else atividade
+            
+            resposta = f"📋 **Atividade:** {atividade_exata}\n"
+            resposta += f"📅 **Período:** {periodo_msg if periodo_msg else 'Todos os registros'}\n\n"
+            resposta += f"⏱️ **Total de horas:** {total_horas:.2f}h\n"
+            resposta += f"📊 **Total de apontamentos:** {total_apontamentos}\n"
+            resposta += f"👥 **Usuários diferentes:** {usuarios_unicos}\n"
+            resposta += f"⌀ **Média por apontamento:** {total_horas/total_apontamentos:.2f}h\n\n"
+            
+            # Top 5 usuários nesta atividade
+            top_usuarios = df_filtrado.groupby('s_nm_recurso')['duracao_horas'].sum().sort_values(ascending=False).head(5)
+            resposta += "👤 **Top 5 Usuários:**\n"
+            for i, (usuario, horas) in enumerate(top_usuarios.items(), 1):
+                resposta += f"{i}. {usuario}: {horas:.2f}h\n"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "atividade": atividade_exata,
+                    "total_horas": float(total_horas),
+                    "total_apontamentos": int(total_apontamentos),
+                    "usuarios_unicos": int(usuarios_unicos),
+                    "top_usuarios": top_usuarios.to_dict()
+                },
+                "tipo": "apontamentos_atividade"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao buscar atividade: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def atividades_por_usuario(self, usuario: str, top_n: int = 10) -> Dict:
+        """
+        Lista atividades realizadas por um usuário específico
+        
+        Args:
+            usuario: Nome ou parte do nome do usuário
+            top_n: Número máximo de atividades a exibir
+        
+        Returns:
+            Dicionário com atividades do usuário
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            # Filtrar por usuário
+            df_usuario = self.df[self.df['s_nm_recurso'].str.contains(usuario, case=False, na=False)]
+            
+            if len(df_usuario) == 0:
+                return {
+                    "resposta": f"❌ Usuário '{usuario}' não encontrado.",
+                    "tipo": "info"
+                }
+            
+            nome_completo = df_usuario['s_nm_recurso'].iloc[0]
+            
+            # Filtrar atividades não nulas
+            df_com_atividades = df_usuario[df_usuario['s_ds_atividade'].notna()]
+            
+            if len(df_com_atividades) == 0:
+                return {
+                    "resposta": f"❌ Usuário '{nome_completo}' não tem atividades registradas.",
+                    "tipo": "info"
+                }
+            
+            # Agrupar por atividade
+            atividades = df_com_atividades.groupby('s_ds_atividade')['duracao_horas'].agg(['sum', 'count']).sort_values('sum', ascending=False).head(top_n)
+            
+            resposta = f"👤 **Usuário:** {nome_completo}\n\n"
+            resposta += f"📋 **Atividades realizadas** (Top {min(top_n, len(atividades))})\n\n"
+            
+            for i, (atividade, row) in enumerate(atividades.iterrows(), 1):
+                resposta += f"{i}. **{atividade}**\n"
+                resposta += f"   ⏱️ {row['sum']:.2f}h ({int(row['count'])} apontamentos)\n\n"
+            
+            total_horas = df_com_atividades['duracao_horas'].sum()
+            resposta += f"📊 **Total:** {total_horas:.2f}h em {len(atividades)} atividades diferentes"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "usuario": nome_completo,
+                    "atividades": atividades.to_dict('index'),
+                    "total_horas": float(total_horas)
+                },
+                "tipo": "atividades_usuario"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao buscar atividades do usuário: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def horas_por_atividade(self, data_inicio: Optional[str] = None, data_fim: Optional[str] = None, top_n: int = 15) -> Dict:
+        """
+        Total de horas gastas em cada atividade
+        
+        Args:
+            data_inicio: Data inicial (opcional)
+            data_fim: Data final (opcional)
+            top_n: Número máximo de atividades a exibir
+        
+        Returns:
+            Dicionário com horas por atividade
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            df_filtrado = self.df[self.df['s_ds_atividade'].notna()].copy()
+            
+            # Filtrar por período se especificado
+            if data_inicio and data_fim:
+                inicio = pd.to_datetime(data_inicio, dayfirst=True)
+                fim = pd.to_datetime(data_fim, dayfirst=True)
+                df_filtrado = df_filtrado[(df_filtrado['data'] >= inicio) & (df_filtrado['data'] <= fim)]
+                periodo_msg = f"📅 **Período:** {inicio.date()} a {fim.date()}\n\n"
+            else:
+                periodo_msg = "📅 **Período:** Todos os registros\n\n"
+            
+            if len(df_filtrado) == 0:
+                return {
+                    "resposta": f"❌ Nenhum dado encontrado no período especificado.",
+                    "tipo": "info"
+                }
+            
+            # Agrupar por atividade
+            horas_atividade = df_filtrado.groupby('s_ds_atividade')['duracao_horas'].agg(['sum', 'count', 'mean']).sort_values('sum', ascending=False).head(top_n)
+            
+            total_geral = df_filtrado['duracao_horas'].sum()
+            
+            resposta = f"⏱️ **Horas por Atividade**\n\n"
+            resposta += periodo_msg
+            
+            for i, (atividade, row) in enumerate(horas_atividade.iterrows(), 1):
+                percentual = (row['sum'] / total_geral) * 100
+                resposta += f"{i}. **{atividade}**\n"
+                resposta += f"   ⏱️ {row['sum']:.2f}h ({percentual:.1f}%)\n"
+                resposta += f"   📊 {int(row['count'])} apontamentos | ⌀ {row['mean']:.2f}h\n\n"
+            
+            resposta += f"📊 **Total analisado:** {total_geral:.2f}h em {len(horas_atividade)} atividades"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "atividades": horas_atividade.to_dict('index'),
+                    "total_horas": float(total_geral)
+                },
+                "tipo": "horas_atividade"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao calcular horas por atividade: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def atividades_por_periodo(self, data_inicio: str, data_fim: str) -> Dict:
+        """
+        Atividades realizadas em um período específico
+        
+        Args:
+            data_inicio: Data inicial
+            data_fim: Data final
+        
+        Returns:
+            Dicionário com atividades do período
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            inicio = pd.to_datetime(data_inicio, dayfirst=True)
+            fim = pd.to_datetime(data_fim, dayfirst=True)
+            
+            # Filtrar por período
+            df_periodo = self.df[(self.df['data'] >= inicio) & (self.df['data'] <= fim)]
+            df_periodo = df_periodo[df_periodo['s_ds_atividade'].notna()]
+            
+            if len(df_periodo) == 0:
+                return {
+                    "resposta": f"❌ Nenhuma atividade encontrada entre {inicio.date()} e {fim.date()}",
+                    "tipo": "info"
+                }
+            
+            # Estatísticas
+            total_atividades = df_periodo['s_ds_atividade'].nunique()
+            total_horas = df_periodo['duracao_horas'].sum()
+            total_apontamentos = len(df_periodo)
+            
+            # Top 10 atividades do período
+            top_atividades = df_periodo.groupby('s_ds_atividade')['duracao_horas'].agg(['sum', 'count']).sort_values('sum', ascending=False).head(10)
+            
+            resposta = f"📅 **Período:** {inicio.date()} a {fim.date()}\n\n"
+            resposta += f"📋 **Atividades únicas:** {total_atividades}\n"
+            resposta += f"⏱️ **Total de horas:** {total_horas:.2f}h\n"
+            resposta += f"📊 **Total de apontamentos:** {total_apontamentos}\n\n"
+            resposta += "🏆 **Top 10 Atividades do Período:**\n\n"
+            
+            for i, (atividade, row) in enumerate(top_atividades.iterrows(), 1):
+                resposta += f"{i}. **{atividade}**\n"
+                resposta += f"   ⏱️ {row['sum']:.2f}h ({int(row['count'])} apontamentos)\n\n"
+            
+            return {
+                "resposta": resposta,
+                "dados": {
+                    "periodo": {"inicio": str(inicio.date()), "fim": str(fim.date())},
+                    "total_atividades": int(total_atividades),
+                    "total_horas": float(total_horas),
+                    "top_atividades": top_atividades.to_dict('index')
+                },
+                "tipo": "atividades_periodo"
+            }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao buscar atividades do período: {str(e)}",
+                "tipo": "erro"
+            }
+    
+    def distribuicao_atividades_por_contrato(self, contrato: Optional[str] = None) -> Dict:
+        """
+        Distribuição de atividades por contrato
+        
+        Args:
+            contrato: Número do contrato (opcional, se None mostra todos)
+        
+        Returns:
+            Dicionário com distribuição de atividades
+        """
+        if self.df is None:
+            return {"erro": "Dados não disponíveis", "tipo": "erro"}
+        
+        if 's_ds_atividade' not in self.df.columns:
+            return {"erro": "Coluna de atividades não disponível", "tipo": "erro"}
+        
+        try:
+            df_filtrado = self.df[self.df['s_ds_atividade'].notna()].copy()
+            
+            # Filtrar por contrato se especificado
+            if contrato:
+                df_filtrado = df_filtrado[df_filtrado['s_nr_contrato'].str.contains(contrato, case=False, na=False)]
+                
+                if len(df_filtrado) == 0:
+                    return {
+                        "resposta": f"❌ Contrato '{contrato}' não encontrado.",
+                        "tipo": "info"
+                    }
+                
+                contrato_nome = df_filtrado['s_nr_contrato'].iloc[0]
+                
+                # Atividades do contrato
+                atividades = df_filtrado.groupby('s_ds_atividade')['duracao_horas'].agg(['sum', 'count']).sort_values('sum', ascending=False)
+                
+                resposta = f"📋 **Contrato:** {contrato_nome}\n\n"
+                resposta += f"🎯 **Atividades do Contrato:**\n\n"
+                
+                total_horas = df_filtrado['duracao_horas'].sum()
+                
+                for i, (atividade, row) in enumerate(atividades.iterrows(), 1):
+                    percentual = (row['sum'] / total_horas) * 100
+                    resposta += f"{i}. **{atividade}**\n"
+                    resposta += f"   ⏱️ {row['sum']:.2f}h ({percentual:.1f}%) | {int(row['count'])} apontamentos\n\n"
+                
+                resposta += f"📊 **Total:** {total_horas:.2f}h em {len(atividades)} atividades"
+                
+                return {
+                    "resposta": resposta,
+                    "dados": {
+                        "contrato": contrato_nome,
+                        "atividades": atividades.to_dict('index'),
+                        "total_horas": float(total_horas)
+                    },
+                    "tipo": "distribuicao_atividades_contrato"
+                }
+            else:
+                # Distribuição geral por contrato
+                distribuicao = df_filtrado.groupby(['s_nr_contrato', 's_ds_atividade'])['duracao_horas'].sum().reset_index()
+                top_contratos = df_filtrado.groupby('s_nr_contrato')['duracao_horas'].sum().sort_values(ascending=False).head(5)
+                
+                resposta = f"📊 **Distribuição de Atividades por Contrato**\n\n"
+                resposta += "🏆 **Top 5 Contratos (por horas):**\n\n"
+                
+                for i, (contrato_num, horas) in enumerate(top_contratos.items(), 1):
+                    # Atividades principais do contrato
+                    atividades_contrato = distribuicao[distribuicao['s_nr_contrato'] == contrato_num].nlargest(3, 'duracao_horas')
+                    
+                    resposta += f"{i}. **{contrato_num}** ({horas:.2f}h)\n"
+                    for _, row in atividades_contrato.iterrows():
+                        resposta += f"   • {row['s_ds_atividade']}: {row['duracao_horas']:.2f}h\n"
+                    resposta += "\n"
+                
+                return {
+                    "resposta": resposta,
+                    "dados": {
+                        "top_contratos": top_contratos.to_dict(),
+                        "distribuicao": distribuicao.to_dict('records')
+                    },
+                    "tipo": "distribuicao_geral_atividades"
+                }
+            
+        except Exception as e:
+            return {
+                "resposta": f"❌ Erro ao analisar distribuição: {str(e)}",
+                "tipo": "erro"
+            }
+
     def ajuda(self) -> Dict:
         """Retorna mensagem de ajuda"""
         return {
@@ -1638,6 +2105,15 @@ class AgenteApontamentos:
 ⚠️ **Análises:**
 • "Mostrar outliers"
 • "Apontamentos fora do padrão"
+
+📋 **Atividades (NOVO!):**
+• "Listar atividades"
+• "Ranking de atividades"
+• "Apontamentos da atividade X"
+• "Atividades do usuário Y"
+• "Horas por atividade"
+• "Atividades do período"
+• "Distribuição de atividades por contrato"
 
 💡 **Dica:** Mencione seu nome para consultas personalizadas!
 """,
