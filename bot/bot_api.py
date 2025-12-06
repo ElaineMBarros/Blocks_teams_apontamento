@@ -419,7 +419,8 @@ if __name__ == "__main__":
         sys.exit(1)
     
     # Iniciar servidor
-    logger.info(f"🚀 Iniciando bot na porta {config.PORT}...")
+    print(f"🤖 INICIANDO BOT FRAMEWORK API NA PORTA {config.PORT}...")
+    logger.info(f"🤖 Iniciando Bot Framework API na porta {config.PORT}...")
     uvicorn.run(
         "bot_api:app",
         host="0.0.0.0",
